@@ -1,0 +1,144 @@
+﻿            SendCmdViaEhternet();
+            //SendCmdViaEhternet( txtCommand.Text, 5024, txtIpHost.Text);
+            //if (cbInterfaceType.Text == "Ethernet")
+            //{
+            //    // Устанавливаем для сокета локальную конечную точку
+            //    int port = 5024; // порт для приема входящих запросов
+            //    string ip = txtIpHost.Text;
+            //    // Создаем сокет Tcp/Ip
+            //    IPEndPoint ipPoint = new IPEndPoint(IPAddress.Parse(ip), port);
+            //    Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+            //    // Назначаем сокет локальной конечной точке и слушаем входящие сокеты
+            //    try
+            //    {
+            //        PiezoParameters piezo = new PiezoParameters();
+            //        string msg = txtCommand.Text + '\n';
+            //        socket.Connect(ipPoint);
+            //        //byte[] data = Encoding.Unicode.GetBytes(msg);
+            //        byte[] data = Encoding.ASCII.GetBytes(msg);
+            //        socket.Send(data);
+            //        // получаем ответ
+            //        data = new byte[70]; // буфер для ответа
+            //        StringBuilder builder = new StringBuilder();
+            //        int bytes = 0; // количество полученных байт
+
+            //        do
+            //        {
+            //            bytes = socket.Receive(data, data.Length, 0);
+            //            builder.Append(Encoding.ASCII.GetString(data, 0, bytes));
+            //        }
+            //        while (socket.Available > 0);
+
+            //        int gg = data.Count();
+            //        MessageBox.Show(gg.ToString());
+            //        Console.WriteLine("ответ сервера: " + builder.ToString());
+
+
+            //        int uu = socket.Receive(data);
+            //        MessageBox.Show(uu.ToString());
+
+            //        byte[] data2 = new byte[70];
+
+            //        for (int i = 6; i < data.Count(); i++)
+            //        {
+            //            data2[i - 6] = data[i];
+            //        }
+            //        MessageBox.Show(Encoding.ASCII.GetString(data2));
+
+            //        // закрываем сокет
+            //        socket.Shutdown(SocketShutdown.Both);
+            //        socket.Close();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        MessageBox.Show(ex.ToString());
+            //        Console.WriteLine(ex.ToString());
+            //    }
+            //    finally
+            //    {
+            //        Console.ReadLine();
+            //    }
+
+            //}
+
+
+
+
+		private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                device.Write(ReplaceCommonEscapeSequences(txtCommand.Text));
+                answer = InsertCommonEscapeSequences(device.ReadString());
+                txtAnswer.Text = answer;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+query		
+private void query_Click(object sender, System.EventArgs e)
+        {
+            Cursor.Current = Cursors.WaitCursor;
+            try
+            {
+                string textToWrite = ReplaceCommonEscapeSequences(writeTextBox.Text);
+                string responseString = mbSession.Query(textToWrite);
+                readTextBox.Text = InsertCommonEscapeSequences(responseString);
+            }
+            catch(Exception exp)
+            {
+                MessageBox.Show(exp.Message);
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
+        }
+
+
+write  
+private void write_Click(object sender, System.EventArgs e)
+        {
+            try
+            {
+                string textToWrite = ReplaceCommonEscapeSequences(writeTextBox.Text);
+                mbSession.Write(textToWrite);
+            }
+            catch(Exception exp)
+            {
+                MessageBox.Show(exp.Message);
+            }
+        }	
+
+
+private void read_Click(object sender, System.EventArgs e)
+        {
+            Cursor.Current = Cursors.WaitCursor;
+            try
+            {
+                string responseString = mbSession.ReadString();
+                readTextBox.Text = InsertCommonEscapeSequences(responseString);
+            }
+            catch(Exception exp)
+            {
+                MessageBox.Show(exp.Message);
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
+        }		
+		

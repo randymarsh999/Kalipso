@@ -1,0 +1,708 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace Kalipso
+{
+#pragma warning disable CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmMeasTempOpt"
+    public partial class frmMeasTempOpt : Form
+#pragma warning restore CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmMeasTempOpt"
+    {
+#pragma warning disable CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmMeasTempOpt.frmMeasTempOpt()"
+        public frmMeasTempOpt()
+#pragma warning restore CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmMeasTempOpt.frmMeasTempOpt()"
+        {
+            InitializeComponent();
+            cFreqMode.SelectedIndex = 0;
+            cbGPIBDevModel.SelectedIndex = 0;
+            cFreqMode.SelectedIndex = 0;
+            cWorkMode.SelectedIndex = 0;
+            cFreqMode.SelectedItem = 0;
+            cDirect.SelectedIndex = 0;
+            cbTempMode.SelectedIndex = 0;
+            cCUCycle.SelectedIndex = 0;
+            cbExportDBMeasTemp.SelectedIndex = 0;
+        }
+
+        private void textBox9_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label16_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void frmMeasTempOpt_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            this.Hide();
+        }
+
+        private void frmMeasTempOpt_FormClosed(object sender, FormClosedEventArgs e)
+        {
+
+        }
+
+        private void frmMeasTempOpt_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtHeight_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+        /// <summary>
+        /// Adding of tempratures to list
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void btnAddTemp_Click(object sender, EventArgs e)
+        {
+            tTempList.Text = "";
+            int startTemp = Convert.ToInt32(txtTempStart.Text);
+            int endTemp = Convert.ToInt32(txtTempEnd.Text);
+            int stepTemp = Convert.ToInt32(txtTempStep.Text);
+            int a = (endTemp - startTemp) / stepTemp;
+
+            for (int i = 0; i < a; i++)
+            {
+
+                startTemp = startTemp + stepTemp;
+                tTempList.AppendText(startTemp.ToString() + Environment.NewLine);
+            }
+            tTempList.AppendText(endTemp.ToString() + Environment.NewLine);
+            for (int i = 0; i < a; i++)
+            {
+                endTemp = endTemp - stepTemp;
+                tTempList.AppendText(endTemp.ToString() + Environment.NewLine);
+            }
+            tTempList.AppendText(txtTempStart.Text);
+        }
+        /// <summary>
+        /// Handles the Click event of the btnAddFreq control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
+        private void btnAddFreq_Click(object sender, EventArgs e)
+        {
+            switch (cbGPIBDevModel.Text)
+            {
+                case "Agilent4980A":
+                    {
+                        tFreqList.Text = "";
+                        if (cFreqMode.Text == "Step")
+                        {
+                            for (int i = 0; i < chListFreq.CheckedItems.Count; i++)
+                            {
+                                tFreqList.AppendText(chListFreq.CheckedItems[i].ToString() + Environment.NewLine);
+                            }
+                        }
+                        if (cFreqMode.Text == "Auto")
+                        {
+
+                            int start = Convert.ToInt32(txtStartFreq.Text);
+                            int end = Convert.ToInt32(txtEndFreq.Text);
+                            int step = Convert.ToInt32(txtStepFreq.Text);
+                            int a;
+                            a = (end - start) / step;
+                            tFreqList.AppendText(start.ToString() + Environment.NewLine);
+                            for (int i = 0; i < a; i++)
+                            {
+                                start = start + step;
+                                if (start < end)
+                                {
+                                    tFreqList.AppendText(start.ToString() + Environment.NewLine);
+                                }
+                                if (start >= end)
+                                {
+                                    tFreqList.AppendText(end.ToString());
+                                    return;
+                                }
+                            }
+                        }
+                        if (cFreqMode.Text == "Logarithm")
+                        {
+                            int start = Convert.ToInt32(txtStartFreq.Text);
+                            int end = Convert.ToInt32(txtEndFreq.Text);
+                            double step = Convert.ToDouble(txtCoefficient.Text);
+                            tFreqList.AppendText(start.ToString() + Environment.NewLine);
+
+                            for (int i = 0; i < end; i++)
+                            {
+                                start = Convert.ToInt32(Convert.ToDouble(start) * step);
+                                if (start < end)
+                                {
+                                    tFreqList.AppendText(start.ToString() + Environment.NewLine);
+                                }
+                                if (start >= end)
+                                {
+                                    tFreqList.AppendText(end.ToString());
+                                    return;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                case "Agilent4263B":
+                    {
+                        tFreqList.AppendText("100" + Environment.NewLine);
+                        tFreqList.AppendText("120" + Environment.NewLine);
+                        tFreqList.AppendText("1000" + Environment.NewLine);
+                        tFreqList.AppendText("10000" + Environment.NewLine);
+                        tFreqList.AppendText("100000");
+                        break;
+                    }
+                case "WayneKerr4300":
+                    {
+                        if (cFreqMode.Text == "Logarithm")
+                        {
+                            int start = Convert.ToInt32(txtStartFreq.Text);
+                            int end = Convert.ToInt32(txtEndFreq.Text);
+                            double step = Convert.ToDouble(txtCoefficient.Text);
+                            tFreqList.AppendText(start.ToString() + Environment.NewLine);
+                            for (int i = 0; i < end; i++)
+                            {
+                                start = Convert.ToInt32(Convert.ToDouble(start) * step);
+                                if (start < end)
+                                {
+                                    tFreqList.AppendText(start.ToString() + Environment.NewLine);
+                                }
+                                if (start >= end)
+                                {
+                                    tFreqList.AppendText(end.ToString());
+                                    return;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                case "E7-20":
+                    {
+                        tFreqList.AppendText("25" + Environment.NewLine);
+                        tFreqList.AppendText("50" + Environment.NewLine);
+                        tFreqList.AppendText("60" + Environment.NewLine);
+                        tFreqList.AppendText("100" + Environment.NewLine);
+                        tFreqList.AppendText("120" + Environment.NewLine);
+                        tFreqList.AppendText("200" + Environment.NewLine);
+                        tFreqList.AppendText("500" + Environment.NewLine);
+                        tFreqList.AppendText("1000" + Environment.NewLine);
+                        tFreqList.AppendText("2000" + Environment.NewLine);
+                        tFreqList.AppendText("5000" + Environment.NewLine);
+                        tFreqList.AppendText("10000" + Environment.NewLine);
+                        tFreqList.AppendText("20000" + Environment.NewLine);
+                        tFreqList.AppendText("50000" + Environment.NewLine);
+                        tFreqList.AppendText("100000" + Environment.NewLine);
+                        tFreqList.AppendText("200000" + Environment.NewLine);
+                        tFreqList.AppendText("500000" + Environment.NewLine);
+                        tFreqList.AppendText("1000000");
+                        break;
+                    }
+                default:
+                    break;
+            }
+        }
+        /// <summary>
+        /// Add all frequnces for the current device
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void cbAllFreq_CheckedChanged(object sender, EventArgs e)
+        {
+            cbDefaultFreq.Checked = false;
+            cbClear.Checked = false;
+            tFreqList.Text = "";
+            //agilent 4980
+            for (int i = 0; i < chListFreq.Items.Count; i++)
+            {
+                chListFreq.SetItemChecked(i, false);
+            }
+            if (cbGPIBDevModel.SelectedIndex == 0)
+            {
+                for (int i = 0; i < chListFreq.Items.Count; i++)
+                {
+                    if (Convert.ToInt32(chListFreq.Items[i].ToString()) >= 20 &&
+                        Convert.ToInt32(chListFreq.Items[i].ToString()) <= 2000000)
+                    {
+                        chListFreq.SetItemChecked(i, true);
+                        tFreqList.AppendText(chListFreq.Items[i].ToString() + Environment.NewLine);
+                    }
+                }
+            }
+            //agilent 4285
+            if (cbGPIBDevModel.SelectedIndex == 1)
+            {
+                for (int i = 0; i < chListFreq.Items.Count; i++)
+                {
+                    if (Convert.ToInt32(chListFreq.Items[i].ToString()) >= 75000 &&
+                        Convert.ToInt32(chListFreq.Items[i].ToString()) <= 30000000)
+                    {
+                        chListFreq.SetItemChecked(i, true);
+                        tFreqList.AppendText(chListFreq.Items[i].ToString() + Environment.NewLine);
+                    }
+                }
+            }
+            //agilent 4263
+            if (cbGPIBDevModel.SelectedIndex == 2)
+            {
+                for (int i = 0; i < chListFreq.Items.Count; i++)
+                {
+                    if (Convert.ToInt32(chListFreq.Items[i].ToString()) == 100 |
+                        Convert.ToInt32(chListFreq.Items[i].ToString()) == 1000 |
+                        Convert.ToInt32(chListFreq.Items[i].ToString()) == 10000 |
+                        Convert.ToInt32(chListFreq.Items[i].ToString()) == 100000)
+                    {
+                        chListFreq.SetItemChecked(i, true);
+                        tFreqList.AppendText(chListFreq.Items[i].ToString() + Environment.NewLine);
+                    }
+                }
+            }
+            //agilent 34401A
+            if (cbGPIBDevModel.SelectedIndex == 3)
+            {
+                return;
+            }
+            //agilent Wayneker
+            if (cbGPIBDevModel.SelectedIndex == 4)
+            {
+                for (int i = 0; i < chListFreq.Items.Count; i++)
+                {
+                    if (Convert.ToInt32(chListFreq.Items[i].ToString()) >= 20 &&
+                        Convert.ToInt32(chListFreq.Items[i].ToString()) <= 15000000)
+                    {
+                        chListFreq.SetItemChecked(i, true);
+                        tFreqList.AppendText(chListFreq.Items[i].ToString() + Environment.NewLine);
+                    }
+                }
+                var lines = tFreqList.Lines.ToList();
+
+                lines.RemoveAt(tFreqList.Lines.Count() - 1);
+                tFreqList.Lines = lines.ToArray();
+            }
+        }
+        /// <summary>
+        /// Defaul values
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void cbDefaultFreq_CheckedChanged(object sender, EventArgs e)
+        {
+            cbClear.Checked = false;
+
+
+            tFreqList.Text = "";
+            //agilent 4980
+            for (int i = 0; i < chListFreq.Items.Count; i++)
+            {
+                chListFreq.SetItemChecked(i, false);
+            }
+
+            if (cbGPIBDevModel.SelectedIndex == 0)
+            {
+                for (int i = 0; i < chListFreq.Items.Count; i++)
+                {
+                    if (Convert.ToInt32(chListFreq.Items[i].ToString()) >= 20 &&
+                        Convert.ToInt32(chListFreq.Items[i].ToString()) <= 2000000)
+                    {
+                        chListFreq.SetItemChecked(i, true);
+                        tFreqList.AppendText(chListFreq.Items[i].ToString() + Environment.NewLine);
+                        i = i + 4;
+                    }
+                }
+            }
+            //agilent 4285
+            if (cbGPIBDevModel.SelectedIndex == 1)
+            {
+                for (int i = 0; i < chListFreq.Items.Count; i++)
+                {
+                    if (Convert.ToInt32(chListFreq.Items[i].ToString()) >= 75000 &&
+                        Convert.ToInt32(chListFreq.Items[i].ToString()) <= 30000000)
+                    {
+                        chListFreq.SetItemChecked(i, true);
+                        tFreqList.AppendText(chListFreq.Items[i].ToString() + Environment.NewLine);
+                        i = i + 4;
+                    }
+                }
+            }
+            //agilent 4263
+            if (cbGPIBDevModel.SelectedIndex == 2)
+            {
+                for (int i = 0; i < chListFreq.Items.Count; i++)
+                {
+                    if (Convert.ToInt32(chListFreq.Items[i].ToString()) == 100 |
+                        Convert.ToInt32(chListFreq.Items[i].ToString()) == 1000 |
+                        Convert.ToInt32(chListFreq.Items[i].ToString()) == 10000 |
+                        Convert.ToInt32(chListFreq.Items[i].ToString()) == 100000)
+                    {
+                        chListFreq.SetItemChecked(i, true);
+                        tFreqList.AppendText(chListFreq.Items[i].ToString() + Environment.NewLine);
+                    }
+                }
+            }
+            //agilent 34401A
+            if (cbGPIBDevModel.SelectedIndex == 3)
+            {
+                return;
+            }
+            //agilent Wayneker
+            if (cbGPIBDevModel.SelectedIndex == 4)
+            {
+                for (int i = 0; i < chListFreq.Items.Count; i++)
+                {
+                    if (Convert.ToInt32(chListFreq.Items[i].ToString()) >= 20 &&
+                        Convert.ToInt32(chListFreq.Items[i].ToString()) <= 15000000)
+                    {
+                        chListFreq.SetItemChecked(i, true);
+                        tFreqList.AppendText(chListFreq.Items[i].ToString() + Environment.NewLine);
+                        i = i + 7;
+                    }
+                }
+                //var lines = tFreqList.Lines.ToList();
+                //lines.RemoveAt(tFreqList.Lines.Count()-1);
+                //tFreqList.Lines = lines.ToArray();
+            }
+        }
+        /// <summary>
+        /// Clear frequency list
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void cbClear_CheckedChanged(object sender, EventArgs e)
+        {
+            tFreqList.Text = "";
+            cbAllFreq.Checked = false;
+            cbDefaultFreq.Checked = false;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnAddUList_Click(object sender, EventArgs e)
+        {
+            //int a;
+            double n = 0;
+            //int t=0;
+            //double tt = 0;
+            //int r;
+            //double ee;
+
+
+            double step = 0;
+            double increment = 0;
+            if (cWorkMode.Text == "C(dU)_man" || cWorkMode.Text == "C(dU)_auto")
+            {
+                if (cCUCycle.Text == "Full cycle")
+                {
+                    step = (Double)((Convert.ToDouble(txtPointCountU.Text) / (4 * Convert.ToDouble(txtPeriodU.Text))));
+                }
+                else if (cCUCycle.Text == "Half cycle")
+                {
+                    step = (Double)Convert.ToDouble(txtPointCountU.Text) / (2 * Convert.ToDouble(txtPeriodU.Text));
+                }
+
+                else if (cCUCycle.Text == "Points full cycle")
+                {
+                    step = (Double)Convert.ToDouble(txtUmax.Text) / Convert.ToDouble(txtPointCountU.Text);
+                }
+                else if (cCUCycle.Text == "Points hulf cycle")
+                {
+                    step = (Double)Convert.ToDouble(txtUmax.Text) / Convert.ToDouble(txtPointCountU.Text);
+                }
+
+                n = (double)Convert.ToDouble(txtUmax.Text) / step;
+
+
+                if (cCUCycle.Text == "Points full cycle")
+                {
+                    //tVoltageList.AppendText("0" + Environment.NewLine);
+                    increment = halfplus(increment, step);
+                    increment = halfplus_1(increment, step);
+                    increment = halfminus(increment, step);
+                    increment = halfminus_1(increment, step);
+                }
+
+                if (cCUCycle.Text == "Points hulf cycle")
+                {
+                    increment = 0;
+                    //tVoltageList.AppendText("0" + Environment.NewLine);
+                    increment = halfplus(increment, step);
+                    increment = halfplus_1(increment, step);
+                }
+            }
+        }
+        /// <summary>
+        /// Halfpluses the specified increment.
+        /// </summary>
+        /// <param name="increment">The increment.</param>
+        /// <param name="step">The step.</param>
+        /// <returns></returns>
+        private double halfplus(double increment, double step)
+        {
+            increment = 0;
+            do
+            {
+                increment = increment + step;
+                tVoltageList.AppendText(increment.ToString() + Environment.NewLine);
+            } while (increment < Convert.ToInt32(txtUmax.Text));
+            return increment;
+        }
+        /// <summary>
+        /// Halfpluses the 1.
+        /// </summary>
+        /// <param name="increment">The increment.</param>
+        /// <param name="step">The step.</param>
+        /// <returns></returns>
+        private double halfplus_1(double increment, double step)
+        {
+            do
+            {
+                increment = increment - step;
+                tVoltageList.AppendText(increment.ToString() + Environment.NewLine);
+            } while (increment > 1);
+            return increment;
+        }
+        /// <summary>
+        /// Halfminuses the specified increment.
+        /// </summary>
+        /// <param name="increment">The increment.</param>
+        /// <param name="step">The step.</param>
+        /// <returns></returns>
+        private double halfminus(double increment, double step)
+        {
+            do
+            {
+                increment = increment - step;
+                tVoltageList.AppendText(increment.ToString() + Environment.NewLine);
+            }
+            while (increment > Convert.ToInt32(txtUmax.Text) * (-1));
+            return increment;
+        }
+        /// <summary>
+        /// Halfminuses the 1.
+        /// </summary>
+        /// <param name="increment">The increment.</param>
+        /// <param name="step">The step.</param>
+        /// <returns></returns>
+        private double halfminus_1(double increment, double step)
+        {
+            do
+            {
+                increment = increment + step;
+                tVoltageList.AppendText(increment.ToString() + Environment.NewLine);
+            } while (increment < 0);
+            return increment;
+        }
+
+
+        private void txtUmax_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtUDelay_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtComposition_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtCBF_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void chTest_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chTest.Checked == true)
+            {
+                cmbOperator.SelectedIndex = 0;
+                txtComposition.Text = "FFFFF";
+                cFreqMode.SelectedIndex = 2;
+                txtTempEnd.Text = "310";
+                cbGPIBDevModel.Text = "Agilent4980A";
+                cbExportDBMeasTemp.SelectedIndex = 2;
+            }
+            else if (chTest.Checked == false)
+            {
+                cmbOperator.SelectedIndex = -1;
+                txtComposition.Text = "";
+                cFreqMode.SelectedIndex = -1;
+                txtTempEnd.Text = "973";
+            }
+
+        }
+
+        private void btnTimer_Click(object sender, EventArgs e)
+        {
+            FileJob fj = new FileJob();
+            string[] str = new string[fj.ReadF("F:\\temp\\time.txt").Length];
+            str = fj.ReadF("F:\\temp\\time.txt");
+            tTimerList.Clear();
+            for (int i = 0; i < str.Length; i++)
+            {
+                tTimerList.AppendText(str[i] + Environment.NewLine);
+            }
+
+            
+             str = new string[fj.ReadF("F:\\temp\\volt.txt").Length];
+            str = fj.ReadF("F:\\temp\\volt.txt");
+            tVoltageList.Clear();
+            for (int i = 0; i < str.Length; i++)
+            {
+                tVoltageList.AppendText(str[i] + Environment.NewLine);
+            }
+
+        }
+
+        private void txtUcur_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void chExportToDB_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbExportDBMeasTemp_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cFreqMode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtPointCountU_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cDirect_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tVoltageList_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        private void openFilevoltageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            opnFileVoltage.ShowDialog();
+        }
+
+        private void openFiletimerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            opnFileTimer.ShowDialog();
+        }
+
+        private void opnFileVoltage_FileOk(object sender, CancelEventArgs e)
+        {
+            FileJob fj = new FileJob();
+            string[] str = new string[fj.ReadF(opnFileVoltage.FileName).Length];
+            str = fj.ReadF(opnFileVoltage.FileName);
+            tVoltageList.Clear();
+            for (int i = 0; i < str.Length; i++)
+            {
+                tVoltageList.AppendText(str[i] + Environment.NewLine);
+            }
+        }
+
+        private void opnFileTimer_FileOk(object sender, CancelEventArgs e)
+        {
+            FileJob fj = new FileJob();
+            string[] str = new string[fj.ReadF(opnFileTimer.FileName).Length];
+            str = fj.ReadF(opnFileTimer.FileName);
+            tTimerList.Clear();
+            for (int i = 0; i < str.Length; i++)
+            {
+                tTimerList.AppendText(str[i] + Environment.NewLine);
+            }
+        }
+
+        private void openFileexcelToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            opnFileExcel.ShowDialog();
+        }
+
+        private void opnFileExcel_FileOk(object sender, CancelEventArgs e)
+        {
+            FileJob fj = new FileJob();
+            fj.LoadExcelFileToTxt(tVoltageList, tTimerList, opnFileExcel.FileName);
+        }
+
+        private void cbGPIBDevModel_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (cbGPIBDevModel.Text)
+            {
+                case "WayneKerr4300":
+                    {
+                        txtEndFreq.Text = "1000000";
+                        break;
+                    }
+                default:
+                    {
+                        txtEndFreq.Text = "2000000";
+                        break;
+                    }
+            }
+            
+        }
+
+        private void label14_Click(object sender, EventArgs e)
+        {
+
+        }
+    }
+}
