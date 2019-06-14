@@ -28,6 +28,7 @@ namespace Kalipso
             cbTempMode.SelectedIndex = 0;
             cCUCycle.SelectedIndex = 0;
             cbExportDBMeasTemp.SelectedIndex = 0;
+            cbGraphOptions.SelectedIndex = 0;
         }
 
         private void textBox9_TextChanged(object sender, EventArgs e)
@@ -541,22 +542,22 @@ namespace Kalipso
 
         private void chTest_CheckedChanged(object sender, EventArgs e)
         {
-            if (chTest.Checked == true)
-            {
-                cmbOperator.SelectedIndex = 0;
-                txtComposition.Text = "FFFFF";
-                cFreqMode.SelectedIndex = 2;
-                txtTempEnd.Text = "310";
-                cbGPIBDevModel.Text = "Agilent4980A";
-                cbExportDBMeasTemp.SelectedIndex = 2;
-            }
-            else if (chTest.Checked == false)
-            {
-                cmbOperator.SelectedIndex = -1;
-                txtComposition.Text = "";
-                cFreqMode.SelectedIndex = -1;
-                txtTempEnd.Text = "973";
-            }
+            //if (chTest.Checked == true)
+            //{
+            //    cmbOperator.SelectedIndex = 0;
+            //    txtComposition.Text = "FFFFF";
+            //    cFreqMode.SelectedIndex = 2;
+            //    txtTempEnd.Text = "310";
+            //    cbGPIBDevModel.Text = "Agilent4980A";
+            //    cbExportDBMeasTemp.SelectedIndex = 2;
+            //}
+            //else if (chTest.Checked == false)
+            //{
+            //    cmbOperator.SelectedIndex = -1;
+            //    txtComposition.Text = "";
+            //    cFreqMode.SelectedIndex = -1;
+            //    txtTempEnd.Text = "973";
+            //}
 
         }
 

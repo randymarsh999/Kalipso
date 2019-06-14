@@ -31,9 +31,6 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.cbExportDBMeasTemp = new System.Windows.Forms.ComboBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.chExportToDB = new System.Windows.Forms.CheckBox();
-            this.chTest = new System.Windows.Forms.CheckBox();
             this.label22 = new System.Windows.Forms.Label();
             this.txtTempSint = new System.Windows.Forms.TextBox();
             this.label21 = new System.Windows.Forms.Label();
@@ -63,6 +60,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txtHeight = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.label32 = new System.Windows.Forms.Label();
+            this.cbGraphOptions = new System.Windows.Forms.ComboBox();
             this.label12 = new System.Windows.Forms.Label();
             this.tTimerList = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
@@ -118,8 +117,8 @@
             this.opnFileVoltage = new System.Windows.Forms.OpenFileDialog();
             this.opnFileTimer = new System.Windows.Forms.OpenFileDialog();
             this.opnFileExcel = new System.Windows.Forms.OpenFileDialog();
-            this.cbGraphOptions = new System.Windows.Forms.ComboBox();
-            this.label32 = new System.Windows.Forms.Label();
+            this.label33 = new System.Windows.Forms.Label();
+            this.chTest = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -140,10 +139,9 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.cbExportDBMeasTemp);
-            this.tabPage1.Controls.Add(this.checkBox1);
-            this.tabPage1.Controls.Add(this.chExportToDB);
             this.tabPage1.Controls.Add(this.chTest);
+            this.tabPage1.Controls.Add(this.label33);
+            this.tabPage1.Controls.Add(this.cbExportDBMeasTemp);
             this.tabPage1.Controls.Add(this.label22);
             this.tabPage1.Controls.Add(this.txtTempSint);
             this.tabPage1.Controls.Add(this.label21);
@@ -187,44 +185,11 @@
             "None",
             "Export to DB parallel",
             "Export to DB(only)"});
-            this.cbExportDBMeasTemp.Location = new System.Drawing.Point(6, 373);
+            this.cbExportDBMeasTemp.Location = new System.Drawing.Point(141, 227);
             this.cbExportDBMeasTemp.Name = "cbExportDBMeasTemp";
             this.cbExportDBMeasTemp.Size = new System.Drawing.Size(121, 21);
             this.cbExportDBMeasTemp.TabIndex = 33;
             this.cbExportDBMeasTemp.SelectedIndexChanged += new System.EventHandler(this.cbExportDBMeasTemp_SelectedIndexChanged);
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(6, 350);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(102, 17);
-            this.checkBox1.TabIndex = 32;
-            this.checkBox1.Text = "Export to DB full";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
-            // 
-            // chExportToDB
-            // 
-            this.chExportToDB.AutoSize = true;
-            this.chExportToDB.Location = new System.Drawing.Point(6, 327);
-            this.chExportToDB.Name = "chExportToDB";
-            this.chExportToDB.Size = new System.Drawing.Size(86, 17);
-            this.chExportToDB.TabIndex = 31;
-            this.chExportToDB.Text = "Export to DB";
-            this.chExportToDB.UseVisualStyleBackColor = true;
-            this.chExportToDB.CheckedChanged += new System.EventHandler(this.chExportToDB_CheckedChanged);
-            // 
-            // chTest
-            // 
-            this.chTest.AutoSize = true;
-            this.chTest.Location = new System.Drawing.Point(6, 304);
-            this.chTest.Name = "chTest";
-            this.chTest.Size = new System.Drawing.Size(47, 17);
-            this.chTest.TabIndex = 30;
-            this.chTest.Text = "Test";
-            this.chTest.UseVisualStyleBackColor = true;
-            this.chTest.CheckedChanged += new System.EventHandler(this.chTest_CheckedChanged);
             // 
             // label22
             // 
@@ -579,6 +544,28 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Work options";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label32.Location = new System.Drawing.Point(326, 298);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(57, 23);
+            this.label32.TabIndex = 70;
+            this.label32.Text = "Graph";
+            // 
+            // cbGraphOptions
+            // 
+            this.cbGraphOptions.FormattingEnabled = true;
+            this.cbGraphOptions.Items.AddRange(new object[] {
+            "e(T)",
+            "e(E)",
+            "e(f)"});
+            this.cbGraphOptions.Location = new System.Drawing.Point(328, 322);
+            this.cbGraphOptions.Name = "cbGraphOptions";
+            this.cbGraphOptions.Size = new System.Drawing.Size(103, 21);
+            this.cbGraphOptions.TabIndex = 69;
             // 
             // label12
             // 
@@ -1171,27 +1158,27 @@
             this.openFiletimerToolStripMenuItem,
             this.openFileexcelToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(35, 20);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // openFilevoltageToolStripMenuItem
             // 
             this.openFilevoltageToolStripMenuItem.Name = "openFilevoltageToolStripMenuItem";
-            this.openFilevoltageToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.openFilevoltageToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.openFilevoltageToolStripMenuItem.Text = "Open file (voltage)";
             this.openFilevoltageToolStripMenuItem.Click += new System.EventHandler(this.openFilevoltageToolStripMenuItem_Click);
             // 
             // openFiletimerToolStripMenuItem
             // 
             this.openFiletimerToolStripMenuItem.Name = "openFiletimerToolStripMenuItem";
-            this.openFiletimerToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.openFiletimerToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.openFiletimerToolStripMenuItem.Text = "Open file (timer)";
             this.openFiletimerToolStripMenuItem.Click += new System.EventHandler(this.openFiletimerToolStripMenuItem_Click);
             // 
             // openFileexcelToolStripMenuItem
             // 
             this.openFileexcelToolStripMenuItem.Name = "openFileexcelToolStripMenuItem";
-            this.openFileexcelToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.openFileexcelToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.openFileexcelToolStripMenuItem.Text = "Open file (excel)";
             this.openFileexcelToolStripMenuItem.Click += new System.EventHandler(this.openFileexcelToolStripMenuItem_Click);
             // 
@@ -1210,27 +1197,26 @@
             this.opnFileExcel.FileName = "openFileDialog1";
             this.opnFileExcel.FileOk += new System.ComponentModel.CancelEventHandler(this.opnFileExcel_FileOk);
             // 
-            // cbGraphOptions
+            // label33
             // 
-            this.cbGraphOptions.FormattingEnabled = true;
-            this.cbGraphOptions.Items.AddRange(new object[] {
-            "e(T)",
-            "e(E)",
-            "e(f)"});
-            this.cbGraphOptions.Location = new System.Drawing.Point(328, 322);
-            this.cbGraphOptions.Name = "cbGraphOptions";
-            this.cbGraphOptions.Size = new System.Drawing.Size(103, 21);
-            this.cbGraphOptions.TabIndex = 69;
+            this.label33.AutoSize = true;
+            this.label33.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label33.Location = new System.Drawing.Point(137, 201);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(97, 23);
+            this.label33.TabIndex = 34;
+            this.label33.Text = "Data export";
             // 
-            // label32
+            // chTest
             // 
-            this.label32.AutoSize = true;
-            this.label32.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label32.Location = new System.Drawing.Point(326, 298);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(57, 23);
-            this.label32.TabIndex = 70;
-            this.label32.Text = "Graph";
+            this.chTest.AutoSize = true;
+            this.chTest.Location = new System.Drawing.Point(10, 304);
+            this.chTest.Name = "chTest";
+            this.chTest.Size = new System.Drawing.Size(43, 17);
+            this.chTest.TabIndex = 35;
+            this.chTest.Text = "test";
+            this.chTest.UseVisualStyleBackColor = true;
+            this.chTest.Visible = false;
             // 
             // frmMeasTempOpt
             // 
@@ -1380,7 +1366,6 @@
         public System.Windows.Forms.TextBox txtRHO;
 #pragma warning restore CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmMeasTempOpt.txtRHO"
 #pragma warning disable CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmMeasTempOpt.chTest"
-        public System.Windows.Forms.CheckBox chTest;
 #pragma warning restore CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmMeasTempOpt.chTest"
         private System.Windows.Forms.Button btnTimer;
         private System.Windows.Forms.Label label29;
@@ -1388,13 +1373,11 @@
         public System.Windows.Forms.TextBox txtUcur;
 #pragma warning restore CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmMeasTempOpt.txtUcur"
 #pragma warning disable CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmMeasTempOpt.chExportToDB"
-        public System.Windows.Forms.CheckBox chExportToDB;
 #pragma warning restore CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmMeasTempOpt.chExportToDB"
 #pragma warning disable CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmMeasTempOpt.cbExportDBMeasTemp"
         public System.Windows.Forms.ComboBox cbExportDBMeasTemp;
 #pragma warning restore CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmMeasTempOpt.cbExportDBMeasTemp"
 #pragma warning disable CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmMeasTempOpt.checkBox1"
-        public System.Windows.Forms.CheckBox checkBox1;
 #pragma warning restore CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmMeasTempOpt.checkBox1"
         private System.Windows.Forms.Label label30;
 #pragma warning disable CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmMeasTempOpt.txtUmin"
@@ -1421,6 +1404,8 @@
         private System.Windows.Forms.OpenFileDialog opnFileExcel;
         private System.Windows.Forms.Label label32;
         public System.Windows.Forms.ComboBox cbGraphOptions;
+        private System.Windows.Forms.Label label33;
+        public System.Windows.Forms.CheckBox chTest;
 #pragma warning restore CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmMeasTempOpt.txtTimerReversive"
     }
 }

@@ -2322,6 +2322,7 @@ namespace Kalipso
         public void GetTempFromVarta()
         {
             PiezoMathCalculation PM = new PiezoMathCalculation();
+
             if (frmMOpt.chTest.Checked == false)
             {
                 try
@@ -4217,6 +4218,12 @@ namespace Kalipso
                                 frmGPIB.WriteCommandDev(PM.ReplaceCommonEscapeSequences(PP.FetchAgilent4980));
                                 frmGPIB.ReadDeviceAnswer();
                                 break;
+                            case "USB":
+                                {
+                                    frmGPIB.ReadDeviceAnswer();
+                                    break;
+                                }
+
                             default:
                                 break;
                         }
@@ -4518,6 +4525,8 @@ namespace Kalipso
 
             PiezoMathCalculation PM = new PiezoMathCalculation();
             ParseStringTab PS = new ParseStringTab();
+
+            PP.BiasHCurrent = Convert.ToDouble(txtHBias.Text);
             switch (frmMOpt.cbGPIBDevModel.Text)
             {
                 case "Agilent4980A":
@@ -4534,6 +4543,8 @@ namespace Kalipso
                                 val2 = Convert.ToDouble(PS.ElementAt(2));
                                 break;
                             default:
+                                val1 = Convert.ToDouble(PS.ElementAt(0));
+                                val2 = Convert.ToDouble(PS.ElementAt(1));
                                 break;
                         }
                         break;
@@ -4639,30 +4650,30 @@ namespace Kalipso
                 }
             }
 
-            if (frmMOpt.chExportToDB.Checked == true && frmDBConnection.DataBaseConnected == true)
-            {
-                try
-                {
-                    NpgsqlConnection pgcon = new NpgsqlConnection(frmDBConnection.ConnectionStringToDB);
-                    pgcon.Open();
-                    string sql = "";
-                    NpgsqlCommand CSend = new NpgsqlCommand(sql, pgcon);
-                    string sql_data = "";
-                    for (int j = 1; j < dGridTempMeas.ColumnCount + 1; j++)
-                    {
-                        sql_data = sql_data + dGridTempMeas.Rows[i].Cells[j].Value.ToString() + ", ";
-                    }
-                    sql_data = sql_data.Substring(0, sql_data.Length - 2);
-                    sql = "Insert into " + frmMOpt.txtComposition + " values (" + sql_data + ");";
-                    CSend.ExecuteNonQuery();
-                    FileJob FJ = new FileJob();
-                    FJ.WriteF(sql, PP.FileNameSaveTempMeas + ".log");
-                }
-                catch (Exception ex)
-                {
-                    ex.ToString();
-                }
-            }
+            //if (frmMOpt.chExportToDB.Checked == true && frmDBConnection.DataBaseConnected == true)
+            //{
+            //    try
+            //    {
+            //        NpgsqlConnection pgcon = new NpgsqlConnection(frmDBConnection.ConnectionStringToDB);
+            //        pgcon.Open();
+            //        string sql = "";
+            //        NpgsqlCommand CSend = new NpgsqlCommand(sql, pgcon);
+            //        string sql_data = "";
+            //        for (int j = 1; j < dGridTempMeas.ColumnCount + 1; j++)
+            //        {
+            //            sql_data = sql_data + dGridTempMeas.Rows[i].Cells[j].Value.ToString() + ", ";
+            //        }
+            //        sql_data = sql_data.Substring(0, sql_data.Length - 2);
+            //        sql = "Insert into " + frmMOpt.txtComposition + " values (" + sql_data + ");";
+            //        CSend.ExecuteNonQuery();
+            //        FileJob FJ = new FileJob();
+            //        FJ.WriteF(sql, PP.FileNameSaveTempMeas + ".log");
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        ex.ToString();
+            //    }
+            //}
 
             if (frmMOpt.cbExportDBMeasTemp.Text == "Export to DB parallel" && frmDBConnection.DataBaseConnected == true)
             {
@@ -4716,7 +4727,7 @@ namespace Kalipso
                 Y = e_e2 * Convert.ToInt32(freq) * 2 * 3.14;
                 dGridTempMeas["Y", 0].Value = Y.ToString();
                 dGridTempMeas["Ubias_V", 0].Value = PP.BiasUCurrent;
-                dGridTempMeas["Hbias_T", 0].Value = txtHBias.Text;
+                dGridTempMeas["Hbias_T", 0].Value = PP.BiasHCurrent;
                 dGridTempMeas["Cycle", 0].Value = PP.cycleCurrentNum.ToString();
                 dGridTempMeas["Date", 0].Value = DateTime.Now.ToShortDateString();
                 dGridTempMeas["Time", 0].Value = dateT.ToString(dateformat);
@@ -4810,10 +4821,11 @@ namespace Kalipso
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void btnHandMeas_Click(object sender, EventArgs e)
         {
-            PP.CelSel = dGridTempMeas.CurrentRow.Index;
-            if (hand == false)
+            //PP.CelSel = dGridTempMeas.CurrentRow.Index;
+            if (hand == true)
             {
                 InitializationOfParametersForMeas();
+                hand = false;
             }
             MainMeas();
         }
