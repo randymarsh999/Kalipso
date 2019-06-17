@@ -1043,7 +1043,7 @@
             this.treatmentToolStripMenuItem,
             this.loadToolStripMenuItem});
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
@@ -1078,7 +1078,7 @@
             this.tempMeasFullToolStripMenuItem,
             this.treatmentToolStripMenuItem1});
             this.saveAgilentToolStripMenuItem.Name = "saveAgilentToolStripMenuItem";
-            this.saveAgilentToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveAgilentToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.saveAgilentToolStripMenuItem.Text = "Save meas";
             this.saveAgilentToolStripMenuItem.Click += new System.EventHandler(this.saveAgilentToolStripMenuItem_Click);
             // 
@@ -1130,7 +1130,7 @@
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.closeToolStripMenuItem.Text = "Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 

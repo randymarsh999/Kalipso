@@ -4063,10 +4063,6 @@ namespace Kalipso
                     {
                         byte[] data = new byte[2];
                         PiezoMathCalculation pm = new PiezoMathCalculation();
-
-
-
-
                         do
                         {
                             PP.bufE7_20 = Com.GetDataFromCOMDevice("E7-20", 0, 22);
@@ -4122,8 +4118,8 @@ namespace Kalipso
                     }
                 case "Agilent4263B":
                     {
-                        //frmGPIB.WriteCommandDev(PP.TrigFetchAgilent4263);
-                        //frmGPIB.ReadGPIBAnswer();
+                        frmGPIB.WriteCommandDev(PP.TrigFetchAgilent4263);
+                        frmGPIB.ReadGPIBAnswer();
                         break;
                     }
                 case "Agilent34401A":
@@ -4220,7 +4216,7 @@ namespace Kalipso
                                 break;
                             case "USB":
                                 {
-                                    frmGPIB.ReadDeviceAnswer();
+                                    frmGPIB.ReadDeviceAnswer(PP.FetchAgilent4980);
                                     break;
                                 }
 
@@ -4513,7 +4509,7 @@ namespace Kalipso
             WriteTempToFile();
 
             double timeCoef = 0.001;
-            string s = frmGPIB.answer;
+            //string s = frmGPIB.answer;
             double e_e0;
             double tgper, Y;
             double e_e2;
@@ -4531,7 +4527,7 @@ namespace Kalipso
             {
                 case "Agilent4980A":
                     {
-                        PS.AddMeasStringAgilent4980(s);
+                        PS.AddMeasStringAgilent4980(frmGPIB.answer);
                         switch (frmGPIB.cbInterfaceType.Text)
                         {
                             case "GPIB":
@@ -4549,20 +4545,20 @@ namespace Kalipso
                         }
                         break;
                     }
-                case "Agilent4285A": PS.AddMeasStringAgilent4980(s); break;
+                case "Agilent4285A": PS.AddMeasStringAgilent4980(frmGPIB.answer); break;
                 case "Agilent4263B":
                     {
-                        PS.AddMeasStringAgilent4263(s);
+                        PS.AddMeasStringAgilent4263(frmGPIB.answer);
                         val1 = Convert.ToDouble(PS.ElementAt(1));
                         val2 = Convert.ToDouble(PS.DeleteZero(PS.ElementAt(2)));
                         break;
                     }
-                case "Agilent34401A": PS.AddMeasStringAgilent4980(s); break;
-                case "WayneKerr6500B": PS.AddMeasStringWayneKerr6500B(s); break;
+                case "Agilent34401A": PS.AddMeasStringAgilent4980(frmGPIB.answer); break;
+                case "WayneKerr6500B": PS.AddMeasStringWayneKerr6500B(frmGPIB.answer); break;
                 case "WayneKerr4300":
                     {
                         //+8.2556835e-13,-1.6205449e+00
-                        PS.AddMeasStringWayneKerr4300(s);
+                        PS.AddMeasStringWayneKerr4300(frmGPIB.answer);
                         val1 = Convert.ToDouble(PS.ElementAt(0));
                         val2 = Convert.ToDouble(PS.ElementAt(1));
                         break;
@@ -4574,7 +4570,7 @@ namespace Kalipso
                         break;
                     }
                 default:
-                    PS.AddMeasStringAgilent4980(s);
+                    PS.AddMeasStringAgilent4980(frmGPIB.answer);
                     break;
             }
 
@@ -4822,10 +4818,10 @@ namespace Kalipso
         private void btnHandMeas_Click(object sender, EventArgs e)
         {
             //PP.CelSel = dGridTempMeas.CurrentRow.Index;
-            if (hand == true)
+            if (PP.hand == true)
             {
                 InitializationOfParametersForMeas();
-                hand = false;
+                PP.hand = false;
             }
             MainMeas();
         }

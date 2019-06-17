@@ -744,6 +744,8 @@ public class PiezoParameters
 
     #endregion
 
+
+
     /// <summary>
     /// Gets or sets the cel sel.
     /// </summary>
@@ -828,6 +830,10 @@ public class PiezoParameters
     /// </value>
     public Int32 StepReversiveLong { get; set; }
     public List<string> Col { get => col; set => col = value; }
+
+
+
+    public bool hand { get; set; }
 
     /// <summary>
     /// Constructor
@@ -950,6 +956,7 @@ public class PiezoParameters
         CurrentTime = 0;
         AvarageIncTime = 0.13244;
         Xi0 = new List<double>(1000);
+        hand = true;
     }
 }
 

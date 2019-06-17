@@ -30,6 +30,8 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.chTest = new System.Windows.Forms.CheckBox();
+            this.label33 = new System.Windows.Forms.Label();
             this.cbExportDBMeasTemp = new System.Windows.Forms.ComboBox();
             this.label22 = new System.Windows.Forms.Label();
             this.txtTempSint = new System.Windows.Forms.TextBox();
@@ -117,8 +119,6 @@
             this.opnFileVoltage = new System.Windows.Forms.OpenFileDialog();
             this.opnFileTimer = new System.Windows.Forms.OpenFileDialog();
             this.opnFileExcel = new System.Windows.Forms.OpenFileDialog();
-            this.label33 = new System.Windows.Forms.Label();
-            this.chTest = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -177,6 +177,26 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Sample value";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // chTest
+            // 
+            this.chTest.AutoSize = true;
+            this.chTest.Location = new System.Drawing.Point(10, 304);
+            this.chTest.Name = "chTest";
+            this.chTest.Size = new System.Drawing.Size(43, 17);
+            this.chTest.TabIndex = 35;
+            this.chTest.Text = "test";
+            this.chTest.UseVisualStyleBackColor = true;
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label33.Location = new System.Drawing.Point(137, 201);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(97, 23);
+            this.label33.TabIndex = 34;
+            this.label33.Text = "Data export";
             // 
             // cbExportDBMeasTemp
             // 
@@ -1196,27 +1216,6 @@
             // 
             this.opnFileExcel.FileName = "openFileDialog1";
             this.opnFileExcel.FileOk += new System.ComponentModel.CancelEventHandler(this.opnFileExcel_FileOk);
-            // 
-            // label33
-            // 
-            this.label33.AutoSize = true;
-            this.label33.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label33.Location = new System.Drawing.Point(137, 201);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(97, 23);
-            this.label33.TabIndex = 34;
-            this.label33.Text = "Data export";
-            // 
-            // chTest
-            // 
-            this.chTest.AutoSize = true;
-            this.chTest.Location = new System.Drawing.Point(10, 304);
-            this.chTest.Name = "chTest";
-            this.chTest.Size = new System.Drawing.Size(43, 17);
-            this.chTest.TabIndex = 35;
-            this.chTest.Text = "test";
-            this.chTest.UseVisualStyleBackColor = true;
-            this.chTest.Visible = false;
             // 
             // frmMeasTempOpt
             // 

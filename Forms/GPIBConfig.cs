@@ -45,8 +45,8 @@ namespace Kalipso
         /// <summary>
         /// Initializes a new instance of the <see cref="frmGPIBConfig"/> class.
         /// </summary>
-        
-        
+
+
         public frmGPIBConfig()
         {
             InitializeComponent();
@@ -63,7 +63,7 @@ namespace Kalipso
             cbInterfaceType.SelectedIndex = 0;
             cbInterfaceType.SelectedIndex = 0;
             txtCommand.Text = ":FREQ 20";
-            
+
         }
         /// <summary>
         /// Handles the Click event of the btnSendCommand control.
@@ -86,7 +86,7 @@ namespace Kalipso
                         {
                             string textToWrite = ReplaceCommonEscapeSequences(txtCommand.Text);
                             string responseString = mbSession.Query(textToWrite);
-                            txtAnswer.AppendText (Environment.NewLine+ InsertCommonEscapeSequences(responseString));
+                            txtAnswer.AppendText(Environment.NewLine + InsertCommonEscapeSequences(responseString));
                         }
                         catch (Exception exp)
                         {
@@ -522,60 +522,61 @@ namespace Kalipso
                         break;
                     }
                 case "USB":
-
-                    //deviceUSB = viFindRsrc
-                    string[] resources = ResourceManager.GetLocalManager().FindResources("?*");
-
-                    try
                     {
-                        string ResourceName = resources[0];
-                        mbSession = (MessageBasedSession)ResourceManager.GetLocalManager().Open(ResourceName);
-                        txtAnswer.AppendText(Environment.NewLine + ResourceName);
-
-                        foreach (string s in resources)
+                        //deviceUSB = viFindRsrc
+                        string[] resources = ResourceManager.GetLocalManager().FindResources("?*");
+                        try
                         {
-                            HardwareInterfaceType intType;
-                            short intNum;
-                            ResourceManager.GetLocalManager().ParseResource(s, out intType, out intNum);
-                            //AddToResourceNode(s, intType);
+                            string ResourceName = resources[0];
+                            mbSession = (MessageBasedSession)ResourceManager.GetLocalManager().Open(ResourceName);
+                            txtAnswer.AppendText(Environment.NewLine + ResourceName);
+
+                            //foreach (string s in resources)
+                            //{
+                            //    HardwareInterfaceType intType;
+                            //    short intNum;
+                            //    ResourceManager.GetLocalManager().ParseResource(s, out intType, out intNum);
+                            //}
                         }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
+                        break;
                     }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
-                    ////var rmSession = new ResourceManager.;
-                    //foreach (string s in resources)
-                    //{
-                    //    txtAnswer.AppendText(Environment.NewLine+ s);
-                    //}
 
-                    //foreach (string s in rmSession.Find("(ASRL|GPIB|TCPIP|USB)?*INSTR"))
-                    //{
-                    //    Console.WriteLine(s);
-                    //}
-                    //rmSession.Dispose();
+                ////var rmSession = new ResourceManager.;
+                //foreach (string s in resources)
+                //{
+                //    txtAnswer.AppendText(Environment.NewLine+ s);
+                //}
+
+                //foreach (string s in rmSession.Find("(ASRL|GPIB|TCPIP|USB)?*INSTR"))
+                //{
+                //    Console.WriteLine(s);
+                //}
+                //rmSession.Dispose();
 
 
 
 
-                    //deviceUSB.Write("");
-                    //mbSession = (MessageBasedSession)ResourceManager.GetLocalManager().Open("GPIB0::17::INSTR");
-                    //try
-                    //{
-                    //    mbSession = (MessageBasedSession)ResourceManager.GetLocalManager().
-                    //    Open("GPIB0::17::INSTR");
-                    //    mbSession.Write(":FREQ 20");
-                    //}
-                    //catch (InvalidCastException)
-                    //{
-                    //    MessageBox.Show("Resource selected must be a message-based session");
-                    //}
-                    //catch (Exception exp)
-                    //{
-                    //    MessageBox.Show(exp.Message);
-                    //}
-                    break;
+                //deviceUSB.Write("");
+                //mbSession = (MessageBasedSession)ResourceManager.GetLocalManager().Open("GPIB0::17::INSTR");
+                //try
+                //{
+                //    mbSession = (MessageBasedSession)ResourceManager.GetLocalManager().
+                //    Open("GPIB0::17::INSTR");
+                //    mbSession.Write(":FREQ 20");
+                //}
+                //catch (InvalidCastException)
+                //{
+                //    MessageBox.Show("Resource selected must be a message-based session");
+                //}
+                //catch (Exception exp)
+                //{
+                //    MessageBox.Show(exp.Message);
+                //}
+                //break;
                 case "ETHERNET":
                     WriteCommandDev("idn?");
                     txtAnswer.Text = answer;
@@ -639,14 +640,29 @@ namespace Kalipso
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void btnReadGPIB_Click(object sender, EventArgs e)
         {
-            try
+            switch (cbInterfaceType.Text)
             {
-                device.BeginRead(new AsyncCallback(OnReadComplete), null);
+                case "GPIB":
+                    {
+                        try
+                        {
+                            device.BeginRead(new AsyncCallback(OnReadComplete), null);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
+                        break;
+                    }
+                case "USB":
+                    {
+                        answer = mbSession.ReadString();
+                        break;
+                    }
+                default:
+                    break;
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+
         }
         /// <summary>
         /// Reads the gpib answer.
@@ -779,7 +795,9 @@ namespace Kalipso
                         return true;
                     }
                 case "USB":
-                    return false;
+                    mbSession.Write(ReplaceCommonEscapeSequences(command));
+                    //txtAnswer.AppendText(Environment.NewLine + InsertCommonEscapeSequences(responseString));
+                    return true;
                 case "ETHERNET":
                     {
                         answer = SendCmdViaEhternet(command, Convert.ToInt32(txtIpPort.Text), txtIpHost.Text);
@@ -873,27 +891,73 @@ namespace Kalipso
                             ex.ToString();
                             switch (cbInterfaceType.Text)
                             {
-                                default:{
-                                    txtAnswer.Text = "+0,+1.00000E-00,+1.00000E-00\n";
-                                    answer= "+0,+1.00000E-00,+1.00000E-00\n";
-                                    break;
-                                }
+                                default:
+                                    {
+                                        txtAnswer.Text = "+0,+1.00000E-00,+1.00000E-00\n";
+                                        answer = "+0,+1.00000E-00,+1.00000E-00\n";
+                                        break;
+                                    }
                             }
-                            
+
 
                         }
 
-                        
+
                         break;
                     }
                 case "USB":
-                    break;
+                    {
+                        answer = mbSession.ReadString();
+                        txtAnswer.Text = answer;
+                        break;
+                    }
+
                 case "ETHERNET":
                     break;
                 default:
                     break;
             }
         }
+
+        public void ReadDeviceAnswer(string query)
+        {
+            switch (cbInterfaceType.Text)
+            {
+                case "GPIB":
+                    {
+                        answer = "";
+                        try
+                        {
+                            answer = device.ReadString();
+                            txtAnswer.Text = answer;
+                        }
+                        catch (Exception ex)
+                        {
+                            ex.ToString();
+                            switch (cbInterfaceType.Text)
+                            {
+                                default:
+                                    {
+                                        txtAnswer.Text = "+0,+1.00000E-00,+1.00000E-00\n";
+                                        answer = "+0,+1.00000E-00,+1.00000E-00\n";
+                                        break;
+                                    }
+                            }
+                        }
+                        break;
+                    }
+                case "USB":
+                    {
+                        answer = mbSession.Query(query);
+                        break;
+                    }
+                case "ETHERNET":
+                    break;
+                default:
+                    break;
+            }
+        }
+
 
         private void txtAnswer_TextChanged(object sender, EventArgs e)
         {
@@ -936,6 +1000,13 @@ namespace Kalipso
                         btnSendCommand.Enabled = true;
                         break;
                     }
+                case "USB":
+                    {
+                        txtAnswer.Enabled = true;
+                        btnSendCommand.Enabled = true;
+                        btnReadGPIB.Enabled = true;
+                        break;
+                    }
                 default:
                     break;
             }
@@ -946,7 +1017,7 @@ namespace Kalipso
             WriteCommandDev(":SOUR:FREQ 1000;:TRIG;FETCh?");
             ReadDeviceAnswer();
 
-            
+
 
 
             //work it
