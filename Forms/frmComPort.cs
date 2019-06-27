@@ -540,17 +540,25 @@ namespace Kalipso
         /// </summary>
         public void GetDataFromVarta()
         {
+            bool varta=false;
             for (int j = 0; j < allComPort.Count() - 1; j++)
             {
                 if (allComPort[j].DeviceName == "Varta703I")
                 {
                     Temperature = ConvertDataToTempVarta(GetDataFromComPort(j));
+                    varta = true;
                     if (Temperature != "")
                     {
                         TemperatureReserv = Temperature;
                     }
+                    else Temperature = 27.ToString();
 
                 }
+
+            }
+            if (varta==false)
+            {
+                Temperature = 27.ToString();
             }
         }
         /// <summary>
@@ -942,9 +950,30 @@ namespace Kalipso
                     //var byteBuffer = new byte[max];
                     //allComPort[j].ActivePort.Read(byteBuffer, offset, byteBuffer.Length - offset);
                     System.Threading.Thread.Sleep(300);
-                    int byteRecieved = allComPort[j].ActivePort.BytesToRead;
+                    //int byteRecieved = 0;
+                    //try
+                    //{
+                    //    int byteRecieved = allComPort[j].ActivePort.BytesToRead;
+                    //    allComPort[j].ActivePort.Read(byteBuffer, 0, byteRecieved);
+                    //    //allComPort[j].ActivePort.Read(byteBuffer, 0, byteRecieved);
+                    //    for (int i = 0; i < (byteBuffer.Length - 5) / 2; i++)
+                    //    {
+                    //        values[i] = byteBuffer[2 * i + 3];
+                    //        values[i] <<= 8;
+                    //        values[i] += byteBuffer[2 * i + 4];
+                    //    }
+                    //}
+                    //catch (Exception e)
+                    //{
+                    //    e.ToString();
+                    //    //GetDataFromVoltageMeter_HY_AV51_T1();
+                    //    //  throw;
+                    //}
+                    ////int byteRecieved = allComPort[j].ActivePort.BytesToRead;
 
+                    int byteRecieved = allComPort[j].ActivePort.BytesToRead;
                     allComPort[j].ActivePort.Read(byteBuffer, 0, byteRecieved);
+                    //allComPort[j].ActivePort.Read(byteBuffer, 0, byteRecieved);
                     for (int i = 0; i < (byteBuffer.Length - 5) / 2; i++)
                     {
                         values[i] = byteBuffer[2 * i + 3];
@@ -952,7 +981,7 @@ namespace Kalipso
                         values[i] += byteBuffer[2 * i + 4];
                     }
 
-                    return values;
+                    // return values;
                 }
             }
             return values;

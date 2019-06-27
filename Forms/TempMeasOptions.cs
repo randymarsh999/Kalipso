@@ -14,9 +14,10 @@ namespace Kalipso
     public partial class frmMeasTempOpt : Form
 #pragma warning restore CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmMeasTempOpt"
     {
-#pragma warning disable CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmMeasTempOpt.frmMeasTempOpt()"
+    /// <summary>
+    ///Constructor of measurment options form
+    /// </summary>
         public frmMeasTempOpt()
-#pragma warning restore CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmMeasTempOpt.frmMeasTempOpt()"
         {
             InitializeComponent();
             cFreqMode.SelectedIndex = 0;

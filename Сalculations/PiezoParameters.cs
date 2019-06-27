@@ -818,7 +818,7 @@ public class PiezoParameters
     /// The polarity.
     /// </value>
     public string Polarity { get; set; }
-
+    
     public string PolarityPositive { get; set; }
 
     public string PolarityNegative { get; set; }

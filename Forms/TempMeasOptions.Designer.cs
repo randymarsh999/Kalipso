@@ -1128,7 +1128,8 @@
             "dt(dU)",
             "dt(dU&dT)",
             "d33Rev_Auto",
-            "d33Rev"});
+            "d33Rev",
+            "Magnit_hand"});
             this.cWorkMode.Location = new System.Drawing.Point(146, 30);
             this.cWorkMode.Name = "cWorkMode";
             this.cWorkMode.Size = new System.Drawing.Size(285, 21);
