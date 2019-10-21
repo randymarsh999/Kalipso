@@ -80,6 +80,32 @@ class ParseStringTab : List<string>
         this.Add(str_array[1]);
     }
 
+    public void AddMeasStringAgilent4285A(string str)
+    {
+        if (str == null)
+        {
+            throw new ArgumentNullException(nameof(str));
+        }
+        //string ss = "";
+        //for (int i = 0; i < str.Length; i++)
+        //{
+        //    if (str[i] != 44)
+        //    {
+        //        ss += str[i];
+        //    }
+        //    if (str[i] == 44)
+        //    {
+        //        this.Add(ss);
+        //        ss = "";
+        //    }
+        //}
+
+        string[] str_array = str.Split(',');
+        this.Add(str_array[0]);
+        this.Add(str_array[1]);
+    }
+
+
     public void AddUMicron(string s)
     {
         string[] ss = s.Split('=');

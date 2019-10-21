@@ -12,7 +12,7 @@ namespace Kalipso.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.2.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -29,6 +29,318 @@ namespace Kalipso.Properties {
         public bool Polarity {
             get {
                 return ((bool)(this["Polarity"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.100")]
+        public string defHeight {
+            get {
+                return ((string)(this["defHeight"]));
+            }
+            set {
+                this["defHeight"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.000")]
+        public string defWidth {
+            get {
+                return ((string)(this["defWidth"]));
+            }
+            set {
+                this["defWidth"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Andryushin K.P.")]
+        public string defOperator {
+            get {
+                return ((string)(this["defOperator"]));
+            }
+            set {
+                this["defOperator"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Agilent4980A")]
+        public string defDevice {
+            get {
+                return ((string)(this["defDevice"]));
+            }
+            set {
+                this["defDevice"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("300")]
+        public string defTemp {
+            get {
+                return ((string)(this["defTemp"]));
+            }
+            set {
+                this["defTemp"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
+        public string defFreq {
+            get {
+                return ((string)(this["defFreq"]));
+            }
+            set {
+                this["defFreq"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1513")]
+        public string defTempSint {
+            get {
+                return ((string)(this["defTempSint"]));
+            }
+            set {
+                this["defTempSint"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Export to DB(only)")]
+        public string defExportMod {
+            get {
+                return ((string)(this["defExportMod"]));
+            }
+            set {
+                this["defExportMod"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("753")]
+        public string defTempEnd {
+            get {
+                return ((string)(this["defTempEnd"]));
+            }
+            set {
+                this["defTempEnd"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string defComposition {
+            get {
+                return ((string)(this["defComposition"]));
+            }
+            set {
+                this["defComposition"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public string deftempStep {
+            get {
+                return ((string)(this["deftempStep"]));
+            }
+            set {
+                this["deftempStep"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("348")]
+        public string defNewCycleTemp {
+            get {
+                return ((string)(this["defNewCycleTemp"]));
+            }
+            set {
+                this["defNewCycleTemp"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string defGraphMode {
+            get {
+                return ((string)(this["defGraphMode"]));
+            }
+            set {
+                this["defGraphMode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string defWorkMode {
+            get {
+                return ((string)(this["defWorkMode"]));
+            }
+            set {
+                this["defWorkMode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string defTempList {
+            get {
+                return ((string)(this["defTempList"]));
+            }
+            set {
+                this["defTempList"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        public string defFreqStart {
+            get {
+                return ((string)(this["defFreqStart"]));
+            }
+            set {
+                this["defFreqStart"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2000000")]
+        public string defFreqEnd {
+            get {
+                return ((string)(this["defFreqEnd"]));
+            }
+            set {
+                this["defFreqEnd"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.0")]
+        public string defParamAMagnit {
+            get {
+                return ((string)(this["defParamAMagnit"]));
+            }
+            set {
+                this["defParamAMagnit"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.0")]
+        public string defParamBMagnit {
+            get {
+                return ((string)(this["defParamBMagnit"]));
+            }
+            set {
+                this["defParamBMagnit"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.0")]
+        public string defParamCMagnit {
+            get {
+                return ((string)(this["defParamCMagnit"]));
+            }
+            set {
+                this["defParamCMagnit"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.0")]
+        public string defParamAReversive {
+            get {
+                return ((string)(this["defParamAReversive"]));
+            }
+            set {
+                this["defParamAReversive"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.0")]
+        public string defParamBReversive {
+            get {
+                return ((string)(this["defParamBReversive"]));
+            }
+            set {
+                this["defParamBReversive"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.0")]
+        public string defParamCReversive {
+            get {
+                return ((string)(this["defParamCReversive"]));
+            }
+            set {
+                this["defParamCReversive"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.0509")]
+        public string defParamAd33 {
+            get {
+                return ((string)(this["defParamAd33"]));
+            }
+            set {
+                this["defParamAd33"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-0.1418")]
+        public string defParamBd33 {
+            get {
+                return ((string)(this["defParamBd33"]));
+            }
+            set {
+                this["defParamBd33"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.0")]
+        public string defParamCd33 {
+            get {
+                return ((string)(this["defParamCd33"]));
+            }
+            set {
+                this["defParamCd33"] = value;
             }
         }
     }

@@ -543,6 +543,10 @@ public class PiezoParameters
     /// </value>
     public string FuncAgilent4285 { get; set; }
     /// <summary>
+    /// 
+    /// </summary>
+    public string TrigAgilent4285Ext { get; set; }
+    /// <summary>
     /// Gets or sets the trig agilent4285.
     /// </summary>
     /// <value>
@@ -924,8 +928,9 @@ public class PiezoParameters
         //Agilent4285
         FreqAgilent4285 = "FREQ ";
         FuncAgilent4285 = "FUNC:IMP "; //+  CPQ        
-        TrigAgilent4285 = "TRIG:SOUR EXT";
-        FetchAgilent4285 = "FETCh?";
+        TrigAgilent4285Ext = "TRIG:SOUR EXT";
+        TrigAgilent4285 = "TRIG;";
+        FetchAgilent4285 = "FETCh?;";
         //Agilent
         FetchGPIBDevices = "FETCh?";
 

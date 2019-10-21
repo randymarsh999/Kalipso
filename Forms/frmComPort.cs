@@ -92,6 +92,7 @@ namespace Kalipso
             ColPort = 0;
             Temperature = 300.ToString();
             TemperatureReserv = 300.ToString();
+            ShowAllPorts();
         }
         /// <summary>
         /// Показать все возможные Com порты
@@ -102,6 +103,12 @@ namespace Kalipso
         {
             //SerialPort port = new SerialPort();
             // получаем список доступных портов
+            ShowAllPorts();
+        }
+
+
+        private void ShowAllPorts()
+        {
             string[] ports = SerialPort.GetPortNames();
             cmbComPortList.Items.Clear();
             for (int i = 0; i < ports.Length; i++)
@@ -119,6 +126,7 @@ namespace Kalipso
                 ActivePorts[i] = new SerialPort();
             }
         }
+
         /// <summary>
         /// Закрытие формы
         /// </summary>
@@ -228,8 +236,6 @@ namespace Kalipso
         /// <param name="e"></param>
         private void tComPort_Tick(object sender, EventArgs e)
         {
-            textBox2.Text = "2";
-
             switch (cbComDevice.Text)
             {
                 case "Varta703I":

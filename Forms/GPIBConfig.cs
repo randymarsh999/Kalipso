@@ -28,7 +28,9 @@ namespace Kalipso
 #pragma warning disable CS0414 // Полю "frmGPIBConfig.deviceUSB" присвоено значение, но оно ни разу не использовано.
         UsbSession deviceUSB = null;
 #pragma warning restore CS0414 // Полю "frmGPIBConfig.deviceUSB" присвоено значение, но оно ни разу не использовано.
-
+        /// <summary>
+        /// 
+        /// </summary>
         public MessageBasedSession mbSession;
         /// <summary>
         /// Answer from device
@@ -77,7 +79,6 @@ namespace Kalipso
                 case "GPIB":
                     {
                         WriteCommandDev(txtCommand.Text);
-                        ReadDeviceAnswer();
                         break;
                     }
                 case "USB":
@@ -85,8 +86,7 @@ namespace Kalipso
                         try
                         {
                             string textToWrite = ReplaceCommonEscapeSequences(txtCommand.Text);
-                            string responseString = mbSession.Query(textToWrite);
-                            txtAnswer.AppendText(Environment.NewLine + InsertCommonEscapeSequences(responseString));
+                            
                         }
                         catch (Exception exp)
                         {
@@ -676,7 +676,7 @@ namespace Kalipso
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                ex.ToString();
             }
         }
         /// <summary>
@@ -692,7 +692,7 @@ namespace Kalipso
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                ex.ToString();
             }
         }
         /// <summary>
@@ -708,7 +708,7 @@ namespace Kalipso
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                ex.ToString();
             }
         }
         /// <summary>
@@ -723,7 +723,7 @@ namespace Kalipso
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                ex.ToString();
             }
             txtElementsTransferred.Text = device.LastCount.ToString();
             txtLastIOStatus.Text = device.LastStatus.ToString();
@@ -788,7 +788,7 @@ namespace Kalipso
                     {
                         if (device == null)
                         {
-                            MessageBox.Show("Chek device");
+                            MessageBox.Show("Check device");
                             return false;
                         }
                         device.Write(ReplaceCommonEscapeSequences(command));
@@ -918,7 +918,10 @@ namespace Kalipso
                     break;
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="query"></param>
         public void ReadDeviceAnswer(string query)
         {
             switch (cbInterfaceType.Text)
@@ -1061,8 +1064,37 @@ namespace Kalipso
 
         }
 
-
-
-
+        private void Button1_Click_1(object sender, EventArgs e)
+        {
+            switch (cbInterfaceType.Text)
+            {
+                case "GPIB":
+                    {
+                        WriteCommandDev(txtCommand.Text);
+                        ReadDeviceAnswer();
+                        break;
+                    }
+                case "USB":
+                    {
+                        try
+                        {
+                            string textToWrite = ReplaceCommonEscapeSequences(txtCommand.Text);
+                            string responseString = mbSession.Query(textToWrite);
+                            txtAnswer.AppendText(Environment.NewLine + InsertCommonEscapeSequences(responseString));
+                        }
+                        catch (Exception exp)
+                        {
+                            MessageBox.Show(exp.Message);
+                        }
+                        finally
+                        {
+                            Cursor.Current = Cursors.Default;
+                        }
+                        break;
+                    }
+                default:
+                    break;
+            }
+        }
     }
 }

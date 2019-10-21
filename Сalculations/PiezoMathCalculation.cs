@@ -4187,7 +4187,7 @@ using System.Windows.Forms;
             double min;
             int c = 0;
             SetUMicronOutMas();
-            for (int i = 0; i < this.UMicronOut.Length; i++)
+            for (int i = 0; i < UMicronOut.Length; i++)
             {
                 min = UMicronOut[i] / Uin;
                 if (min > 0.99 && min < 1.01)
@@ -4198,7 +4198,23 @@ using System.Windows.Forms;
             return c;
         }
 
-        public double XiVal(int i)
+    public double XiVal_1(double Uin)
+    {
+        //return 19.5047 * Uin +2.8923;
+        return 19.411155 * Uin + 2.98926;
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="Uin"></param>
+    /// <returns></returns>
+    public double XiVal_Law_linear(double Uin,double A, double B)
+    {
+        //return 19.5047 * Uin +2.8923;
+        return A * Uin + B;
+    }
+
+    public double XiVal(int i)
         {
             SetXiMas();
             return Xi[i];

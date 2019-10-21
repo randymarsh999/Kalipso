@@ -14,9 +14,9 @@ namespace Kalipso
     public partial class frmMeasTempOpt : Form
 #pragma warning restore CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmMeasTempOpt"
     {
-    /// <summary>
-    ///Constructor of measurment options form
-    /// </summary>
+        /// <summary>
+        ///Constructor of measurment options form
+        /// </summary>
         public frmMeasTempOpt()
         {
             InitializeComponent();
@@ -47,11 +47,6 @@ namespace Kalipso
 
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void frmMeasTempOpt_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = true;
@@ -65,6 +60,50 @@ namespace Kalipso
 
         private void frmMeasTempOpt_Load(object sender, EventArgs e)
         {
+            txtHeight.Text = Properties.Settings.Default.defHeight;
+            txtDiameter.Text = Properties.Settings.Default.defWidth;
+            txtTempEnd.Text = Properties.Settings.Default.defTempEnd;
+            txtTempSint.Text = Properties.Settings.Default.defTempSint;
+            cmbOperator.Text = Properties.Settings.Default.defOperator;
+            cbGPIBDevModel.Text = Properties.Settings.Default.defDevice;
+            cbExportDBMeasTemp.Text = Properties.Settings.Default.defExportMod;
+            txtComposition.Text = Properties.Settings.Default.defComposition;
+            txtTempStep.Text = Properties.Settings.Default.deftempStep;
+            txtNewCycleTemp.Text = Properties.Settings.Default.defNewCycleTemp;
+            tFreqList.Text = Properties.Settings.Default.defFreq;
+            cbGraphOptions.Text = Properties.Settings.Default.defGraphMode;
+            cWorkMode.Text = Properties.Settings.Default.defWorkMode;
+            tTempList.Text = Properties.Settings.Default.defTempList;
+            txtStartFreq.Text = Properties.Settings.Default.defFreqStart;
+            txtEndFreq.Text = Properties.Settings.Default.defFreqEnd;
+
+            switch (cWorkMode.Text)
+            {
+                case "Magnit_hand":
+                    {
+                        txtApproxA.Text = Properties.Settings.Default.defParamAMagnit ;
+                        txtApproxB.Text = Properties.Settings.Default.defParamBMagnit;
+                        txtApproxC.Text = Properties.Settings.Default.defParamCMagnit  ;
+                        break;
+                    }
+                case "C(dU)_hand_reversive":
+                    {
+                        txtApproxA.Text = Properties.Settings.Default.defParamAReversive;
+                        txtApproxB.Text = Properties.Settings.Default.defParamBReversive ;
+                        txtApproxC.Text = Properties.Settings.Default.defParamCReversive ;
+                        break;
+                    }
+                case "d33Rev":
+                    {
+                        txtApproxA.Text = Properties.Settings.Default.defParamAd33;
+                        txtApproxB.Text = Properties.Settings.Default.defParamBd33;
+                        txtApproxC.Text = Properties.Settings.Default.defParamCd33;
+                        break;
+                    }
+                default:
+                    break;
+            }
+
 
         }
 
@@ -115,6 +154,7 @@ namespace Kalipso
             {
                 case "Agilent4980A":
                     {
+                        tFreqList.Clear();
                         tFreqList.Text = "";
                         if (cFreqMode.Text == "Step")
                         {
@@ -148,6 +188,7 @@ namespace Kalipso
                         }
                         if (cFreqMode.Text == "Logarithm")
                         {
+                            tFreqList.Clear();
                             int start = Convert.ToInt32(txtStartFreq.Text);
                             int end = Convert.ToInt32(txtEndFreq.Text);
                             double step = Convert.ToDouble(txtCoefficient.Text);
@@ -167,10 +208,12 @@ namespace Kalipso
                                 }
                             }
                         }
+
                         break;
                     }
                 case "Agilent4263B":
                     {
+                        tFreqList.Clear();
                         tFreqList.AppendText("100" + Environment.NewLine);
                         tFreqList.AppendText("120" + Environment.NewLine);
                         tFreqList.AppendText("1000" + Environment.NewLine);
@@ -180,6 +223,7 @@ namespace Kalipso
                     }
                 case "WayneKerr4300":
                     {
+                        tFreqList.Clear();
                         if (cFreqMode.Text == "Logarithm")
                         {
                             int start = Convert.ToInt32(txtStartFreq.Text);
@@ -204,6 +248,7 @@ namespace Kalipso
                     }
                 case "E7-20":
                     {
+                        tFreqList.Clear();
                         tFreqList.AppendText("25" + Environment.NewLine);
                         tFreqList.AppendText("50" + Environment.NewLine);
                         tFreqList.AppendText("60" + Environment.NewLine);
@@ -224,6 +269,30 @@ namespace Kalipso
                         break;
                     }
                 default:
+                    {
+                        if (cFreqMode.Text == "Logarithm")
+                        {
+                            tFreqList.Clear();
+                            int start = Convert.ToInt32(txtStartFreq.Text);
+                            int end = Convert.ToInt32(txtEndFreq.Text);
+                            double step = Convert.ToDouble(txtCoefficient.Text);
+                            tFreqList.AppendText(start.ToString() + Environment.NewLine);
+
+                            for (int i = 0; i < end; i++)
+                            {
+                                start = Convert.ToInt32(Convert.ToDouble(start) * step);
+                                if (start < end)
+                                {
+                                    tFreqList.AppendText(start.ToString() + Environment.NewLine);
+                                }
+                                if (start >= end)
+                                {
+                                    tFreqList.AppendText(end.ToString());
+                                    return;
+                                }
+                            }
+                        }
+                    }
                     break;
             }
         }
@@ -573,8 +642,8 @@ namespace Kalipso
                 tTimerList.AppendText(str[i] + Environment.NewLine);
             }
 
-            
-             str = new string[fj.ReadF("F:\\temp\\volt.txt").Length];
+
+            str = new string[fj.ReadF("F:\\temp\\volt.txt").Length];
             str = fj.ReadF("F:\\temp\\volt.txt");
             tVoltageList.Clear();
             for (int i = 0; i < str.Length; i++)
@@ -624,16 +693,6 @@ namespace Kalipso
 
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tVoltageList_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
         {
 
@@ -675,7 +734,7 @@ namespace Kalipso
 
         private void openFileexcelToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            opnFileExcel.ShowDialog();
+            //opnFileExcel.ShowDialog();
         }
 
         private void opnFileExcel_FileOk(object sender, CancelEventArgs e)
@@ -699,11 +758,182 @@ namespace Kalipso
                         break;
                     }
             }
-            
+
         }
 
         private void label14_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void FrmMeasTempOpt_Shown(object sender, EventArgs e)
+        {
+            txtHeight.Text = Properties.Settings.Default.defHeight;
+            txtDiameter.Text = Properties.Settings.Default.defWidth;
+        }
+
+        private void FrmMeasTempOpt_VisibleChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.defHeight = txtHeight.Text;
+            Properties.Settings.Default.defWidth = txtDiameter.Text;
+            Properties.Settings.Default.defTempEnd = txtTempEnd.Text;
+            Properties.Settings.Default.defTempSint = txtTempSint.Text;
+            Properties.Settings.Default.defOperator = cmbOperator.Text;
+            Properties.Settings.Default.defDevice = cbGPIBDevModel.Text;
+            Properties.Settings.Default.defExportMod = cbExportDBMeasTemp.Text;
+            Properties.Settings.Default.defComposition = txtComposition.Text;
+            Properties.Settings.Default.deftempStep = txtTempStep.Text;
+            Properties.Settings.Default.defNewCycleTemp = txtNewCycleTemp.Text;
+            Properties.Settings.Default.defFreq = tFreqList.Text;
+            Properties.Settings.Default.defGraphMode = cbGraphOptions.Text;
+            Properties.Settings.Default.defWorkMode = cWorkMode.Text;
+            Properties.Settings.Default.defTempList = tTempList.Text;
+            Properties.Settings.Default.defFreqStart = txtStartFreq.Text;
+            Properties.Settings.Default.defFreqEnd = txtEndFreq.Text;
+
+            switch (cWorkMode.Text)
+            {
+                case "Magnit_hand":
+                    {
+                        txtApproxA.Text = Properties.Settings.Default.defParamAMagnit;
+                        txtApproxB.Text = Properties.Settings.Default.defParamBMagnit;
+                        txtApproxC.Text = Properties.Settings.Default.defParamCMagnit;
+                        break;
+                    }
+                case "C(dU)_hand_reversive":
+                    {
+                        txtApproxA.Text = Properties.Settings.Default.defParamAReversive;
+                        txtApproxB.Text = Properties.Settings.Default.defParamBReversive;
+                        txtApproxC.Text = Properties.Settings.Default.defParamCReversive;
+                        break;
+                    }
+                case "d33Rev":
+                    {
+                        txtApproxA.Text = Properties.Settings.Default.defParamAd33;
+                        txtApproxB.Text = Properties.Settings.Default.defParamBd33;
+                        txtApproxC.Text = Properties.Settings.Default.defParamCd33;
+                        break;
+                    }
+                default:
+                    break;
+            }
+
+
+
+
+
+            Properties.Settings.Default.Save();
+
+
+        }
+
+        private void CWorkMode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (cWorkMode.Text)
+            {
+                case "Magnit_hand":
+                    {
+                        txtApproxA.Text = Properties.Settings.Default.defParamAMagnit;
+                        txtApproxB.Text = Properties.Settings.Default.defParamBMagnit;
+                        txtApproxC.Text = Properties.Settings.Default.defParamCMagnit;
+                        break;
+                    }
+                case "C(dU)_hand_reversive":
+                    {
+                        txtApproxA.Text = Properties.Settings.Default.defParamAReversive;
+                        txtApproxB.Text = Properties.Settings.Default.defParamBReversive;
+                        txtApproxC.Text = Properties.Settings.Default.defParamCReversive;
+                        break;
+                    }
+                case "d33Rev":
+                    {
+                        txtApproxA.Text = Properties.Settings.Default.defParamAd33;
+                        txtApproxB.Text = Properties.Settings.Default.defParamBd33;
+                        txtApproxC.Text = Properties.Settings.Default.defParamCd33;
+                        break;
+                    }
+                default:
+                    break;
+            }
+
+        }
+
+        private void Label37_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TxtApproxA_TextChanged(object sender, EventArgs e)
+        {
+            switch (cWorkMode.Text)
+            {
+                case "Magnit_hand":
+                    {
+                        Properties.Settings.Default.defParamAMagnit= txtApproxA.Text ;
+                        break;
+                    }
+                case "C(dU)_hand_reversive":
+                    {
+                        Properties.Settings.Default.defParamAReversive = txtApproxA.Text;
+                        break;
+                    }
+                case "d33Rev":
+                    {
+                        Properties.Settings.Default.defParamAd33 = txtApproxA.Text;
+                        break;
+                    }
+                default:
+                    break;
+            }
+        }
+
+        private void TxtApproxB_TextChanged(object sender, EventArgs e)
+        {
+            switch (cWorkMode.Text)
+            {
+                case "Magnit_hand":
+                    {
+                        Properties.Settings.Default.defParamBMagnit = txtApproxB.Text;
+                        break;
+                    }
+                case "C(dU)_hand_reversive":
+                    {
+                        Properties.Settings.Default.defParamBReversive = txtApproxB.Text;
+                        break;
+                    }
+                case "d33Rev":
+                    {
+                        Properties.Settings.Default.defParamBd33 = txtApproxB.Text;
+                        break;
+                    }
+                default:
+                    break;
+            }
+
+        }
+
+        private void TxtApproxC_TextChanged(object sender, EventArgs e)
+        {
+            switch (cWorkMode.Text)
+            {
+                case "Magnit_hand":
+                    {
+                        Properties.Settings.Default.defParamCMagnit = txtApproxC.Text;
+                        break;
+                    }
+                case "C(dU)_hand_reversive":
+                    {
+                        Properties.Settings.Default.defParamCReversive = txtApproxC.Text;
+                        break;
+                    }
+                case "d33Rev":
+                    {
+                        Properties.Settings.Default.defParamCd33 = txtApproxC.Text;
+                        break;
+                    }
+                default:
+                    break;
+            }
 
         }
     }

@@ -47,8 +47,6 @@ namespace Kalipso
             this.txtComLog = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txtReadString = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tComPortVarta = new System.Windows.Forms.Timer(this.components);
             this.timerArduinoIn = new System.Windows.Forms.Timer(this.components);
@@ -185,12 +183,10 @@ namespace Kalipso
             this.panel2.Controls.Add(this.txtComLog);
             this.panel2.Controls.Add(this.label3);
             this.panel2.Controls.Add(this.txtReadString);
-            this.panel2.Controls.Add(this.label2);
-            this.panel2.Controls.Add(this.textBox2);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Location = new System.Drawing.Point(231, 54);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(687, 370);
+            this.panel2.Size = new System.Drawing.Size(687, 331);
             this.panel2.TabIndex = 3;
             // 
             // cmbBaudRate
@@ -215,7 +211,7 @@ namespace Kalipso
             "57600",
             "128000",
             "115200"});
-            this.cmbBaudRate.Location = new System.Drawing.Point(14, 30);
+            this.cmbBaudRate.Location = new System.Drawing.Point(14, 25);
             this.cmbBaudRate.Name = "cmbBaudRate";
             this.cmbBaudRate.Size = new System.Drawing.Size(106, 21);
             this.cmbBaudRate.TabIndex = 12;
@@ -223,7 +219,7 @@ namespace Kalipso
             // 
             // txtComLog
             // 
-            this.txtComLog.Location = new System.Drawing.Point(14, 138);
+            this.txtComLog.Location = new System.Drawing.Point(14, 96);
             this.txtComLog.Multiline = true;
             this.txtComLog.Name = "txtComLog";
             this.txtComLog.Size = new System.Drawing.Size(670, 224);
@@ -233,7 +229,7 @@ namespace Kalipso
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label3.Location = new System.Drawing.Point(11, 92);
+            this.label3.Location = new System.Drawing.Point(11, 50);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(92, 17);
             this.label3.TabIndex = 10;
@@ -241,33 +237,16 @@ namespace Kalipso
             // 
             // txtReadString
             // 
-            this.txtReadString.Location = new System.Drawing.Point(14, 112);
+            this.txtReadString.Location = new System.Drawing.Point(14, 70);
             this.txtReadString.Name = "txtReadString";
-            this.txtReadString.Size = new System.Drawing.Size(106, 20);
+            this.txtReadString.Size = new System.Drawing.Size(670, 20);
             this.txtReadString.TabIndex = 9;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(11, 54);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(75, 17);
-            this.label2.TabIndex = 8;
-            this.label2.Text = "Baud Rate";
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(14, 74);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(106, 20);
-            this.textBox2.TabIndex = 7;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(11, 11);
+            this.label1.Location = new System.Drawing.Point(11, 6);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(75, 17);
             this.label1.TabIndex = 6;
@@ -286,9 +265,9 @@ namespace Kalipso
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(238, 422);
+            this.button1.Location = new System.Drawing.Point(231, 391);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(707, 32);
+            this.button1.Size = new System.Drawing.Size(688, 32);
             this.button1.TabIndex = 8;
             this.button1.Text = "Read Data from TERMO";
             this.button1.UseVisualStyleBackColor = true;
@@ -298,9 +277,9 @@ namespace Kalipso
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(238, 460);
+            this.button2.Location = new System.Drawing.Point(231, 429);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(707, 32);
+            this.button2.Size = new System.Drawing.Size(688, 32);
             this.button2.TabIndex = 9;
             this.button2.Text = "Read Data from TERMO";
             this.button2.UseVisualStyleBackColor = true;
@@ -315,7 +294,7 @@ namespace Kalipso
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(957, 504);
+            this.ClientSize = new System.Drawing.Size(958, 483);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.panel2);
@@ -351,8 +330,6 @@ namespace Kalipso
         private System.Windows.Forms.Button btnOpenPortDif;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtReadString;
         private System.Windows.Forms.TextBox txtComLog;

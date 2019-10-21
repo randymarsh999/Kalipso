@@ -5,5 +5,83 @@
     <Setting Name="Polarity" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="defHeight" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0.100</Value>
+    </Setting>
+    <Setting Name="defWidth" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1.000</Value>
+    </Setting>
+    <Setting Name="defOperator" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Andryushin K.P.</Value>
+    </Setting>
+    <Setting Name="defDevice" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Agilent4980A</Value>
+    </Setting>
+    <Setting Name="defTemp" Type="System.String" Scope="User">
+      <Value Profile="(Default)">300</Value>
+    </Setting>
+    <Setting Name="defFreq" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1000</Value>
+    </Setting>
+    <Setting Name="defTempSint" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1513</Value>
+    </Setting>
+    <Setting Name="defExportMod" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Export to DB(only)</Value>
+    </Setting>
+    <Setting Name="defTempEnd" Type="System.String" Scope="User">
+      <Value Profile="(Default)">753</Value>
+    </Setting>
+    <Setting Name="defComposition" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="deftempStep" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="defNewCycleTemp" Type="System.String" Scope="User">
+      <Value Profile="(Default)">348</Value>
+    </Setting>
+    <Setting Name="defGraphMode" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="defWorkMode" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="defTempList" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="defFreqStart" Type="System.String" Scope="User">
+      <Value Profile="(Default)">20</Value>
+    </Setting>
+    <Setting Name="defFreqEnd" Type="System.String" Scope="User">
+      <Value Profile="(Default)">2000000</Value>
+    </Setting>
+    <Setting Name="defParamAMagnit" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1.0</Value>
+    </Setting>
+    <Setting Name="defParamBMagnit" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1.0</Value>
+    </Setting>
+    <Setting Name="defParamCMagnit" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1.0</Value>
+    </Setting>
+    <Setting Name="defParamAReversive" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1.0</Value>
+    </Setting>
+    <Setting Name="defParamBReversive" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1.0</Value>
+    </Setting>
+    <Setting Name="defParamCReversive" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1.0</Value>
+    </Setting>
+    <Setting Name="defParamAd33" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0.0509</Value>
+    </Setting>
+    <Setting Name="defParamBd33" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-0.1418</Value>
+    </Setting>
+    <Setting Name="defParamCd33" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1.0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

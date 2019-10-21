@@ -111,6 +111,12 @@
             this.cWorkMode = new System.Windows.Forms.ComboBox();
             this.label13 = new System.Windows.Forms.Label();
             this.cFreqMode = new System.Windows.Forms.ComboBox();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label36 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
+            this.txtApproxB = new System.Windows.Forms.TextBox();
+            this.label35 = new System.Windows.Forms.Label();
+            this.txtApproxA = new System.Windows.Forms.TextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFilevoltageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -119,9 +125,12 @@
             this.opnFileVoltage = new System.Windows.Forms.OpenFileDialog();
             this.opnFileTimer = new System.Windows.Forms.OpenFileDialog();
             this.opnFileExcel = new System.Windows.Forms.OpenFileDialog();
+            this.label37 = new System.Windows.Forms.Label();
+            this.txtApproxC = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -131,6 +140,7 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Location = new System.Drawing.Point(12, 27);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -345,8 +355,8 @@
             "Pavelko A.A.",
             "Pavlenko A.V.",
             "Boldyrev N.V.",
-            "Abubakarov A.G.",
-            "Hasbulatov S.V."});
+            "Glazunova E.V.",
+            "Sadykov H.A."});
             this.cmbOperator.Location = new System.Drawing.Point(3, 277);
             this.cmbOperator.Name = "cmbOperator";
             this.cmbOperator.Size = new System.Drawing.Size(121, 21);
@@ -461,11 +471,10 @@
             // txtDiameter
             // 
             this.txtDiameter.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtDiameter.Location = new System.Drawing.Point(6, 94);
+            this.txtDiameter.Location = new System.Drawing.Point(6, 97);
             this.txtDiameter.Name = "txtDiameter";
             this.txtDiameter.Size = new System.Drawing.Size(100, 29);
             this.txtDiameter.TabIndex = 4;
-            this.txtDiameter.Text = "1.000";
             // 
             // label2
             // 
@@ -503,7 +512,6 @@
             this.txtHeight.Name = "txtHeight";
             this.txtHeight.Size = new System.Drawing.Size(100, 29);
             this.txtHeight.TabIndex = 0;
-            this.txtHeight.Text = "0.100";
             this.txtHeight.TextChanged += new System.EventHandler(this.txtHeight_TextChanged);
             // 
             // tabPage2
@@ -1134,7 +1142,7 @@
             this.cWorkMode.Name = "cWorkMode";
             this.cWorkMode.Size = new System.Drawing.Size(285, 21);
             this.cWorkMode.TabIndex = 22;
-            this.cWorkMode.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.cWorkMode.SelectedIndexChanged += new System.EventHandler(this.CWorkMode_SelectedIndexChanged);
             // 
             // label13
             // 
@@ -1161,6 +1169,73 @@
             this.cFreqMode.Size = new System.Drawing.Size(121, 21);
             this.cFreqMode.TabIndex = 19;
             this.cFreqMode.SelectedIndexChanged += new System.EventHandler(this.cFreqMode_SelectedIndexChanged);
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.label37);
+            this.tabPage3.Controls.Add(this.txtApproxC);
+            this.tabPage3.Controls.Add(this.label36);
+            this.tabPage3.Controls.Add(this.label34);
+            this.tabPage3.Controls.Add(this.txtApproxB);
+            this.tabPage3.Controls.Add(this.label35);
+            this.tabPage3.Controls.Add(this.txtApproxA);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(1004, 538);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Calculations";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label36.Location = new System.Drawing.Point(35, 3);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(85, 23);
+            this.label36.TabIndex = 53;
+            this.label36.Text = "Reversive";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label34.Location = new System.Drawing.Point(35, 86);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(21, 23);
+            this.label34.TabIndex = 52;
+            this.label34.Text = "B";
+            // 
+            // txtApproxB
+            // 
+            this.txtApproxB.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtApproxB.Location = new System.Drawing.Point(35, 112);
+            this.txtApproxB.Name = "txtApproxB";
+            this.txtApproxB.Size = new System.Drawing.Size(100, 29);
+            this.txtApproxB.TabIndex = 51;
+            this.txtApproxB.Text = "-3.9299";
+            this.txtApproxB.TextChanged += new System.EventHandler(this.TxtApproxB_TextChanged);
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label35.Location = new System.Drawing.Point(35, 26);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(21, 23);
+            this.label35.TabIndex = 50;
+            this.label35.Text = "A";
+            // 
+            // txtApproxA
+            // 
+            this.txtApproxA.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtApproxA.Location = new System.Drawing.Point(35, 52);
+            this.txtApproxA.Name = "txtApproxA";
+            this.txtApproxA.Size = new System.Drawing.Size(100, 29);
+            this.txtApproxA.TabIndex = 49;
+            this.txtApproxA.Text = "21.13";
+            this.txtApproxA.TextChanged += new System.EventHandler(this.TxtApproxA_TextChanged);
             // 
             // menuStrip1
             // 
@@ -1218,6 +1293,27 @@
             this.opnFileExcel.FileName = "openFileDialog1";
             this.opnFileExcel.FileOk += new System.ComponentModel.CancelEventHandler(this.opnFileExcel_FileOk);
             // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label37.Location = new System.Drawing.Point(35, 150);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(21, 23);
+            this.label37.TabIndex = 55;
+            this.label37.Text = "C";
+            this.label37.Click += new System.EventHandler(this.Label37_Click);
+            // 
+            // txtApproxC
+            // 
+            this.txtApproxC.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtApproxC.Location = new System.Drawing.Point(35, 176);
+            this.txtApproxC.Name = "txtApproxC";
+            this.txtApproxC.Size = new System.Drawing.Size(100, 29);
+            this.txtApproxC.TabIndex = 54;
+            this.txtApproxC.Text = "-3.9299";
+            this.txtApproxC.TextChanged += new System.EventHandler(this.TxtApproxC_TextChanged);
+            // 
             // frmMeasTempOpt
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1234,11 +1330,15 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMeasTempOpt_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMeasTempOpt_FormClosed);
             this.Load += new System.EventHandler(this.frmMeasTempOpt_Load);
+            this.Shown += new System.EventHandler(this.openFileexcelToolStripMenuItem_Click);
+            this.VisibleChanged += new System.EventHandler(this.FrmMeasTempOpt_VisibleChanged);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -1406,6 +1506,14 @@
         public System.Windows.Forms.ComboBox cbGraphOptions;
         private System.Windows.Forms.Label label33;
         public System.Windows.Forms.CheckBox chTest;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.Label label36;
+        private System.Windows.Forms.Label label34;
+        public System.Windows.Forms.TextBox txtApproxB;
+        private System.Windows.Forms.Label label35;
+        public System.Windows.Forms.TextBox txtApproxA;
+        private System.Windows.Forms.Label label37;
+        public System.Windows.Forms.TextBox txtApproxC;
 #pragma warning restore CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmMeasTempOpt.txtTimerReversive"
     }
 }
