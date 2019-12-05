@@ -112,7 +112,6 @@ namespace Kalipso
             string[] ports = SerialPort.GetPortNames();
             cmbComPortList.Items.Clear();
             for (int i = 0; i < ports.Length; i++)
-            //for (int i = ports.Length+1; i> 0  ; i--)
             {
                 cmbComPortList.Items.Add(ports[i].ToString());
                 ColPort = ports.Length;
@@ -261,10 +260,9 @@ namespace Kalipso
                 TemperatureReserv = (Convert.ToInt32(s) + 273).ToString();
                 txtReadString.Text = Temperature.ToString();
             }
-#pragma warning disable CS0168 // Переменная "ex" объявлена, но ни разу не использована.
             catch (Exception ex)
-#pragma warning restore CS0168 // Переменная "ex" объявлена, но ни разу не использована.
             {
+                ex.ToString();
                 Temperature = TemperatureReserv;
                 txtReadString.Text = Temperature.ToString();
             }
@@ -368,11 +366,6 @@ namespace Kalipso
                         allComPort[i].ActivePort = ComP;
                         allComPort[i].DeviceName = cbComDevice.Text;
                         txtComLog.AppendText(Environment.NewLine+ cmbComPortList.SelectedItem.ToString() + " was opened" + Environment.NewLine);
-
-                        //if (cbComDevice.Text == "Varta703I")
-                        //    {
-                        //        tComPortVarta.Enabled = true;
-                        //    }
                         return;
                     }
 
@@ -897,44 +890,6 @@ namespace Kalipso
             }
         }
         /// <summary>
-        /// Gets the data from voltage meter hy a V51 t.
-        /// </summary>
-        /// <returns></returns>
-        //public byte[] GetDataFromVoltageMeter_HY_AV51_T()
-        //{
-        //    int offset = 0;
-        //    int max = 85;
-        //    byte[] byteBuffer = new byte[max];
-
-        //    byte[] responce = new byte[max];
-
-        //    short[] values = new short[max];
-        //    for (int j = 0; j < allComPort.Count() - 1; j++)
-        //    {
-        //        if (allComPort[j].DeviceName == "VoltageMeter HY-AV51-T")
-        //        {
-
-        //            allComPort[j].ActivePort.Write(new byte[] { 0x01, 0x03, 0x00, 0x00, 0x00, 0x28, 0x45, 0xd4 }, 0, 8);
-        //            //var byteBuffer = new byte[max];
-        //            //allComPort[j].ActivePort.Read(byteBuffer, offset, byteBuffer.Length - offset);
-        //            System.Threading.Thread.Sleep(300);
-        //            int byteRecieved = allComPort[j].ActivePort.BytesToRead;
-
-        //            allComPort[j].ActivePort.Read(byteBuffer, 0, byteRecieved);
-        //            for (int i = 0; i < (byteBuffer.Length - 5) / 2; i++)
-        //            {
-        //                values[i] = byteBuffer[2 * i + 3];
-        //                values[i] <<= 8;
-        //                values[i] += byteBuffer[2 * i + 4];
-        //            }
-
-        //            return byteBuffer;
-        //        }
-        //    }
-        //    return byteBuffer;
-        //}
-
-        /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
@@ -944,8 +899,7 @@ namespace Kalipso
             int max = 85;
             byte[] byteBuffer = new byte[max];
 
-            byte[] responce = new byte[max];
-
+            //byte[] responce = new byte[max];
             short[] values = new short[50];
             for (int j = 0; j < allComPort.Count() - 1; j++)
             {
@@ -986,12 +940,36 @@ namespace Kalipso
                         values[i] <<= 8;
                         values[i] += byteBuffer[2 * i + 4];
                     }
-
                     // return values;
                 }
             }
             return values;
         }
+
+
+        byte [] GetDataFromComPortITR2523(string device )
+        {
+            //int offset = 0;
+            int max = 85;
+            byte [] byteBuffer = new byte[max];
+            byte [] values = new byte[50];
+            for (int j = 0; j < allComPort.Count() - 1; j++)
+            {
+                if (allComPort[j].DeviceName == device)
+                {
+                    int byteRecieved = allComPort[j].ActivePort.BytesToRead;
+                    allComPort[j].ActivePort.Read(byteBuffer, 0, byteRecieved);
+                    for (int i = 0; i < (byteBuffer.Length - 5) / 2; i++)
+                    {
+                        values[i] = byteBuffer[2 * i + 3];
+                        values[i] <<= 8;
+                        values[i] += byteBuffer[2 * i + 4];
+                    }
+                }
+            }
+            return values;
+        }
+
 
         /// <summary>
         /// 
@@ -1083,7 +1061,6 @@ namespace Kalipso
                     }
                 }
             }
-
             return byteBuffer;
         }
 
@@ -1251,7 +1228,64 @@ namespace Kalipso
                 this.Refresh();
             }
         }
+
+
+
+        private void CheckITR2523()
+        {
+
+            //byte[] buf = GetDataFromCOMDevice("ITR2523", 0, 22);
+            PiezoMathCalculation pm = new PiezoMathCalculation();
+            //byte[] bufo = { buf[12], buf[13], buf[14] };
+            
+
+            string s = "";
+            //s = "";
+
+            byte[] buf_out = new byte [11] { 0xFF, 0xFF, 0x01, 0x01, 0x02, 0x02, 0x02, 0x00, 0x03, 0x03, 0x00 };
+            //byte[] answer = new byte [18]{ 0x01, 0x01, 0xFF, 0xFF, 0x09, 0x09, 0x02, 0x80, 0x03, 0x24, 0xD7, 0x07, 0x01, 0x12, 0x04, 0x00, 0x9C, 0x01 };
+            SendDataToComPort("ITR2523", buf_out);
+            byte [] data = GetDataFromComPortITR2523("ITR2523");
+
+
+
+            //ReadFile(comportstruct.COMport[index], buf_in, 20, &ByteCount, NULL);
+
+            //for (i = 0; i < 11; i++)
+            //{
+            //    s = s + buf_out[i] + " ";
+            //}
+            //txtComLog.AppendText(s);
+            for (int i = 0; i < data.Count(); i++)
+            {
+                s += s + data[i].ToString();
+            }
+            txtComLog.AppendText(s.ToString());
+
+
+            txtComLog.AppendText("/n-------------------------");
+
+
+            //s = "";
+            //for (i = 0; i < 18; i++)
+            //{
+            //    s = s + buf_in[i] + " ";
+            //}
+            //txtComLog.AppendText(s);
+            //txtComLog.AppendText("-------------------------");
+        }
+
+        private void button4_Click_1(object sender, EventArgs e)
+        {
+            CheckITR2523();
+        }
     }
+
+
+
+
+
+
 
     /// <summary>
     /// 

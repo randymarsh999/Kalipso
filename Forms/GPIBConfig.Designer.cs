@@ -167,6 +167,7 @@
             this.DeviceAddressUD.Name = "DeviceAddressUD";
             this.DeviceAddressUD.Size = new System.Drawing.Size(120, 20);
             this.DeviceAddressUD.TabIndex = 28;
+            this.DeviceAddressUD.ValueChanged += new System.EventHandler(this.DeviceAddressUD_ValueChanged);
             // 
             // txtLastIOStatus
             // 
@@ -294,6 +295,7 @@
             this.Text = "GPIB Configuration";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmGPIBConfig_FormClosing);
             this.Load += new System.EventHandler(this.frmGPIBConfig_Load);
+            this.VisibleChanged += new System.EventHandler(this.frmGPIBConfig_VisibleChanged);
             ((System.ComponentModel.ISupportInitialize)(this.ControllerAddressUD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DeviceAddressUD)).EndInit();
             this.ResumeLayout(false);

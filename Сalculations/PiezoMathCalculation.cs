@@ -4207,6 +4207,8 @@ using System.Windows.Forms;
     /// 
     /// </summary>
     /// <param name="Uin"></param>
+    /// <param name="A"></param>
+    /// <param name="B"></param>
     /// <returns></returns>
     public double XiVal_Law_linear(double Uin,double A, double B)
     {

@@ -83,5 +83,14 @@
     <Setting Name="defParamCd33" Type="System.String" Scope="User">
       <Value Profile="(Default)">1.0</Value>
     </Setting>
+    <Setting Name="defParamACTE" Type="System.String" Scope="User">
+      <Value Profile="(Default)">20.425</Value>
+    </Setting>
+    <Setting Name="defParamBCTE" Type="System.String" Scope="User">
+      <Value Profile="(Default)">3.8974</Value>
+    </Setting>
+    <Setting Name="defGPIBAddress" Type="System.String" Scope="User">
+      <Value Profile="(Default)">17</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

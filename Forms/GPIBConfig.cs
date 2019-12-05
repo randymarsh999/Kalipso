@@ -735,6 +735,7 @@ namespace Kalipso
         /// <param name="e">The <see cref="FormClosingEventArgs"/> instance containing the event data.</param>
         private void frmGPIBConfig_FormClosing(object sender, FormClosingEventArgs e)
         {
+            Properties.Settings.Default.defGPIBAddress = DeviceAddressUD.Text;
             e.Cancel = true;
             this.Hide();
         }
@@ -974,7 +975,7 @@ namespace Kalipso
 
         private void frmGPIBConfig_Load(object sender, EventArgs e)
         {
-
+            DeviceAddressUD.Text = Properties.Settings.Default.defGPIBAddress;
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -1020,9 +1021,6 @@ namespace Kalipso
             WriteCommandDev(":SOUR:FREQ 1000;:TRIG;FETCh?");
             ReadDeviceAnswer();
 
-
-
-
             //work it
             //txtAnswer.Text = SendCmdViaEhternet(txtCommand.Text, Convert.ToInt32(txtIpPort.Text), txtIpHost.Text);
             //Regex reg = new Regex(@"^[-+][0-9][.][0-9]{5}[E][-+][0-9]{2}[,][-+][0-9][.][0-9]{5}[E][-+][0-9]{1}");
@@ -1031,11 +1029,6 @@ namespace Kalipso
             //{
             //    txtAnswer.Text = "Ok";
             //}
-
-
-
-
-
 
 
 
@@ -1095,6 +1088,16 @@ namespace Kalipso
                 default:
                     break;
             }
+        }
+
+        private void DeviceAddressUD_ValueChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.defGPIBAddress = DeviceAddressUD.Text;
+        }
+
+        private void frmGPIBConfig_VisibleChanged(object sender, EventArgs e)
+        {
+            DeviceAddressUD.Text= Properties.Settings.Default.defGPIBAddress;
         }
     }
 }

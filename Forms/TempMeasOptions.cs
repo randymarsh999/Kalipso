@@ -76,6 +76,8 @@ namespace Kalipso
             tTempList.Text = Properties.Settings.Default.defTempList;
             txtStartFreq.Text = Properties.Settings.Default.defFreqStart;
             txtEndFreq.Text = Properties.Settings.Default.defFreqEnd;
+            txtApproxCTE_A.Text = Properties.Settings.Default.defParamACTE;
+            txtApproxCTE_B.Text=Properties.Settings.Default.defParamBCTE;
 
             switch (cWorkMode.Text)
             {
@@ -791,6 +793,9 @@ namespace Kalipso
             Properties.Settings.Default.defFreqStart = txtStartFreq.Text;
             Properties.Settings.Default.defFreqEnd = txtEndFreq.Text;
 
+            Properties.Settings.Default.defParamACTE = txtApproxCTE_A.Text;
+            Properties.Settings.Default.defParamBCTE = txtApproxCTE_B.Text;
+
             switch (cWorkMode.Text)
             {
                 case "Magnit_hand":
@@ -935,6 +940,16 @@ namespace Kalipso
                     break;
             }
 
+        }
+
+        private void txtApproxCTE_A_TextChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.defParamACTE = txtApproxCTE_A.Text;
+        }
+
+        private void txtApproxCTE_B_TextChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.defParamBCTE = txtApproxCTE_B.Text;
         }
     }
 }

@@ -270,7 +270,7 @@ namespace Kalipso
             catch (Exception ex)
             {
                 ex.ToString();
-                    //MessageBox.Show("ERROR: " + ex.ToString());
+                //MessageBox.Show("ERROR: " + ex.ToString());
                 lbTemp.Text = "None";
                 return;
             }
@@ -1717,6 +1717,12 @@ namespace Kalipso
             {
                 case "d33Rev":
                     {
+                        frmGPIB.WriteCommandDev("init");
+                        break;
+                    }
+                case "CTE":
+                    {
+                        
                         break;
                     }
                 default:
@@ -2010,6 +2016,18 @@ namespace Kalipso
                         DGJ.AddColumn(dGridTempMeas, "E_kV_Div_cm", "double precision");
                         DGJ.AddColumn(dGridTempMeas, "k_10_E_4", "double precision");
                         DGJ.AddColumn(dGridTempMeas, "d33rev", "double precision");
+                        PP.Xi0.Clear();
+                        break;
+                    }
+                case "CTE":
+                    {
+                        PP.ListTimer = new string[frmMOpt.tTimerList.Lines.Count()];
+                        for (int i = 0; i < frmMOpt.tTimerList.Lines.Count(); i++)
+                        {
+                            PP.ListTimer[i] = frmMOpt.tTimerList.Lines[i];
+                        }
+                        DGJ.AddColumn(dGridTempMeas, "Uout_V", "double precision");
+                        DGJ.AddColumn(dGridTempMeas, "Xi", "double precision");
                         PP.Xi0.Clear();
                         break;
                     }
@@ -3185,7 +3203,6 @@ namespace Kalipso
             //-------------------------------------------------------------
             InitialiezeFreq(0);
             this.Refresh();
-
         }
 
         /// <summary>
@@ -3294,11 +3311,108 @@ namespace Kalipso
                         MeasMagnit_Hand();
                         break;
                     }
+                case "CTE":
+                    {
+                        CTE_meas();
+                        break;
+                    }
                 default:
                     break;
             }
             this.Refresh();
         }
+
+        private void CTE_meas()
+        {
+            ParseStringTab PS = new ParseStringTab();
+            //string s = "";
+            #region  Get_data_from_Varta703I
+            GetTempFromVarta();
+            #endregion
+
+            #region  Get_data_from_micron
+            //do
+            //{
+            //    Com.SendDataToComPort("ArduinoUno", "m");
+            //    s = Com.ComReadString();
+            //} while (s.Length < 7);
+            //PS.AddUMicron(s);
+
+
+            frmGPIB.WriteCommandDev("init;fetch?");
+            frmGPIB.ReadDeviceAnswer();
+            
+            #endregion
+
+
+
+
+
+            double Uin = Convert.ToDouble(frmGPIB.answer);
+
+            System.Diagnostics.Stopwatch myStopwatch = new System.Diagnostics.Stopwatch();
+            myStopwatch.Start();
+            double timeCoef = 0.001;
+            PiezoMathCalculation PM = new PiezoMathCalculation();
+            switch (frmMOpt.cbExportDBMeasTemp.Text)
+            {
+                case "Export to DB(only)":
+                    {
+                        myStopwatch.Stop();
+                        PP.TimeMeas = PP.TimeMeas + (Convert.ToDouble(myStopwatch.ElapsedMilliseconds.ToString()) * timeCoef) + 0.14;
+
+                        AddParametersVal();
+                        //PM.SetXiMas();
+                        //PM.SetUMicronOutMas();
+                        
+                        dGridTempMeas["Uout_V", 0].Value = Uin.ToString();//PM.XiVal(PM.FindUmicron(Uin));
+                        dGridTempMeas["Xi", 0].Value = PM.XiVal_Law_linear(Uin, Convert.ToDouble(frmMOpt.txtApproxCTE_A.Text), Convert.ToDouble(frmMOpt.txtApproxCTE_B.Text)).ToString();//PM.XiVal(PM.FindUmicron(Uin));
+
+                        if (chPolarity.Checked == true)
+                        {
+                            dGridTempMeas["Y", 0].Value = "20";
+                        }
+                        if (chPolarity.Checked==false)
+                        {
+                            dGridTempMeas["Y", 0].Value = "200";
+                        }
+                        double ave = 0;
+
+
+
+
+                       
+                            for (int j = 0; j < PP.Xi0.Count(); j++)
+                            {
+                                ave += PP.Xi0[j];
+                            }
+                        ++PP.CelSel;
+                        switch (frmMOpt.cWorkMode.Text)
+                        {
+                            case "CTE":
+                                {
+                                    chartMeasTemp1.Series[0].Points.AddXY(Convert.ToDouble(dGridTempMeas["T_K", 0].Value), Convert.ToDouble(dGridTempMeas["Xi", 0].Value));
+                                    break;
+                                }
+                            default:
+                                {
+                                    break;
+                                }
+                        }
+
+                        DBConn dBConn = new DBConn();
+                        string sql = dBConn.DBExportDataString(this.dGridTempMeas, PP.DBTableName, 0);
+                        FileJob FJ = new FileJob();
+                        FJ.WriteF(sql, PP.FileNameSaveTempMeasDB);
+                        break;
+                    }
+                default:
+                    break;
+
+            }
+
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -5452,8 +5566,9 @@ namespace Kalipso
 
                         if (PP.BiasUCurrent == 0)
                         {
-                            dGridTempMeas["Xi", 0].Value = PM.XiVal_1(Uin).ToString();
-                               // PM.XiVal(PM.FindUmicron(Uin));
+                            //dGridTempMeas["Xi", 0].Value = PM.XiVal_1(Uin).ToString();
+                            dGridTempMeas["Xi", 0].Value = PM.XiVal_Law_linear(Uin, Convert.ToDouble(frmMOpt.txtApproxA.Text), Convert.ToDouble(frmMOpt.txtApproxB.Text)).ToString();//PM.XiVal(PM.FindUmicron(Uin));
+                            // PM.XiVal(PM.FindUmicron(Uin));
                             dGridTempMeas["Uout_V", 0].Value = Uin.ToString();
                             dGridTempMeas["E_kV_Div_cm", 0].Value = (Convert.ToDouble(dGridTempMeas["Xi", 0].Value) / Convert.ToDouble(frmMOpt.txtHeight.Text)).ToString(); ;
 
@@ -5614,9 +5729,10 @@ namespace Kalipso
                         }
                         break;
                     }
-                case "Agilent4285A": PS.AddMeasStringAgilent4285A(frmGPIB.answer);
+                case "Agilent4285A": 
                     try
                     {
+                        PS.AddMeasStringAgilent4285A(frmGPIB.answer);
                         val1 = Convert.ToDouble(PS.ElementAt(0));
                         val2 = Convert.ToDouble(PS.ElementAt(1));
                     }
