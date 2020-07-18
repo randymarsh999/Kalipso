@@ -123,11 +123,37 @@
             this.label35 = new System.Windows.Forms.Label();
             this.txtApproxA = new System.Windows.Forms.TextBox();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.label41 = new System.Windows.Forms.Label();
+            this.txtApproxCTE_B_2000 = new System.Windows.Forms.TextBox();
+            this.label42 = new System.Windows.Forms.Label();
+            this.txtApproxCTE_A_2000 = new System.Windows.Forms.TextBox();
+            this.label39 = new System.Windows.Forms.Label();
+            this.txtApproxCTE_B_200 = new System.Windows.Forms.TextBox();
+            this.label40 = new System.Windows.Forms.Label();
+            this.txtApproxCTE_A_200 = new System.Windows.Forms.TextBox();
             this.label36 = new System.Windows.Forms.Label();
-            this.txtApproxCTE_B = new System.Windows.Forms.TextBox();
+            this.txtApproxCTE_B_20 = new System.Windows.Forms.TextBox();
             this.label38 = new System.Windows.Forms.Label();
-            this.txtApproxCTE_A = new System.Windows.Forms.TextBox();
+            this.txtApproxCTE_A_20 = new System.Windows.Forms.TextBox();
             this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label49 = new System.Windows.Forms.Label();
+            this.txtApproxU_d33_B = new System.Windows.Forms.TextBox();
+            this.label50 = new System.Windows.Forms.Label();
+            this.txtApproxU_d33_A = new System.Windows.Forms.TextBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label43 = new System.Windows.Forms.Label();
+            this.txtApproxD33_B_2000 = new System.Windows.Forms.TextBox();
+            this.label44 = new System.Windows.Forms.Label();
+            this.txtApproxD33_A_2000 = new System.Windows.Forms.TextBox();
+            this.label45 = new System.Windows.Forms.Label();
+            this.txtApproxD33_B_200 = new System.Windows.Forms.TextBox();
+            this.label46 = new System.Windows.Forms.Label();
+            this.txtApproxD33_A_200 = new System.Windows.Forms.TextBox();
+            this.label47 = new System.Windows.Forms.Label();
+            this.txtApproxD33_B_20 = new System.Windows.Forms.TextBox();
+            this.label48 = new System.Windows.Forms.Label();
+            this.txtApproxD33_A_20 = new System.Windows.Forms.TextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFilevoltageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -145,6 +171,9 @@
             this.tabControl2.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.tabPage5.SuspendLayout();
+            this.tabPage6.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -1207,7 +1236,7 @@
             this.tabControl2.Location = new System.Drawing.Point(6, 6);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(231, 434);
+            this.tabControl2.Size = new System.Drawing.Size(477, 434);
             this.tabControl2.TabIndex = 58;
             // 
             // tabPage4
@@ -1221,7 +1250,7 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(223, 408);
+            this.tabPage4.Size = new System.Drawing.Size(469, 408);
             this.tabPage4.TabIndex = 0;
             this.tabPage4.Text = "Reversive non linerity";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -1285,17 +1314,106 @@
             // 
             // tabPage5
             // 
+            this.tabPage5.Controls.Add(this.label41);
+            this.tabPage5.Controls.Add(this.txtApproxCTE_B_2000);
+            this.tabPage5.Controls.Add(this.label42);
+            this.tabPage5.Controls.Add(this.txtApproxCTE_A_2000);
+            this.tabPage5.Controls.Add(this.label39);
+            this.tabPage5.Controls.Add(this.txtApproxCTE_B_200);
+            this.tabPage5.Controls.Add(this.label40);
+            this.tabPage5.Controls.Add(this.txtApproxCTE_A_200);
             this.tabPage5.Controls.Add(this.label36);
-            this.tabPage5.Controls.Add(this.txtApproxCTE_B);
+            this.tabPage5.Controls.Add(this.txtApproxCTE_B_20);
             this.tabPage5.Controls.Add(this.label38);
-            this.tabPage5.Controls.Add(this.txtApproxCTE_A);
+            this.tabPage5.Controls.Add(this.txtApproxCTE_A_20);
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(223, 408);
+            this.tabPage5.Size = new System.Drawing.Size(469, 408);
             this.tabPage5.TabIndex = 1;
             this.tabPage5.Text = "CTE";
             this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // label41
+            // 
+            this.label41.AutoSize = true;
+            this.label41.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label41.Location = new System.Drawing.Point(287, 69);
+            this.label41.Name = "label41";
+            this.label41.Size = new System.Drawing.Size(66, 23);
+            this.label41.TabIndex = 71;
+            this.label41.Text = "B_2000";
+            // 
+            // txtApproxCTE_B_2000
+            // 
+            this.txtApproxCTE_B_2000.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtApproxCTE_B_2000.Location = new System.Drawing.Point(287, 95);
+            this.txtApproxCTE_B_2000.Name = "txtApproxCTE_B_2000";
+            this.txtApproxCTE_B_2000.Size = new System.Drawing.Size(100, 29);
+            this.txtApproxCTE_B_2000.TabIndex = 70;
+            this.txtApproxCTE_B_2000.Text = "-3.9299";
+            this.txtApproxCTE_B_2000.TextChanged += new System.EventHandler(this.txtApproxCTE_B_2000_TextChanged);
+            // 
+            // label42
+            // 
+            this.label42.AutoSize = true;
+            this.label42.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label42.Location = new System.Drawing.Point(287, 9);
+            this.label42.Name = "label42";
+            this.label42.Size = new System.Drawing.Size(66, 23);
+            this.label42.TabIndex = 69;
+            this.label42.Text = "A_2000";
+            // 
+            // txtApproxCTE_A_2000
+            // 
+            this.txtApproxCTE_A_2000.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtApproxCTE_A_2000.Location = new System.Drawing.Point(287, 35);
+            this.txtApproxCTE_A_2000.Name = "txtApproxCTE_A_2000";
+            this.txtApproxCTE_A_2000.Size = new System.Drawing.Size(100, 29);
+            this.txtApproxCTE_A_2000.TabIndex = 68;
+            this.txtApproxCTE_A_2000.Text = "21.13";
+            this.txtApproxCTE_A_2000.TextChanged += new System.EventHandler(this.TextBox4_TextChanged);
+            // 
+            // label39
+            // 
+            this.label39.AutoSize = true;
+            this.label39.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label39.Location = new System.Drawing.Point(149, 69);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(57, 23);
+            this.label39.TabIndex = 67;
+            this.label39.Text = "B_200";
+            this.label39.Click += new System.EventHandler(this.label39_Click);
+            // 
+            // txtApproxCTE_B_200
+            // 
+            this.txtApproxCTE_B_200.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtApproxCTE_B_200.Location = new System.Drawing.Point(149, 95);
+            this.txtApproxCTE_B_200.Name = "txtApproxCTE_B_200";
+            this.txtApproxCTE_B_200.Size = new System.Drawing.Size(100, 29);
+            this.txtApproxCTE_B_200.TabIndex = 66;
+            this.txtApproxCTE_B_200.Text = "-3.9299";
+            this.txtApproxCTE_B_200.TextChanged += new System.EventHandler(this.txtApproxCTE_B_200_TextChanged);
+            // 
+            // label40
+            // 
+            this.label40.AutoSize = true;
+            this.label40.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label40.Location = new System.Drawing.Point(149, 9);
+            this.label40.Name = "label40";
+            this.label40.Size = new System.Drawing.Size(57, 23);
+            this.label40.TabIndex = 65;
+            this.label40.Text = "A_200";
+            // 
+            // txtApproxCTE_A_200
+            // 
+            this.txtApproxCTE_A_200.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtApproxCTE_A_200.Location = new System.Drawing.Point(149, 35);
+            this.txtApproxCTE_A_200.Name = "txtApproxCTE_A_200";
+            this.txtApproxCTE_A_200.Size = new System.Drawing.Size(100, 29);
+            this.txtApproxCTE_A_200.TabIndex = 64;
+            this.txtApproxCTE_A_200.Text = "21.13";
+            this.txtApproxCTE_A_200.TextChanged += new System.EventHandler(this.txtApproxCTE_A_200_TextChanged);
             // 
             // label36
             // 
@@ -1303,19 +1421,19 @@
             this.label36.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label36.Location = new System.Drawing.Point(6, 69);
             this.label36.Name = "label36";
-            this.label36.Size = new System.Drawing.Size(21, 23);
+            this.label36.Size = new System.Drawing.Size(48, 23);
             this.label36.TabIndex = 63;
-            this.label36.Text = "B";
+            this.label36.Text = "B_20";
             // 
-            // txtApproxCTE_B
+            // txtApproxCTE_B_20
             // 
-            this.txtApproxCTE_B.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtApproxCTE_B.Location = new System.Drawing.Point(6, 95);
-            this.txtApproxCTE_B.Name = "txtApproxCTE_B";
-            this.txtApproxCTE_B.Size = new System.Drawing.Size(100, 29);
-            this.txtApproxCTE_B.TabIndex = 62;
-            this.txtApproxCTE_B.Text = "-3.9299";
-            this.txtApproxCTE_B.TextChanged += new System.EventHandler(this.txtApproxCTE_B_TextChanged);
+            this.txtApproxCTE_B_20.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtApproxCTE_B_20.Location = new System.Drawing.Point(6, 95);
+            this.txtApproxCTE_B_20.Name = "txtApproxCTE_B_20";
+            this.txtApproxCTE_B_20.Size = new System.Drawing.Size(100, 29);
+            this.txtApproxCTE_B_20.TabIndex = 62;
+            this.txtApproxCTE_B_20.Text = "-3.9299";
+            this.txtApproxCTE_B_20.TextChanged += new System.EventHandler(this.txtApproxCTE_B_TextChanged);
             // 
             // label38
             // 
@@ -1323,29 +1441,222 @@
             this.label38.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label38.Location = new System.Drawing.Point(6, 9);
             this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(21, 23);
+            this.label38.Size = new System.Drawing.Size(48, 23);
             this.label38.TabIndex = 61;
-            this.label38.Text = "A";
+            this.label38.Text = "A_20";
+            this.label38.Click += new System.EventHandler(this.label38_Click);
             // 
-            // txtApproxCTE_A
+            // txtApproxCTE_A_20
             // 
-            this.txtApproxCTE_A.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtApproxCTE_A.Location = new System.Drawing.Point(6, 35);
-            this.txtApproxCTE_A.Name = "txtApproxCTE_A";
-            this.txtApproxCTE_A.Size = new System.Drawing.Size(100, 29);
-            this.txtApproxCTE_A.TabIndex = 60;
-            this.txtApproxCTE_A.Text = "21.13";
-            this.txtApproxCTE_A.TextChanged += new System.EventHandler(this.txtApproxCTE_A_TextChanged);
+            this.txtApproxCTE_A_20.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtApproxCTE_A_20.Location = new System.Drawing.Point(6, 35);
+            this.txtApproxCTE_A_20.Name = "txtApproxCTE_A_20";
+            this.txtApproxCTE_A_20.Size = new System.Drawing.Size(100, 29);
+            this.txtApproxCTE_A_20.TabIndex = 60;
+            this.txtApproxCTE_A_20.Text = "21.13";
+            this.txtApproxCTE_A_20.TextChanged += new System.EventHandler(this.txtApproxCTE_A_TextChanged);
             // 
             // tabPage6
             // 
+            this.tabPage6.Controls.Add(this.groupBox2);
+            this.tabPage6.Controls.Add(this.groupBox1);
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(223, 408);
+            this.tabPage6.Size = new System.Drawing.Size(469, 408);
             this.tabPage6.TabIndex = 2;
             this.tabPage6.Text = "d33rev";
             this.tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.label49);
+            this.groupBox2.Controls.Add(this.txtApproxU_d33_B);
+            this.groupBox2.Controls.Add(this.label50);
+            this.groupBox2.Controls.Add(this.txtApproxU_d33_A);
+            this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.groupBox2.Location = new System.Drawing.Point(19, 208);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(144, 166);
+            this.groupBox2.TabIndex = 85;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "convert U";
+            // 
+            // label49
+            // 
+            this.label49.AutoSize = true;
+            this.label49.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label49.Location = new System.Drawing.Point(10, 83);
+            this.label49.Name = "label49";
+            this.label49.Size = new System.Drawing.Size(48, 23);
+            this.label49.TabIndex = 95;
+            this.label49.Text = "B_20";
+            // 
+            // txtApproxU_d33_B
+            // 
+            this.txtApproxU_d33_B.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtApproxU_d33_B.Location = new System.Drawing.Point(10, 109);
+            this.txtApproxU_d33_B.Name = "txtApproxU_d33_B";
+            this.txtApproxU_d33_B.Size = new System.Drawing.Size(100, 29);
+            this.txtApproxU_d33_B.TabIndex = 94;
+            this.txtApproxU_d33_B.Text = "-3.9299";
+            this.txtApproxU_d33_B.TextChanged += new System.EventHandler(this.txtApproxU_d33_B_TextChanged);
+            // 
+            // label50
+            // 
+            this.label50.AutoSize = true;
+            this.label50.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label50.Location = new System.Drawing.Point(10, 23);
+            this.label50.Name = "label50";
+            this.label50.Size = new System.Drawing.Size(48, 23);
+            this.label50.TabIndex = 93;
+            this.label50.Text = "A_20";
+            // 
+            // txtApproxU_d33_A
+            // 
+            this.txtApproxU_d33_A.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtApproxU_d33_A.Location = new System.Drawing.Point(10, 49);
+            this.txtApproxU_d33_A.Name = "txtApproxU_d33_A";
+            this.txtApproxU_d33_A.Size = new System.Drawing.Size(100, 29);
+            this.txtApproxU_d33_A.TabIndex = 92;
+            this.txtApproxU_d33_A.Text = "21.13";
+            this.txtApproxU_d33_A.TextChanged += new System.EventHandler(this.txtApproxU_d33_A_TextChanged);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label43);
+            this.groupBox1.Controls.Add(this.txtApproxD33_B_2000);
+            this.groupBox1.Controls.Add(this.label44);
+            this.groupBox1.Controls.Add(this.txtApproxD33_A_2000);
+            this.groupBox1.Controls.Add(this.label45);
+            this.groupBox1.Controls.Add(this.txtApproxD33_B_200);
+            this.groupBox1.Controls.Add(this.label46);
+            this.groupBox1.Controls.Add(this.txtApproxD33_A_200);
+            this.groupBox1.Controls.Add(this.label47);
+            this.groupBox1.Controls.Add(this.txtApproxD33_B_20);
+            this.groupBox1.Controls.Add(this.label48);
+            this.groupBox1.Controls.Add(this.txtApproxD33_A_20);
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.groupBox1.Location = new System.Drawing.Point(19, 21);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(427, 167);
+            this.groupBox1.TabIndex = 84;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "d33_approximation coefficients";
+            // 
+            // label43
+            // 
+            this.label43.AutoSize = true;
+            this.label43.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label43.Location = new System.Drawing.Point(287, 86);
+            this.label43.Name = "label43";
+            this.label43.Size = new System.Drawing.Size(66, 23);
+            this.label43.TabIndex = 95;
+            this.label43.Text = "B_2000";
+            // 
+            // txtApproxD33_B_2000
+            // 
+            this.txtApproxD33_B_2000.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtApproxD33_B_2000.Location = new System.Drawing.Point(287, 112);
+            this.txtApproxD33_B_2000.Name = "txtApproxD33_B_2000";
+            this.txtApproxD33_B_2000.Size = new System.Drawing.Size(100, 29);
+            this.txtApproxD33_B_2000.TabIndex = 94;
+            this.txtApproxD33_B_2000.Text = "-3.9299";
+            // 
+            // label44
+            // 
+            this.label44.AutoSize = true;
+            this.label44.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label44.Location = new System.Drawing.Point(287, 26);
+            this.label44.Name = "label44";
+            this.label44.Size = new System.Drawing.Size(66, 23);
+            this.label44.TabIndex = 93;
+            this.label44.Text = "A_2000";
+            // 
+            // txtApproxD33_A_2000
+            // 
+            this.txtApproxD33_A_2000.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtApproxD33_A_2000.Location = new System.Drawing.Point(287, 52);
+            this.txtApproxD33_A_2000.Name = "txtApproxD33_A_2000";
+            this.txtApproxD33_A_2000.Size = new System.Drawing.Size(100, 29);
+            this.txtApproxD33_A_2000.TabIndex = 92;
+            this.txtApproxD33_A_2000.Text = "21.13";
+            // 
+            // label45
+            // 
+            this.label45.AutoSize = true;
+            this.label45.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label45.Location = new System.Drawing.Point(149, 86);
+            this.label45.Name = "label45";
+            this.label45.Size = new System.Drawing.Size(57, 23);
+            this.label45.TabIndex = 91;
+            this.label45.Text = "B_200";
+            // 
+            // txtApproxD33_B_200
+            // 
+            this.txtApproxD33_B_200.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtApproxD33_B_200.Location = new System.Drawing.Point(149, 112);
+            this.txtApproxD33_B_200.Name = "txtApproxD33_B_200";
+            this.txtApproxD33_B_200.Size = new System.Drawing.Size(100, 29);
+            this.txtApproxD33_B_200.TabIndex = 90;
+            this.txtApproxD33_B_200.Text = "-3.9299";
+            // 
+            // label46
+            // 
+            this.label46.AutoSize = true;
+            this.label46.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label46.Location = new System.Drawing.Point(149, 26);
+            this.label46.Name = "label46";
+            this.label46.Size = new System.Drawing.Size(57, 23);
+            this.label46.TabIndex = 89;
+            this.label46.Text = "A_200";
+            // 
+            // txtApproxD33_A_200
+            // 
+            this.txtApproxD33_A_200.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtApproxD33_A_200.Location = new System.Drawing.Point(149, 52);
+            this.txtApproxD33_A_200.Name = "txtApproxD33_A_200";
+            this.txtApproxD33_A_200.Size = new System.Drawing.Size(100, 29);
+            this.txtApproxD33_A_200.TabIndex = 88;
+            this.txtApproxD33_A_200.Text = "21.13";
+            // 
+            // label47
+            // 
+            this.label47.AutoSize = true;
+            this.label47.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label47.Location = new System.Drawing.Point(6, 86);
+            this.label47.Name = "label47";
+            this.label47.Size = new System.Drawing.Size(48, 23);
+            this.label47.TabIndex = 87;
+            this.label47.Text = "B_20";
+            // 
+            // txtApproxD33_B_20
+            // 
+            this.txtApproxD33_B_20.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtApproxD33_B_20.Location = new System.Drawing.Point(6, 112);
+            this.txtApproxD33_B_20.Name = "txtApproxD33_B_20";
+            this.txtApproxD33_B_20.Size = new System.Drawing.Size(100, 29);
+            this.txtApproxD33_B_20.TabIndex = 86;
+            this.txtApproxD33_B_20.Text = "-3.9299";
+            // 
+            // label48
+            // 
+            this.label48.AutoSize = true;
+            this.label48.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label48.Location = new System.Drawing.Point(6, 26);
+            this.label48.Name = "label48";
+            this.label48.Size = new System.Drawing.Size(48, 23);
+            this.label48.TabIndex = 85;
+            this.label48.Text = "A_20";
+            // 
+            // txtApproxD33_A_20
+            // 
+            this.txtApproxD33_A_20.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtApproxD33_A_20.Location = new System.Drawing.Point(6, 52);
+            this.txtApproxD33_A_20.Name = "txtApproxD33_A_20";
+            this.txtApproxD33_A_20.Size = new System.Drawing.Size(100, 29);
+            this.txtApproxD33_A_20.TabIndex = 84;
+            this.txtApproxD33_A_20.Text = "21.13";
             // 
             // menuStrip1
             // 
@@ -1434,6 +1745,11 @@
             this.tabPage4.PerformLayout();
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
+            this.tabPage6.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -1614,10 +1930,36 @@
         public System.Windows.Forms.TextBox txtApproxA;
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.Label label36;
-        public System.Windows.Forms.TextBox txtApproxCTE_B;
+        public System.Windows.Forms.TextBox txtApproxCTE_B_20;
         private System.Windows.Forms.Label label38;
-        public System.Windows.Forms.TextBox txtApproxCTE_A;
+        public System.Windows.Forms.TextBox txtApproxCTE_A_20;
         private System.Windows.Forms.TabPage tabPage6;
+        private System.Windows.Forms.Label label39;
+        public System.Windows.Forms.TextBox txtApproxCTE_B_200;
+        private System.Windows.Forms.Label label40;
+        public System.Windows.Forms.TextBox txtApproxCTE_A_200;
+        private System.Windows.Forms.Label label41;
+        public System.Windows.Forms.TextBox txtApproxCTE_B_2000;
+        private System.Windows.Forms.Label label42;
+        public System.Windows.Forms.TextBox txtApproxCTE_A_2000;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label label49;
+        public System.Windows.Forms.TextBox txtApproxU_d33_B;
+        private System.Windows.Forms.Label label50;
+        public System.Windows.Forms.TextBox txtApproxU_d33_A;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label43;
+        public System.Windows.Forms.TextBox txtApproxD33_B_2000;
+        private System.Windows.Forms.Label label44;
+        public System.Windows.Forms.TextBox txtApproxD33_A_2000;
+        private System.Windows.Forms.Label label45;
+        public System.Windows.Forms.TextBox txtApproxD33_B_200;
+        private System.Windows.Forms.Label label46;
+        public System.Windows.Forms.TextBox txtApproxD33_A_200;
+        private System.Windows.Forms.Label label47;
+        public System.Windows.Forms.TextBox txtApproxD33_B_20;
+        private System.Windows.Forms.Label label48;
+        public System.Windows.Forms.TextBox txtApproxD33_A_20;
 #pragma warning restore CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmMeasTempOpt.txtTimerReversive"
     }
 }

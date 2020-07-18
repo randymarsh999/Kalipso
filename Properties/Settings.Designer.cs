@@ -12,7 +12,7 @@ namespace Kalipso.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.3.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.6.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -377,6 +377,174 @@ namespace Kalipso.Properties {
             }
             set {
                 this["defGPIBAddress"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("21.40117")]
+        public double defParamA_d33_20 {
+            get {
+                return ((double)(this["defParamA_d33_20"]));
+            }
+            set {
+                this["defParamA_d33_20"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-13.52108")]
+        public double defParamB_d33_20 {
+            get {
+                return ((double)(this["defParamB_d33_20"]));
+            }
+            set {
+                this["defParamB_d33_20"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("213.0142")]
+        public double defParamA_d33_200 {
+            get {
+                return ((double)(this["defParamA_d33_200"]));
+            }
+            set {
+                this["defParamA_d33_200"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-133.99419")]
+        public double defParamB_d33_200 {
+            get {
+                return ((double)(this["defParamB_d33_200"]));
+            }
+            set {
+                this["defParamB_d33_200"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1700.40509")]
+        public double defParamA_d33_2000 {
+            get {
+                return ((double)(this["defParamA_d33_2000"]));
+            }
+            set {
+                this["defParamA_d33_2000"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-1049.12549")]
+        public double defParamB_d33_2000 {
+            get {
+                return ((double)(this["defParamB_d33_2000"]));
+            }
+            set {
+                this["defParamB_d33_2000"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("21.249")]
+        public double defParamA_CTE_20 {
+            get {
+                return ((double)(this["defParamA_CTE_20"]));
+            }
+            set {
+                this["defParamA_CTE_20"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.2904")]
+        public double defParamB_CTE_20 {
+            get {
+                return ((double)(this["defParamB_CTE_20"]));
+            }
+            set {
+                this["defParamB_CTE_20"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("207.72")]
+        public double defParamA_CTE_200 {
+            get {
+                return ((double)(this["defParamA_CTE_200"]));
+            }
+            set {
+                this["defParamA_CTE_200"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("13.621")]
+        public double defParamB_CTE_200 {
+            get {
+                return ((double)(this["defParamB_CTE_200"]));
+            }
+            set {
+                this["defParamB_CTE_200"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2069.5")]
+        public double defParamA_CTE_2000 {
+            get {
+                return ((double)(this["defParamA_CTE_2000"]));
+            }
+            set {
+                this["defParamA_CTE_2000"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("133.15")]
+        public double defParamB_CTE_2000 {
+            get {
+                return ((double)(this["defParamB_CTE_2000"]));
+            }
+            set {
+                this["defParamB_CTE_2000"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("51.752")]
+        public double defParamA_U_d33 {
+            get {
+                return ((double)(this["defParamA_U_d33"]));
+            }
+            set {
+                this["defParamA_U_d33"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-44.561")]
+        public double defParamB_U_d33 {
+            get {
+                return ((double)(this["defParamB_U_d33"]));
+            }
+            set {
+                this["defParamB_U_d33"] = value;
             }
         }
     }

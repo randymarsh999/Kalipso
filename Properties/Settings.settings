@@ -92,5 +92,47 @@
     <Setting Name="defGPIBAddress" Type="System.String" Scope="User">
       <Value Profile="(Default)">17</Value>
     </Setting>
+    <Setting Name="defParamA_d33_20" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">21.40117</Value>
+    </Setting>
+    <Setting Name="defParamB_d33_20" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">-13.52108</Value>
+    </Setting>
+    <Setting Name="defParamA_d33_200" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">213.0142</Value>
+    </Setting>
+    <Setting Name="defParamB_d33_200" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">-133.99419</Value>
+    </Setting>
+    <Setting Name="defParamA_d33_2000" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1700.40509</Value>
+    </Setting>
+    <Setting Name="defParamB_d33_2000" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">-1049.12549</Value>
+    </Setting>
+    <Setting Name="defParamA_CTE_20" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">21.249</Value>
+    </Setting>
+    <Setting Name="defParamB_CTE_20" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1.2904</Value>
+    </Setting>
+    <Setting Name="defParamA_CTE_200" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">207.72</Value>
+    </Setting>
+    <Setting Name="defParamB_CTE_200" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">13.621</Value>
+    </Setting>
+    <Setting Name="defParamA_CTE_2000" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">2069.5</Value>
+    </Setting>
+    <Setting Name="defParamB_CTE_2000" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">133.15</Value>
+    </Setting>
+    <Setting Name="defParamA_U_d33" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">51.752</Value>
+    </Setting>
+    <Setting Name="defParamB_U_d33" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">-44.561</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

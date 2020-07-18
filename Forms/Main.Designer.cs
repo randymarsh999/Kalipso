@@ -48,6 +48,7 @@
             this.btnCalcPiezo = new System.Windows.Forms.Button();
             this.dGridPiezo = new System.Windows.Forms.DataGridView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.lbField = new System.Windows.Forms.Label();
             this.btnSetY2 = new System.Windows.Forms.Button();
             this.btnSetX2 = new System.Windows.Forms.Button();
             this.txtYmax2 = new System.Windows.Forms.TextBox();
@@ -174,7 +175,7 @@
             this.sDlgFull = new System.Windows.Forms.SaveFileDialog();
             this.sTreatment = new System.Windows.Forms.SaveFileDialog();
             this.timerRev = new System.Windows.Forms.Timer(this.components);
-            this.lbField = new System.Windows.Forms.Label();
+            this.cbCTE_Limit = new System.Windows.Forms.ComboBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dGridPiezo)).BeginInit();
@@ -260,6 +261,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.cbCTE_Limit);
             this.tabPage2.Controls.Add(this.lbField);
             this.tabPage2.Controls.Add(this.btnSetY2);
             this.tabPage2.Controls.Add(this.btnSetX2);
@@ -315,6 +317,16 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Temp meas.";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // lbField
+            // 
+            this.lbField.AutoSize = true;
+            this.lbField.Font = new System.Drawing.Font("Times New Roman", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lbField.Location = new System.Drawing.Point(265, 461);
+            this.lbField.Name = "lbField";
+            this.lbField.Size = new System.Drawing.Size(72, 46);
+            this.lbField.TabIndex = 63;
+            this.lbField.Text = "U=";
             // 
             // btnSetY2
             // 
@@ -799,7 +811,7 @@
             this.tabPage3.Controls.Add(this.txtTreatMinT);
             this.tabPage3.Controls.Add(this.dTreatmentOut);
             this.tabPage3.Controls.Add(this.button4);
-            this.tabPage3.Controls.Add(this.chart1);
+//            this.tabPage3.Controls.Add(this.chart1);
             this.tabPage3.Controls.Add(this.button1);
             this.tabPage3.Controls.Add(this.chartTreatment);
             this.tabPage3.Controls.Add(this.cmbTreatment);
@@ -1471,15 +1483,18 @@
             this.timerRev.Interval = 1000;
             this.timerRev.Tick += new System.EventHandler(this.timerRev_Tick);
             // 
-            // lbField
+            // cbCTE_Limit
             // 
-            this.lbField.AutoSize = true;
-            this.lbField.Font = new System.Drawing.Font("Times New Roman", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lbField.Location = new System.Drawing.Point(265, 461);
-            this.lbField.Name = "lbField";
-            this.lbField.Size = new System.Drawing.Size(72, 46);
-            this.lbField.TabIndex = 63;
-            this.lbField.Text = "U=";
+            this.cbCTE_Limit.FormattingEnabled = true;
+            this.cbCTE_Limit.Items.AddRange(new object[] {
+            "20",
+            "200",
+            "2000"});
+            this.cbCTE_Limit.Location = new System.Drawing.Point(26, 517);
+            this.cbCTE_Limit.Name = "cbCTE_Limit";
+            this.cbCTE_Limit.Size = new System.Drawing.Size(102, 21);
+            this.cbCTE_Limit.TabIndex = 64;
+            this.cbCTE_Limit.Text = "20";
             // 
             // frmMain
             // 
@@ -1659,6 +1674,7 @@
         private System.Windows.Forms.TextBox txtXmax2;
         private System.Windows.Forms.TextBox txtXmin2;
         private System.Windows.Forms.Label lbField;
+        public System.Windows.Forms.ComboBox cbCTE_Limit;
     }
 }
 

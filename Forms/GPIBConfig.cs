@@ -405,10 +405,11 @@ namespace Kalipso
         {
 
         }
-
-#pragma warning disable CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmGPIBConfig.GetAnswerEthernet()"
+/// <summary>
+/// 
+/// </summary>
+/// <returns></returns>
         public string GetAnswerEthernet()
-#pragma warning restore CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmGPIBConfig.GetAnswerEthernet()"
         {
             return "";
         }
@@ -899,11 +900,7 @@ namespace Kalipso
                                         break;
                                     }
                             }
-
-
                         }
-
-
                         break;
                     }
                 case "USB":
@@ -973,10 +970,7 @@ namespace Kalipso
 
         }
 
-        private void frmGPIBConfig_Load(object sender, EventArgs e)
-        {
-            DeviceAddressUD.Text = Properties.Settings.Default.defGPIBAddress;
-        }
+
 
         private void button3_Click(object sender, EventArgs e)
         {
@@ -1089,15 +1083,35 @@ namespace Kalipso
                     break;
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void frmGPIBConfig_Load(object sender, EventArgs e)
+        {
+            DeviceAddressUD.Text = Properties.Settings.Default.defGPIBAddress;
+            
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DeviceAddressUD_ValueChanged(object sender, EventArgs e)
         {
-            Properties.Settings.Default.defGPIBAddress = DeviceAddressUD.Text;
+            //Properties.Settings.Default.defGPIBAddress = DeviceAddressUD.Text;
+            //Properties.Settings.Default.Save();
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void frmGPIBConfig_VisibleChanged(object sender, EventArgs e)
         {
-            DeviceAddressUD.Text= Properties.Settings.Default.defGPIBAddress;
+            Properties.Settings.Default.defGPIBAddress = DeviceAddressUD.Text;
+            Properties.Settings.Default.Save();
         }
     }
 }

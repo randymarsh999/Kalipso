@@ -32,6 +32,8 @@ namespace Kalipso
         {
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnCheckXMFT = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.btnClosePorts = new System.Windows.Forms.Button();
             this.btnOpenPortDif = new System.Windows.Forms.Button();
@@ -53,13 +55,13 @@ namespace Kalipso
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.button4 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnCheckXMFT);
             this.panel1.Controls.Add(this.button4);
             this.panel1.Controls.Add(this.button3);
             this.panel1.Controls.Add(this.btnClosePorts);
@@ -70,8 +72,32 @@ namespace Kalipso
             this.panel1.Controls.Add(this.btnShowPorts);
             this.panel1.Location = new System.Drawing.Point(3, 80);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(219, 324);
+            this.panel1.Size = new System.Drawing.Size(210, 381);
             this.panel1.TabIndex = 1;
+            // 
+            // btnCheckXMFT
+            // 
+            this.btnCheckXMFT.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCheckXMFT.Location = new System.Drawing.Point(0, 327);
+            this.btnCheckXMFT.Name = "btnCheckXMFT";
+            this.btnCheckXMFT.Size = new System.Drawing.Size(204, 32);
+            this.btnCheckXMFT.TabIndex = 15;
+            this.btnCheckXMFT.Text = "checkXMFT";
+            this.btnCheckXMFT.UseVisualStyleBackColor = true;
+            this.btnCheckXMFT.Click += new System.EventHandler(this.btnCheckXMFT_Click);
+            // 
+            // button4
+            // 
+            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.button4.Location = new System.Drawing.Point(3, 289);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(204, 32);
+            this.button4.TabIndex = 14;
+            this.button4.Text = "checkITR";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click_1);
             // 
             // button3
             // 
@@ -99,7 +125,7 @@ namespace Kalipso
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOpenPortDif.Location = new System.Drawing.Point(3, 38);
             this.btnOpenPortDif.Name = "btnOpenPortDif";
-            this.btnOpenPortDif.Size = new System.Drawing.Size(213, 32);
+            this.btnOpenPortDif.Size = new System.Drawing.Size(204, 32);
             this.btnOpenPortDif.TabIndex = 6;
             this.btnOpenPortDif.Text = "Open ComPort";
             this.btnOpenPortDif.UseVisualStyleBackColor = true;
@@ -111,7 +137,7 @@ namespace Kalipso
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnTransmitCMD.Location = new System.Drawing.Point(3, 245);
             this.btnTransmitCMD.Name = "btnTransmitCMD";
-            this.btnTransmitCMD.Size = new System.Drawing.Size(213, 22);
+            this.btnTransmitCMD.Size = new System.Drawing.Size(204, 22);
             this.btnTransmitCMD.TabIndex = 5;
             this.btnTransmitCMD.Text = "Transmit CMD";
             this.btnTransmitCMD.UseVisualStyleBackColor = true;
@@ -130,7 +156,7 @@ namespace Kalipso
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnTransmitDataComPort.Location = new System.Drawing.Point(3, 111);
             this.btnTransmitDataComPort.Name = "btnTransmitDataComPort";
-            this.btnTransmitDataComPort.Size = new System.Drawing.Size(213, 32);
+            this.btnTransmitDataComPort.Size = new System.Drawing.Size(204, 32);
             this.btnTransmitDataComPort.TabIndex = 4;
             this.btnTransmitDataComPort.Text = "Transmit TERMO";
             this.btnTransmitDataComPort.UseVisualStyleBackColor = true;
@@ -142,7 +168,7 @@ namespace Kalipso
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnShowPorts.Location = new System.Drawing.Point(3, 3);
             this.btnShowPorts.Name = "btnShowPorts";
-            this.btnShowPorts.Size = new System.Drawing.Size(213, 32);
+            this.btnShowPorts.Size = new System.Drawing.Size(204, 32);
             this.btnShowPorts.TabIndex = 1;
             this.btnShowPorts.Text = "Show all Ports";
             this.btnShowPorts.UseVisualStyleBackColor = true;
@@ -172,7 +198,8 @@ namespace Kalipso
             "ITR2523",
             "ArduinoUno",
             "VoltageMeter HY-AV51-T",
-            "E7-20"});
+            "E7-20",
+            "XMFT"});
             this.cbComDevice.Location = new System.Drawing.Point(3, 39);
             this.cbComDevice.Name = "cbComDevice";
             this.cbComDevice.Size = new System.Drawing.Size(219, 21);
@@ -292,18 +319,6 @@ namespace Kalipso
             this.timer1.Interval = 200;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick_1);
             // 
-            // button4
-            // 
-            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.button4.Location = new System.Drawing.Point(3, 289);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(213, 32);
-            this.button4.TabIndex = 14;
-            this.button4.Text = "checkITR";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click_1);
-            // 
             // frmComPort
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -359,5 +374,6 @@ namespace Kalipso
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button btnCheckXMFT;
     }
 }

@@ -5657,7 +5657,7 @@ using System.Windows.Forms;
         /// <returns>temperature</returns>
         public double ConvertCelciusToKelvin(int temperature)
         {
-            return Convert.ToDouble(temperature) + 273.16;
+            return Convert.ToDouble(temperature) + 273;
         }
         /// <summary>
         /// Converts the celcius to kelvin.
@@ -5666,7 +5666,7 @@ using System.Windows.Forms;
         /// <returns>temperature</returns>
         public double ConvertCelciusToKelvin(double temperature)
         {
-            return temperature + 273.16;
+            return temperature + 273;
         }
         /// <summary>
         /// Converts the celcius to kelvin.
@@ -5677,7 +5677,7 @@ using System.Windows.Forms;
         /// </returns>
         public double ConvertCelciusToKelvin(string temperature)
         {
-            return Convert.ToDouble(temperature) + 273.16;
+            return Convert.ToDouble(temperature) + 273;
         }
 
         public string ReplaceCommonEscapeSequences(string command)
@@ -5803,7 +5803,11 @@ using System.Windows.Forms;
             return res;
         }
 
-
+    public byte convert16to10(double val)
+    {
+        byte x = Convert.ToByte(55);
+        return x;
+    }
 
     }
     
