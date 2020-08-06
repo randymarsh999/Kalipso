@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO.Ports;
 using System.Runtime.InteropServices;
+using Mono.Security.Cryptography;
+using Kalipso.Сalculations;
+
 
 namespace Kalipso
 {
@@ -41,6 +44,15 @@ namespace Kalipso
             this.DeviceName = Name;
             this.ActivePort = Port;
         }
+        /// <summary>
+        ///  Set device Address RS458
+        /// </summary>
+        public int deviceAddressRS458 { get; set; }
+        /// <summary>
+        /// list of Device Address RS458
+        /// </summary>
+        public int[] listDeviceAddressRS458 { get; set; }
+
     }
 
     /// <summary>
@@ -79,9 +91,10 @@ namespace Kalipso
         /// Controller name
         /// </summary>
         private string Controller { get; set; }
-
-        public byte[] DevBuf; 
-        
+        /// <summary>
+        /// 
+        /// </summary>
+        public byte[] DevBuf;
         /// <summary>
         /// Constrctor of comport class
         /// </summary>
@@ -106,7 +119,9 @@ namespace Kalipso
             ShowAllPorts();
         }
 
-
+        /// <summary>
+        /// Find all com ports on the PC
+        /// </summary>
         private void ShowAllPorts()
         {
             string[] ports = SerialPort.GetPortNames();
@@ -324,6 +339,15 @@ namespace Kalipso
                                 ComP.StopBits = System.IO.Ports.StopBits.Two;
                                 break;
                             }
+                        case "XMFT":
+                            {
+                                ComP.BaudRate = Convert.ToInt32(cmbBaudRate.Text); ;
+                                ComP.DataBits = 8;
+                                ComP.Parity = System.IO.Ports.Parity.None;
+                                ComP.StopBits = System.IO.Ports.StopBits.Two;
+                                break;
+                            }
+
                         case "ArduinoUno":
                             {
                                 ComP.BaudRate = Convert.ToInt32(cmbBaudRate.Text);
@@ -348,8 +372,6 @@ namespace Kalipso
                                 ComP.DataBits = 8;
                                 ComP.Parity = System.IO.Ports.Parity.None;
                                 ComP.StopBits = System.IO.Ports.StopBits.One;
-
-                                //timer1.Enabled = true;
                                 break;
                             }
                         default:
@@ -365,7 +387,7 @@ namespace Kalipso
                         ComP.Open();
                         allComPort[i].ActivePort = ComP;
                         allComPort[i].DeviceName = cbComDevice.Text;
-                        txtComLog.AppendText(Environment.NewLine+ cmbComPortList.SelectedItem.ToString() + " was opened" + Environment.NewLine);
+                        txtComLog.AppendText(Environment.NewLine + cmbComPortList.SelectedItem.ToString() + " was opened" + Environment.NewLine);
                         return;
                     }
 
@@ -539,7 +561,7 @@ namespace Kalipso
         /// </summary>
         public void GetDataFromVarta()
         {
-            bool varta=false;
+            bool varta = false;
             for (int j = 0; j < allComPort.Count() - 1; j++)
             {
                 if (allComPort[j].DeviceName == "Varta703I")
@@ -555,7 +577,7 @@ namespace Kalipso
                 }
 
             }
-            if (varta==false)
+            if (varta == false)
             {
                 Temperature = 27.ToString();
             }
@@ -753,14 +775,14 @@ namespace Kalipso
                 {
                     if (allComPort[i].DeviceName == device && allComPort[i].ActivePort.IsOpen == true)
                     {
-                        if (allComPort[i].DeviceName=="E7-20")
+                        if (allComPort[i].DeviceName == "E7-20")
                         {
                             timer1.Enabled = false;
                         }
-                        
+
                         allComPort[i].ActivePort.Close();
                         allComPort[i].DeviceName = "";
-                        txtComLog.AppendText(Environment.NewLine+ cmbComPortList.SelectedItem + " closed");
+                        txtComLog.AppendText(Environment.NewLine + cmbComPortList.SelectedItem + " closed");
                         return;
                     }
                 }
@@ -947,12 +969,12 @@ namespace Kalipso
         }
 
 
-        byte [] GetDataFromComPortITR2523(string device )
+        byte[] GetDataFromComPortITR2523(string device)
         {
             //int offset = 0;
             int max = 85;
-            byte [] byteBuffer = new byte[max];
-            byte [] values = new byte[50];
+            byte[] byteBuffer = new byte[max];
+            byte[] values = new byte[50];
             for (int j = 0; j < allComPort.Count() - 1; j++)
             {
                 if (allComPort[j].DeviceName == device)
@@ -982,26 +1004,26 @@ namespace Kalipso
             int max = 22;
             byte[] byteBuffer = new byte[max];
             byte[] responce = new byte[max];
-            
+
             short[] values = new short[max];
 
-                for (int i = 0; i < allComPort.Count(); i++)
+            for (int i = 0; i < allComPort.Count(); i++)
+            {
+                if (allComPort[i].DeviceName == device)
                 {
-                    if (allComPort[i].DeviceName == device)
+                    if (allComPort[i].ActivePort.IsOpen == true)
                     {
-                        if (allComPort[i].ActivePort.IsOpen == true)
-                        {
                         allComPort[i].ActivePort.DiscardInBuffer();
                         System.Threading.Thread.Sleep(400);
                         int byteRecieved = allComPort[i].ActivePort.BytesToRead;
-                            
-                            allComPort[i].ActivePort.Read(byteBuffer, offset, max);
-                            for (int j = 0; j < (byteBuffer.Length - 5) / 2; j++)
-                            {
-                                values[j] = byteBuffer[2 * j + 3];
-                                values[j] <<= 8;
-                                values[j] += byteBuffer[2 * j + 4];
-                            }
+
+                        allComPort[i].ActivePort.Read(byteBuffer, offset, max);
+                        for (int j = 0; j < (byteBuffer.Length - 5) / 2; j++)
+                        {
+                            values[j] = byteBuffer[2 * j + 3];
+                            values[j] <<= 8;
+                            values[j] += byteBuffer[2 * j + 4];
+                        }
 
                         //txtComLog.AppendText(Environment.NewLine+ "---------"+ Environment.NewLine);
                         //for (int j = 0; j < max; j++)
@@ -1020,10 +1042,10 @@ namespace Kalipso
                         //txtComLog.AppendText(Environment.NewLine);
 
                         return values;
-                        }
                     }
                 }
-            
+            }
+
             return values;
         }
         /// <summary>
@@ -1177,14 +1199,14 @@ namespace Kalipso
 
         private void button3_Click_1(object sender, EventArgs e)
         {
-            DevBuf= GetDataFromCOMDevice("E7-20", 0, 22);
-            
+            DevBuf = GetDataFromCOMDevice("E7-20", 0, 22);
+
         }
 
         private void timer1_Tick_1(object sender, EventArgs e)
         {
             //GetDataFromE7_20("E7-20");
-            
+
             byte[] buf = GetDataFromCOMDevice("E7-20", 0, 22);
             PiezoMathCalculation pm = new PiezoMathCalculation();
             byte[] bufo = { buf[12], buf[13], buf[14] };
@@ -1195,11 +1217,11 @@ namespace Kalipso
 
             //if (BlockIn[18] and 128)<> 0 then
 
-            if (buf[14] !=0)
+            if (buf[14] != 0)
             {
-                bufo[0] =(byte)(buf[12] ^ c);
-                bufo[1] = (byte) (buf[13]^c);
-                bufo[2] = (byte)(buf[14]^c);
+                bufo[0] = (byte)(buf[12] ^ c);
+                bufo[1] = (byte)(buf[13] ^ c);
+                bufo[2] = (byte)(buf[14] ^ c);
                 int_value1 = (-1 - bufo[0] - (bufo[1] + bufo[2] * 256) * 256) * Math.Pow(Math.Pow(10, 256 - (int)(buf[15])), -1);
             }
 
@@ -1208,22 +1230,22 @@ namespace Kalipso
                 bufo[0] = (byte)(buf[16] ^ c);
                 bufo[1] = (byte)(buf[17] ^ c);
                 bufo[2] = (byte)(buf[18] ^ c);
-                int_value2 = (-1 - bufo[0] - (bufo[1] + bufo[2] * 256) * 256) * Math.Pow(Math.Pow(10, 256 - (int)(buf[19])), -1); 
+                int_value2 = (-1 - bufo[0] - (bufo[1] + bufo[2] * 256) * 256) * Math.Pow(Math.Pow(10, 256 - (int)(buf[19])), -1);
             }
 
 
             System.Threading.Thread.Sleep(500);
-                double b2 = pm.BytesToDouble(buf, 12, 3) * Math.Pow(Math.Pow(10, 256 - (int)(buf[15])), -1);
-                double b1 = pm.BytesToDouble(buf, 16, 3) * Math.Pow(Math.Pow(10, 256 - (int)(buf[19])), -1);
-                txtComLog.AppendText(Environment.NewLine +int_value1.ToString() + "\t "+ int_value2.ToString());
-                txtComLog.AppendText(Environment.NewLine + "b1=" + b2.ToString() + "\t"+buf[16] + "\t" + buf[17] + "\t" + buf[18] + "\t" + buf[19]);
-                txtComLog.AppendText(Environment.NewLine + "b2=" + b1.ToString() + "\t"+buf[12] + "\t" + buf[13] + "\t" + buf[14] + "\t" + buf[15]);
+            double b2 = pm.BytesToDouble(buf, 12, 3) * Math.Pow(Math.Pow(10, 256 - (int)(buf[15])), -1);
+            double b1 = pm.BytesToDouble(buf, 16, 3) * Math.Pow(Math.Pow(10, 256 - (int)(buf[19])), -1);
+            txtComLog.AppendText(Environment.NewLine + int_value1.ToString() + "\t " + int_value2.ToString());
+            txtComLog.AppendText(Environment.NewLine + "b1=" + b2.ToString() + "\t" + buf[16] + "\t" + buf[17] + "\t" + buf[18] + "\t" + buf[19]);
+            txtComLog.AppendText(Environment.NewLine + "b2=" + b1.ToString() + "\t" + buf[12] + "\t" + buf[13] + "\t" + buf[14] + "\t" + buf[15]);
             if (b2 > 1)
             {
-                
+
                 this.Refresh();
             }
-            if (int_value1 < 0 || int_value2<0)
+            if (int_value1 < 0 || int_value2 < 0)
             {
                 this.Refresh();
             }
@@ -1233,24 +1255,17 @@ namespace Kalipso
 
         private void CheckITR2523()
         {
-
             //byte[] buf = GetDataFromCOMDevice("ITR2523", 0, 22);
             PiezoMathCalculation pm = new PiezoMathCalculation();
             //byte[] bufo = { buf[12], buf[13], buf[14] };
-            
-
             string s = "";
             //s = "";
 
-            byte[] buf_out = new byte [11] { 0xFF, 0xFF, 0x01, 0x01, 0x02, 0x02, 0x02, 0x00, 0x03, 0x03, 0x00 };
+            byte[] buf_out = new byte[11] { 0xFF, 0xFF, 0x01, 0x01, 0x02, 0x02, 0x02, 0x00, 0x03, 0x03, 0x00 };
             //byte[] answer = new byte [18]{ 0x01, 0x01, 0xFF, 0xFF, 0x09, 0x09, 0x02, 0x80, 0x03, 0x24, 0xD7, 0x07, 0x01, 0x12, 0x04, 0x00, 0x9C, 0x01 };
             SendDataToComPort("ITR2523", buf_out);
-            byte [] data = GetDataFromComPortITR2523("ITR2523");
-
-
-
+            byte[] data = GetDataFromComPortITR2523("ITR2523");
             //ReadFile(comportstruct.COMport[index], buf_in, 20, &ByteCount, NULL);
-
             //for (i = 0; i < 11; i++)
             //{
             //    s = s + buf_out[i] + " ";
@@ -1261,11 +1276,7 @@ namespace Kalipso
                 s += s + data[i].ToString();
             }
             txtComLog.AppendText(s.ToString());
-
-
             txtComLog.AppendText("/n-------------------------");
-
-
             //s = "";
             //for (i = 0; i < 18; i++)
             //{
@@ -1275,129 +1286,261 @@ namespace Kalipso
             //txtComLog.AppendText("-------------------------");
         }
 
+
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public short[] GetDataFromXMFT(byte[] nn)
+        {
+            int offset = 0;
+            int max = 7;
+            byte[] byteBuffer = new byte[max];
+            short[] values = new short[10];
+            for (int j = 0; j < allComPort.Count() - 1; j++)
+            {
+                if (allComPort[j].DeviceName == "XMFT")
+                {
+                    allComPort[j].ActivePort.Write(nn, offset, 8);
+                    System.Threading.Thread.Sleep(300);
+                    int byteRecieved = allComPort[j].ActivePort.BytesToRead;
+                    allComPort[j].ActivePort.Read(byteBuffer, 0, byteRecieved);
+                    for (int i = 0; i < (byteBuffer.Length - 5) / 2; i++)
+                    {
+                        values[i] = byteBuffer[2 * i + 3];
+                        values[i] <<= 8;
+                        values[i] += byteBuffer[2 * i + 4];
+                    }
+                }
+            }
+            return values;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public short[] GetDataFromXMFT()
+        {
+            int offset = 0;
+            int max = 7;
+            byte[] byteBuffer = new byte[max];
+            short[] values = new short[10];
+            for (int j = 0; j < allComPort.Count() - 1; j++)
+            {
+                if (allComPort[j].DeviceName == "XMFT")
+                {
+                    byte[] nn = new byte[6];
+                    byte[] tt = new byte[2];
+
+                    nn[0] = 1;
+                    nn[1] = 3;
+                    nn[2] = 0;
+                    nn[3] = 0;
+                    nn[4] = 0;
+                    nn[5] = 1;
+                    tt = CRC.ModbusCRC16Calc(nn);
+                    byte[] buf_out = new byte[] { nn[0], nn[1], nn[2], nn[3], nn[4], nn[5], tt[0], tt[1] };
+
+                    //allComPort[j].ActivePort.Write(new byte[] { 0x01, 0x03, 0x00, 0x00, 0x00, 0x01, 0x84, 0x0A }, offset, 8);
+                    //allComPort[j].ActivePort.Write(new byte[] { 0x01, 0x04, 0x00, 0x00, 0x00, 0x01, 0x31, 0xCA }, offset, 8);
+                    //allComPort[j].ActivePort.Write(new byte[] { nn[0], nn[1], nn[2], nn[3], nn[4], nn[5], tt[0], tt[1] }, offset, 8);
+                    allComPort[j].ActivePort.Write(buf_out, offset, 8);
+                    System.Threading.Thread.Sleep(300);
+                    int byteRecieved = allComPort[j].ActivePort.BytesToRead;
+                    allComPort[j].ActivePort.Read(byteBuffer, 0, byteRecieved);
+                    for (int i = 0; i < (byteBuffer.Length - 5) / 2; i++)
+                    {
+                        values[i] = byteBuffer[2 * i + 3];
+                        values[i] <<= 8;
+                        values[i] += byteBuffer[2 * i + 4];
+                    }
+                }
+            }
+            return values;
+        }
+
+        /// <summary>
+        /// Checking xmft availiable
+        /// </summary>
+        private void CheckXMTF()
+        {
+            byte[] nn = new byte[6];
+            byte[] tt = new byte[2];
+            short[] get = new short[8];
+            int i = 0;
+            do
+            {
+                nn[0] = Convert.ToByte(i);  // address
+                nn[1] = 3;
+                nn[2] = 0;
+                nn[3] = 0;
+                nn[4] = 0;
+                nn[5] = 1;
+                //CRC crc = new CRC();
+                tt = CRC.ModbusCRC16Calc(nn);
+                byte[] buf_out = new byte[] { nn[0], nn[1], nn[2], nn[3], nn[4], nn[5], tt[0], tt[1] };
+                get = GetDataFromXMFT(buf_out);
+                i++;
+            }
+            while (get[0] == 0);
+            //txtComLog.AppendText(i--.ToString());
+            for (int j = 0; j < allComPort.Count() - 1; j++)
+            {
+                if (allComPort[j].DeviceName == "XMFT")
+                {
+                    allComPort[j].deviceAddressRS458 = --i;
+                    txtComLog.AppendText(allComPort[j].deviceAddressRS458.ToString());
+                }
+            }
+
+            //s = "";
+            //byte[] buf_out = new byte[] { 0x01, 0x04, 0x53, 0x00};
+            //byte[] buf_out = new byte[] { nn[0], nn[1], nn[2], nn[3], nn[4], nn[5], tt[0], tt[1] };
+            //byte[] buf_out = new byte[] { 0x01, 0x04, 0x00, 0x00, 0x00, 0x01,  0x31, 0xCA };
+
+        }
+
+
         private void button4_Click_1(object sender, EventArgs e)
         {
             CheckITR2523();
         }
-    }
 
-
-
-
-
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public class Crc16
-    {
-        const ushort polynomial = 0xA001;
-        ushort[] table = new ushort[256];
-
-        public ushort ComputeChecksum(byte[] bytes)
+        private void btnCheckXMFT_Click(object sender, EventArgs e)
         {
-            ushort crc = 0;
-            for (int i = 0; i < bytes.Length; ++i)
-            {
-                byte index = (byte)(crc ^ bytes[i]);
-                crc = (ushort)((crc >> 8) ^ table[index]);
-            }
-            return crc;
+            CheckXMTF();
+            //int num = Convert.ToInt32(txtReadString.Text, 16);
+            //string text = string.Format("{0:X}", num);
+            //int i = Convert.ToInt32(txtReadString.Text);
+            //string x = Convert.ToString(i, 16);
+            //byte[] arr = BitConverter.GetBytes(i);
+            //string s = x.ToString("x");
+            //byte c = Convert.ToByte(x);
+            //txtComLog.AppendText(' '+ x);
+
         }
 
-        public byte[] ComputeChecksumBytes(byte[] bytes)
+
+
+        ///// <summary>
+        ///// Расчет контрольной суммы
+        ///// </summary>
+        ///// <param name="Message"></param>
+        ///// <returns></returns>
+        //public static byte[] ModbusCRC16Calc(byte[] Message)
+        //{
+        //    //выдаваемый массив CRC
+        //    byte[] CRC = new byte[2];
+        //    ushort Register = 0xFFFF; // создаем регистр, в котором будем сохранять высчитанный CRC
+        //    ushort Polynom = 0xA001; //Указываем полином, он может быть как 0xA001(старший бит справа), так и его реверс 0x8005(старший бит слева, здесь не рассматривается), при сдвиге вправо используется 0xA001
+
+        //    for (int i = 0; i < Message.Length; i++) // для каждого байта в принятом\отправляемом сообщении проводим следующие операции(байты сообщения без принятого CRC)
+        //    {
+        //        Register = (ushort)(Register ^ Message[i]); // Делим через XOR регистр на выбранный байт сообщения(от младшего к старшему)
+
+        //        for (int j = 0; j < 8; j++) // для каждого бита в выбранном байте делим полученный регистр на полином
+        //        {
+        //            if ((ushort)(Register & 0x01) == 1) //если старший бит равен 1 то
+        //            {
+        //                Register = (ushort)(Register >> 1); //сдвигаем на один бит вправо
+        //                Register = (ushort)(Register ^ Polynom); //делим регистр на полином по XOR
+        //            }
+        //            else //если старший бит равен 0 то
+        //            {
+        //                Register = (ushort)(Register >> 1); // сдвигаем регистр вправо
+        //            }
+        //        }
+        //    }
+
+        //    CRC[1] = (byte)(Register >> 8); // присваеваем старший байт полученного регистра младшему байту результата CRC (CRClow)
+        //    CRC[0] = (byte)(Register & 0x00FF); // присваеваем младший байт полученного регистра старшему байту результата CRC (CRCHi) это условность Modbus — обмен байтов местами.
+
+        //    return CRC;
+        //}
+
+        private void btnSendDataToXMFT_Click(object sender, EventArgs e)
         {
-            ushort crc = ComputeChecksum(bytes);
-            return BitConverter.GetBytes(crc);
+
         }
 
-        public Crc16()
+        private void btnCheckXMFT_Click_1(object sender, EventArgs e)
         {
-            ushort value;
-            ushort temp;
-            for (ushort i = 0; i < table.Length; ++i)
+            CheckXMTF();
+        }
+
+        private void btnSendDataToXMFT_Click_1(object sender, EventArgs e)
+        {
+
+
+        }
+
+        private void btnGetAllDataFromXMFT_Click(object sender, EventArgs e)
+        {
+            GetAllDataFromXMFT();
+        }
+
+        async void GetAllDataFromXMFT()
+        {
+            byte[] nn = new byte[6];
+            byte[] tt = new byte[2];
+            short[] get = new short[8];
+            dGridXMFT.Rows.Add();
+            for (int j = 0; j < allComPort.Count() - 1; j++)
             {
-                value = 0;
-                temp = i;
-                for (byte j = 0; j < 8; ++j)
+                if (allComPort[j].DeviceName == "XMFT")
                 {
-                    if (((value ^ temp) & 0x0001) != 0)
+                    for (int i = 0; i < 27; i++)
                     {
-                        value = (ushort)((value >> 1) ^ polynomial);
+                        nn[0] = Convert.ToByte(allComPort[j].deviceAddressRS458);
+                        nn[1] = 3;
+                        nn[2] = 0;
+                        nn[3] = 0;
+                        nn[4] = 0;
+                        nn[5] = Convert.ToByte(i); 
+                        tt = CRC.ModbusCRC16Calc(nn);
+                        byte[] buf_out = new byte[] { nn[0], nn[1], nn[2], nn[3], nn[4], nn[5], tt[0], tt[1] };
+                        get = GetDataFromXMFT(buf_out);
+                        dGridXMFT["ReadValue", i].Value = get[0];
+                        dGridXMFT.Rows.Add();
                     }
-                    else
-                    {
-                        value >>= 1;
-                    }
-                    temp >>= 1;
-                }
-                table[i] = value;
-            }
-        }
-    }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public class Crc32
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        uint[] table;
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="bytes"></param>
-        /// <returns></returns>
-        public uint ComputeChecksum(byte[] bytes)
-        {
-            uint crc = 0xffffffff;
-            for (int i = 0; i < bytes.Length; ++i)
-            {
-                byte index = (byte)(((crc) & 0xff) ^ bytes[i]);
-                crc = (uint)((crc >> 8) ^ table[index]);
+                }
             }
-            return ~crc;
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="bytes"></param>
-        /// <returns></returns>
-        public byte[] ComputeChecksumBytes(byte[] bytes)
+
+
+        async void WriteDataToXMFT(int command, int val )
         {
-            return BitConverter.GetBytes(ComputeChecksum(bytes));
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public Crc32()
-        {
-            uint poly = 0xedb88320;
-            table = new uint[256];
-            uint temp = 0;
-            for (uint i = 0; i < table.Length; ++i)
+            byte[] nn = new byte[6];
+            byte[] tt = new byte[2];
+            short[] get = new short[8];
+            dGridXMFT.Rows.Add();
+            for (int j = 0; j < allComPort.Count() - 1; j++)
             {
-                temp = i;
-                for (int j = 8; j > 0; --j)
+                if (allComPort[j].DeviceName == "XMFT")
                 {
-                    if ((temp & 1) == 1)
+                    for (int i = 0; i < 27; i++)
                     {
-                        temp = (uint)((temp >> 1) ^ poly);
-                    }
-                    else
-                    {
-                        temp >>= 1;
+                        nn[0] = Convert.ToByte(allComPort[j].deviceAddressRS458);
+                        nn[1] = 3;
+                        nn[2] = 0;
+                        nn[3] = 0;
+                        nn[4] = 0;
+                        nn[5] = Convert.ToByte(i);
+                        tt = CRC.ModbusCRC16Calc(nn);
+                        byte[] buf_out = new byte[] { nn[0], nn[1], nn[2], nn[3], nn[4], nn[5], tt[0], tt[1] };
+                        get = GetDataFromXMFT(buf_out);
+                        dGridXMFT["ReadValue", i].Value = get[0];
+                        dGridXMFT.Rows.Add();
                     }
                 }
-                table[i] = temp;
             }
         }
+
     }
-
-
 }
 
 

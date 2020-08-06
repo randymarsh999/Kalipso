@@ -76,23 +76,37 @@ namespace Kalipso
             tTempList.Text = Properties.Settings.Default.defTempList;
             txtStartFreq.Text = Properties.Settings.Default.defFreqStart;
             txtEndFreq.Text = Properties.Settings.Default.defFreqEnd;
-            txtApproxCTE_A.Text = Properties.Settings.Default.defParamACTE;
-            txtApproxCTE_B.Text=Properties.Settings.Default.defParamBCTE;
+            txtApproxCTE_A_20.Text = Properties.Settings.Default.defParamA_CTE_20.ToString();
+            txtApproxCTE_B_20.Text = Properties.Settings.Default.defParamB_CTE_20.ToString();
+            txtApproxCTE_A_200.Text = Properties.Settings.Default.defParamA_CTE_200.ToString();
+            txtApproxCTE_B_200.Text = Properties.Settings.Default.defParamB_CTE_200.ToString();
+            txtApproxCTE_A_2000.Text = Properties.Settings.Default.defParamA_CTE_2000.ToString();
+            txtApproxCTE_B_2000.Text = Properties.Settings.Default.defParamB_CTE_2000.ToString();
+
+            txtApproxD33_A_20.Text = Properties.Settings.Default.defParamA_d33_20.ToString();
+            txtApproxD33_B_20.Text = Properties.Settings.Default.defParamB_d33_20.ToString();
+            txtApproxD33_A_200.Text = Properties.Settings.Default.defParamA_d33_200.ToString();
+            txtApproxD33_B_200.Text = Properties.Settings.Default.defParamB_d33_200.ToString();
+            txtApproxD33_A_2000.Text = Properties.Settings.Default.defParamA_d33_2000.ToString();
+            txtApproxD33_B_2000.Text = Properties.Settings.Default.defParamB_d33_2000.ToString();
+
+            txtApproxU_d33_A.Text = Properties.Settings.Default.defParamA_U_d33.ToString();
+            txtApproxU_d33_B.Text = Properties.Settings.Default.defParamB_U_d33.ToString();
 
             switch (cWorkMode.Text)
             {
                 case "Magnit_hand":
                     {
-                        txtApproxA.Text = Properties.Settings.Default.defParamAMagnit ;
+                        txtApproxA.Text = Properties.Settings.Default.defParamAMagnit;
                         txtApproxB.Text = Properties.Settings.Default.defParamBMagnit;
-                        txtApproxC.Text = Properties.Settings.Default.defParamCMagnit  ;
+                        txtApproxC.Text = Properties.Settings.Default.defParamCMagnit;
                         break;
                     }
                 case "C(dU)_hand_reversive":
                     {
                         txtApproxA.Text = Properties.Settings.Default.defParamAReversive;
-                        txtApproxB.Text = Properties.Settings.Default.defParamBReversive ;
-                        txtApproxC.Text = Properties.Settings.Default.defParamCReversive ;
+                        txtApproxB.Text = Properties.Settings.Default.defParamBReversive;
+                        txtApproxC.Text = Properties.Settings.Default.defParamCReversive;
                         break;
                     }
                 case "d33Rev":
@@ -793,9 +807,20 @@ namespace Kalipso
             Properties.Settings.Default.defFreqStart = txtStartFreq.Text;
             Properties.Settings.Default.defFreqEnd = txtEndFreq.Text;
 
-            Properties.Settings.Default.defParamACTE = txtApproxCTE_A.Text;
-            Properties.Settings.Default.defParamBCTE = txtApproxCTE_B.Text;
+            Properties.Settings.Default.defParamACTE = txtApproxCTE_A_20.Text;
+            Properties.Settings.Default.defParamBCTE = txtApproxCTE_B_20.Text;
 
+
+
+            #region d33 approximation 
+            //Properties.Settings.Default.defParamA_d33_20 = Convert.ToDouble(txtApproxD33_A_20.Text);
+            //Properties.Settings.Default.defParamB_d33_20 = Convert.ToDouble(txtApproxD33_B_20.Text);
+
+            //Properties.Settings.Default.defParamA_d33_200 = Convert.ToDouble(txtApproxD33_A_200.Text);
+            //Properties.Settings.Default.defParamB_d33_200 = Convert.ToDouble(txtApproxD33_B_200.Text);
+            //Properties.Settings.Default.defParamA_d33_2000 = Convert.ToDouble(txtApproxD33_A_2000.Text);
+            //Properties.Settings.Default.defParamB_d33_2000 = Convert.ToDouble(txtApproxD33_B_2000.Text);
+            #endregion
             switch (cWorkMode.Text)
             {
                 case "Magnit_hand":
@@ -874,7 +899,7 @@ namespace Kalipso
             {
                 case "Magnit_hand":
                     {
-                        Properties.Settings.Default.defParamAMagnit= txtApproxA.Text ;
+                        Properties.Settings.Default.defParamAMagnit = txtApproxA.Text;
                         break;
                     }
                 case "C(dU)_hand_reversive":
@@ -944,12 +969,124 @@ namespace Kalipso
 
         private void txtApproxCTE_A_TextChanged(object sender, EventArgs e)
         {
-            Properties.Settings.Default.defParamACTE = txtApproxCTE_A.Text;
+            Properties.Settings.Default.defParamA_CTE_20 = Convert.ToDouble(txtApproxCTE_A_20.Text);
         }
 
         private void txtApproxCTE_B_TextChanged(object sender, EventArgs e)
         {
-            Properties.Settings.Default.defParamBCTE = txtApproxCTE_B.Text;
+            Properties.Settings.Default.defParamB_CTE_20 = Convert.ToDouble(txtApproxCTE_A_20.Text);
+        }
+
+        private void label38_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label39_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtApproxD33_A_20_TextChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.defParamA_d33_20 = Convert.ToDouble(txtApproxD33_A_20.Text);
+
+        }
+
+        private void txtApproxD33_B_20_TextChanged(object sender, EventArgs e)
+        {
+
+            Properties.Settings.Default.defParamB_d33_20 = Convert.ToDouble(txtApproxD33_B_20.Text);
+
+        }
+
+        private void txtApproxD33_A_200_TextChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.defParamA_d33_200 = Convert.ToDouble(txtApproxD33_A_200.Text);
+
+        }
+
+        private void txtApproxD33_B_200_TextChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.defParamB_d33_200 = Convert.ToDouble(txtApproxD33_B_200.Text);
+        }
+
+        private void txtApproxD33_A_2000_TextChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.defParamA_d33_2000 = Convert.ToDouble(txtApproxD33_A_2000.Text);
+
+        }
+
+        private void txtApproxD33_B_2000_TextChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.defParamB_d33_2000 = Convert.ToDouble(txtApproxD33_B_2000.Text);
+        }
+
+        private void txtApproxU_d33_A_TextChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.defParamA_U_d33 = Convert.ToDouble(txtApproxU_d33_A.Text);
+        }
+
+        private void txtApproxU_d33_B_TextChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.defParamB_U_d33 = Convert.ToDouble(txtApproxU_d33_B.Text);
+        }
+
+        private void TextBox4_TextChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.defParamA_CTE_2000 = Convert.ToDouble(txtApproxCTE_A_2000.Text);
+        }
+
+        private void txtApproxCTE_A_200_TextChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.defParamA_CTE_200 = Convert.ToDouble(txtApproxCTE_A_200.Text);
+        }
+
+        private void txtApproxCTE_B_200_TextChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.defParamB_CTE_200 = Convert.ToDouble(txtApproxCTE_B_200.Text);
+        }
+
+        private void txtApproxCTE_B_2000_TextChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.defParamB_CTE_2000 = Convert.ToDouble(txtApproxCTE_B_2000.Text);
+        }
+
+        private void DGTempData_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                Objects ob = new Objects();
+
+                ob.ExcelToDataGridView(DGTempData);
+                //int rCnt;
+                //int cCnt;
+                //OpenFileDialog opf = new OpenFileDialog();
+                //opf.Filter = "Файл Excel|*.XLSX;*.XLS";
+                //opf.ShowDialog();
+                //System.Data.DataTable tb = new System.Data.DataTable();
+                //string filename = opf.FileName;
+                //Microsoft.Office.Interop.Excel.Application ExcelApp = new Microsoft.Office.Interop.Excel.Application();
+                //Microsoft.Office.Interop.Excel._Workbook ExcelWorkBook;
+                //Microsoft.Office.Interop.Excel.Worksheet ExcelWorkSheet;
+                //Microsoft.Office.Interop.Excel.Range ExcelRange;
+
+                //ExcelWorkBook = ExcelApp.Workbooks.Open(filename, 0, true, 5, "", "", true, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "\t", false,
+                //    false, 0, true, 1, 0);
+                //ExcelWorkSheet = (Microsoft.Office.Interop.Excel.Worksheet)ExcelWorkBook.Worksheets.get_Item(1);
+                //ExcelRange = ExcelWorkSheet.UsedRange;
+                //for (rCnt = 2; rCnt <= ExcelRange.Rows.Count; rCnt++)
+                //{
+                //    DGTempData.Rows.Add(1);
+                //    for (cCnt = 1; cCnt <= 2; cCnt++)
+                //    {
+                //        //DGTempData.Rows.Add(1);
+                //        DGTempData.Rows[rCnt-2].Cells[cCnt-1].Value = ExcelApp.Cells[rCnt, cCnt].Value;
+                //    }
+                //}
+                //ExcelWorkBook.Close(true, null, null);
+                //ExcelApp.Quit();
+            }
         }
     }
 }

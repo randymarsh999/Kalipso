@@ -32,6 +32,7 @@ namespace Kalipso
         {
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.btnClosePorts = new System.Windows.Forms.Button();
             this.btnOpenPortDif = new System.Windows.Forms.Button();
@@ -53,9 +54,21 @@ namespace Kalipso
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.button4 = new System.Windows.Forms.Button();
+            this.officeDataSourceObjectBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.dGridXMFT = new System.Windows.Forms.DataGridView();
+            this.Command = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SetValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ReadValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.isReadValue = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.btnSendDataToXMFT = new System.Windows.Forms.Button();
+            this.btnCheckXMFT = new System.Windows.Forms.Button();
+            this.btnGetAllDataFromXMFT = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.officeDataSourceObjectBindingSource)).BeginInit();
+            this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dGridXMFT)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -70,8 +83,20 @@ namespace Kalipso
             this.panel1.Controls.Add(this.btnShowPorts);
             this.panel1.Location = new System.Drawing.Point(3, 80);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(219, 324);
+            this.panel1.Size = new System.Drawing.Size(210, 381);
             this.panel1.TabIndex = 1;
+            // 
+            // button4
+            // 
+            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.button4.Location = new System.Drawing.Point(3, 273);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(201, 32);
+            this.button4.TabIndex = 14;
+            this.button4.Text = "checkITR";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click_1);
             // 
             // button3
             // 
@@ -99,7 +124,7 @@ namespace Kalipso
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOpenPortDif.Location = new System.Drawing.Point(3, 38);
             this.btnOpenPortDif.Name = "btnOpenPortDif";
-            this.btnOpenPortDif.Size = new System.Drawing.Size(213, 32);
+            this.btnOpenPortDif.Size = new System.Drawing.Size(204, 32);
             this.btnOpenPortDif.TabIndex = 6;
             this.btnOpenPortDif.Text = "Open ComPort";
             this.btnOpenPortDif.UseVisualStyleBackColor = true;
@@ -111,7 +136,7 @@ namespace Kalipso
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnTransmitCMD.Location = new System.Drawing.Point(3, 245);
             this.btnTransmitCMD.Name = "btnTransmitCMD";
-            this.btnTransmitCMD.Size = new System.Drawing.Size(213, 22);
+            this.btnTransmitCMD.Size = new System.Drawing.Size(201, 22);
             this.btnTransmitCMD.TabIndex = 5;
             this.btnTransmitCMD.Text = "Transmit CMD";
             this.btnTransmitCMD.UseVisualStyleBackColor = true;
@@ -130,7 +155,7 @@ namespace Kalipso
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnTransmitDataComPort.Location = new System.Drawing.Point(3, 111);
             this.btnTransmitDataComPort.Name = "btnTransmitDataComPort";
-            this.btnTransmitDataComPort.Size = new System.Drawing.Size(213, 32);
+            this.btnTransmitDataComPort.Size = new System.Drawing.Size(204, 32);
             this.btnTransmitDataComPort.TabIndex = 4;
             this.btnTransmitDataComPort.Text = "Transmit TERMO";
             this.btnTransmitDataComPort.UseVisualStyleBackColor = true;
@@ -142,7 +167,7 @@ namespace Kalipso
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnShowPorts.Location = new System.Drawing.Point(3, 3);
             this.btnShowPorts.Name = "btnShowPorts";
-            this.btnShowPorts.Size = new System.Drawing.Size(213, 32);
+            this.btnShowPorts.Size = new System.Drawing.Size(204, 32);
             this.btnShowPorts.TabIndex = 1;
             this.btnShowPorts.Text = "Show all Ports";
             this.btnShowPorts.UseVisualStyleBackColor = true;
@@ -172,7 +197,8 @@ namespace Kalipso
             "ITR2523",
             "ArduinoUno",
             "VoltageMeter HY-AV51-T",
-            "E7-20"});
+            "E7-20",
+            "XMFT"});
             this.cbComDevice.Location = new System.Drawing.Point(3, 39);
             this.cbComDevice.Name = "cbComDevice";
             this.cbComDevice.Size = new System.Drawing.Size(219, 21);
@@ -186,9 +212,9 @@ namespace Kalipso
             this.panel2.Controls.Add(this.label3);
             this.panel2.Controls.Add(this.txtReadString);
             this.panel2.Controls.Add(this.label1);
-            this.panel2.Location = new System.Drawing.Point(231, 54);
+            this.panel2.Location = new System.Drawing.Point(231, 12);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(687, 331);
+            this.panel2.Size = new System.Drawing.Size(305, 373);
             this.panel2.TabIndex = 3;
             // 
             // cmbBaudRate
@@ -221,10 +247,13 @@ namespace Kalipso
             // 
             // txtComLog
             // 
+            this.txtComLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtComLog.Location = new System.Drawing.Point(14, 96);
             this.txtComLog.Multiline = true;
             this.txtComLog.Name = "txtComLog";
-            this.txtComLog.Size = new System.Drawing.Size(670, 224);
+            this.txtComLog.Size = new System.Drawing.Size(288, 274);
             this.txtComLog.TabIndex = 11;
             // 
             // label3
@@ -239,9 +268,11 @@ namespace Kalipso
             // 
             // txtReadString
             // 
+            this.txtReadString.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtReadString.Location = new System.Drawing.Point(14, 70);
             this.txtReadString.Name = "txtReadString";
-            this.txtReadString.Size = new System.Drawing.Size(670, 20);
+            this.txtReadString.Size = new System.Drawing.Size(288, 20);
             this.txtReadString.TabIndex = 9;
             // 
             // label1
@@ -269,7 +300,7 @@ namespace Kalipso
             | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.Location = new System.Drawing.Point(231, 391);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(688, 32);
+            this.button1.Size = new System.Drawing.Size(146, 32);
             this.button1.TabIndex = 8;
             this.button1.Text = "Read Data from TERMO";
             this.button1.UseVisualStyleBackColor = true;
@@ -281,7 +312,7 @@ namespace Kalipso
             | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.Location = new System.Drawing.Point(231, 429);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(688, 32);
+            this.button2.Size = new System.Drawing.Size(146, 32);
             this.button2.TabIndex = 9;
             this.button2.Text = "Read Data from TERMO";
             this.button2.UseVisualStyleBackColor = true;
@@ -292,23 +323,100 @@ namespace Kalipso
             this.timer1.Interval = 200;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick_1);
             // 
-            // button4
+            // officeDataSourceObjectBindingSource
             // 
-            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.officeDataSourceObjectBindingSource.DataSource = typeof(Microsoft.Office.Core.OfficeDataSourceObject);
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.btnGetAllDataFromXMFT);
+            this.panel3.Controls.Add(this.dGridXMFT);
+            this.panel3.Controls.Add(this.btnSendDataToXMFT);
+            this.panel3.Controls.Add(this.btnCheckXMFT);
+            this.panel3.Location = new System.Drawing.Point(542, 12);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(404, 449);
+            this.panel3.TabIndex = 18;
+            // 
+            // dGridXMFT
+            // 
+            this.dGridXMFT.AllowUserToOrderColumns = true;
+            this.dGridXMFT.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dGridXMFT.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Command,
+            this.SetValue,
+            this.ReadValue,
+            this.isReadValue});
+            this.dGridXMFT.Location = new System.Drawing.Point(3, 6);
+            this.dGridXMFT.Name = "dGridXMFT";
+            this.dGridXMFT.Size = new System.Drawing.Size(398, 367);
+            this.dGridXMFT.TabIndex = 20;
+            // 
+            // Command
+            // 
+            this.Command.HeaderText = "Command";
+            this.Command.Name = "Command";
+            // 
+            // SetValue
+            // 
+            this.SetValue.HeaderText = "SetValue";
+            this.SetValue.Name = "SetValue";
+            // 
+            // ReadValue
+            // 
+            this.ReadValue.HeaderText = "ReadValue";
+            this.ReadValue.Name = "ReadValue";
+            // 
+            // isReadValue
+            // 
+            this.isReadValue.HeaderText = "isReadValue";
+            this.isReadValue.Name = "isReadValue";
+            this.isReadValue.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.isReadValue.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // btnSendDataToXMFT
+            // 
+            this.btnSendDataToXMFT.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button4.Location = new System.Drawing.Point(3, 289);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(213, 32);
-            this.button4.TabIndex = 14;
-            this.button4.Text = "checkITR";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click_1);
+            this.btnSendDataToXMFT.Location = new System.Drawing.Point(0, 407);
+            this.btnSendDataToXMFT.Name = "btnSendDataToXMFT";
+            this.btnSendDataToXMFT.Size = new System.Drawing.Size(131, 22);
+            this.btnSendDataToXMFT.TabIndex = 19;
+            this.btnSendDataToXMFT.Text = "SendDataToXMFT";
+            this.btnSendDataToXMFT.UseVisualStyleBackColor = true;
+            this.btnSendDataToXMFT.Click += new System.EventHandler(this.btnSendDataToXMFT_Click_1);
+            // 
+            // btnCheckXMFT
+            // 
+            this.btnCheckXMFT.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCheckXMFT.Location = new System.Drawing.Point(3, 379);
+            this.btnCheckXMFT.Name = "btnCheckXMFT";
+            this.btnCheckXMFT.Size = new System.Drawing.Size(131, 22);
+            this.btnCheckXMFT.TabIndex = 18;
+            this.btnCheckXMFT.Text = "checkXMFT";
+            this.btnCheckXMFT.UseVisualStyleBackColor = true;
+            this.btnCheckXMFT.Click += new System.EventHandler(this.btnCheckXMFT_Click_1);
+            // 
+            // btnGetAllDataFromXMFT
+            // 
+            this.btnGetAllDataFromXMFT.AccessibleRole = System.Windows.Forms.AccessibleRole.PageTabList;
+            this.btnGetAllDataFromXMFT.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGetAllDataFromXMFT.Location = new System.Drawing.Point(140, 379);
+            this.btnGetAllDataFromXMFT.Name = "btnGetAllDataFromXMFT";
+            this.btnGetAllDataFromXMFT.Size = new System.Drawing.Size(131, 22);
+            this.btnGetAllDataFromXMFT.TabIndex = 22;
+            this.btnGetAllDataFromXMFT.Text = "Get All Data From XMFT";
+            this.btnGetAllDataFromXMFT.UseVisualStyleBackColor = true;
+            this.btnGetAllDataFromXMFT.Click += new System.EventHandler(this.btnGetAllDataFromXMFT_Click);
             // 
             // frmComPort
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(958, 483);
+            this.Controls.Add(this.panel3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.panel2);
@@ -327,6 +435,9 @@ namespace Kalipso
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.officeDataSourceObjectBindingSource)).EndInit();
+            this.panel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dGridXMFT)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -359,5 +470,15 @@ namespace Kalipso
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.BindingSource officeDataSourceObjectBindingSource;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.DataGridView dGridXMFT;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Command;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SetValue;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ReadValue;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn isReadValue;
+        private System.Windows.Forms.Button btnSendDataToXMFT;
+        private System.Windows.Forms.Button btnCheckXMFT;
+        private System.Windows.Forms.Button btnGetAllDataFromXMFT;
     }
 }
