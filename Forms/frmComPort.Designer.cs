@@ -31,6 +31,9 @@ namespace Kalipso
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -54,21 +57,21 @@ namespace Kalipso
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.officeDataSourceObjectBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.panel3 = new System.Windows.Forms.Panel();
+            this.btnGetAllDataFromXMFT = new System.Windows.Forms.Button();
             this.dGridXMFT = new System.Windows.Forms.DataGridView();
+            this.btnSendDataToXMFT = new System.Windows.Forms.Button();
+            this.btnCheckXMFT = new System.Windows.Forms.Button();
             this.Command = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SetValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ReadValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.isReadValue = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.btnSendDataToXMFT = new System.Windows.Forms.Button();
-            this.btnCheckXMFT = new System.Windows.Forms.Button();
-            this.btnGetAllDataFromXMFT = new System.Windows.Forms.Button();
+            this.officeDataSourceObjectBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.officeDataSourceObjectBindingSource)).BeginInit();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dGridXMFT)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.officeDataSourceObjectBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -146,7 +149,7 @@ namespace Kalipso
             // 
             this.txtTransmit.Location = new System.Drawing.Point(3, 218);
             this.txtTransmit.Name = "txtTransmit";
-            this.txtTransmit.Size = new System.Drawing.Size(213, 20);
+            this.txtTransmit.Size = new System.Drawing.Size(201, 20);
             this.txtTransmit.TabIndex = 5;
             // 
             // btnTransmitDataComPort
@@ -323,10 +326,6 @@ namespace Kalipso
             this.timer1.Interval = 200;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick_1);
             // 
-            // officeDataSourceObjectBindingSource
-            // 
-            this.officeDataSourceObjectBindingSource.DataSource = typeof(Microsoft.Office.Core.OfficeDataSourceObject);
-            // 
             // panel3
             // 
             this.panel3.Controls.Add(this.btnGetAllDataFromXMFT);
@@ -338,41 +337,56 @@ namespace Kalipso
             this.panel3.Size = new System.Drawing.Size(404, 449);
             this.panel3.TabIndex = 18;
             // 
+            // btnGetAllDataFromXMFT
+            // 
+            this.btnGetAllDataFromXMFT.AccessibleRole = System.Windows.Forms.AccessibleRole.PageTabList;
+            this.btnGetAllDataFromXMFT.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGetAllDataFromXMFT.Location = new System.Drawing.Point(140, 379);
+            this.btnGetAllDataFromXMFT.Name = "btnGetAllDataFromXMFT";
+            this.btnGetAllDataFromXMFT.Size = new System.Drawing.Size(131, 22);
+            this.btnGetAllDataFromXMFT.TabIndex = 22;
+            this.btnGetAllDataFromXMFT.Text = "Get All Data From XMFT";
+            this.btnGetAllDataFromXMFT.UseVisualStyleBackColor = true;
+            this.btnGetAllDataFromXMFT.Click += new System.EventHandler(this.btnGetAllDataFromXMFT_Click);
+            // 
             // dGridXMFT
             // 
             this.dGridXMFT.AllowUserToOrderColumns = true;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dGridXMFT.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dGridXMFT.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dGridXMFT.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Command,
             this.SetValue,
             this.ReadValue,
             this.isReadValue});
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dGridXMFT.DefaultCellStyle = dataGridViewCellStyle2;
             this.dGridXMFT.Location = new System.Drawing.Point(3, 6);
             this.dGridXMFT.Name = "dGridXMFT";
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dGridXMFT.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dGridXMFT.Size = new System.Drawing.Size(398, 367);
             this.dGridXMFT.TabIndex = 20;
-            // 
-            // Command
-            // 
-            this.Command.HeaderText = "Command";
-            this.Command.Name = "Command";
-            // 
-            // SetValue
-            // 
-            this.SetValue.HeaderText = "SetValue";
-            this.SetValue.Name = "SetValue";
-            // 
-            // ReadValue
-            // 
-            this.ReadValue.HeaderText = "ReadValue";
-            this.ReadValue.Name = "ReadValue";
-            // 
-            // isReadValue
-            // 
-            this.isReadValue.HeaderText = "isReadValue";
-            this.isReadValue.Name = "isReadValue";
-            this.isReadValue.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.isReadValue.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // btnSendDataToXMFT
             // 
@@ -398,18 +412,32 @@ namespace Kalipso
             this.btnCheckXMFT.UseVisualStyleBackColor = true;
             this.btnCheckXMFT.Click += new System.EventHandler(this.btnCheckXMFT_Click_1);
             // 
-            // btnGetAllDataFromXMFT
+            // Command
             // 
-            this.btnGetAllDataFromXMFT.AccessibleRole = System.Windows.Forms.AccessibleRole.PageTabList;
-            this.btnGetAllDataFromXMFT.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGetAllDataFromXMFT.Location = new System.Drawing.Point(140, 379);
-            this.btnGetAllDataFromXMFT.Name = "btnGetAllDataFromXMFT";
-            this.btnGetAllDataFromXMFT.Size = new System.Drawing.Size(131, 22);
-            this.btnGetAllDataFromXMFT.TabIndex = 22;
-            this.btnGetAllDataFromXMFT.Text = "Get All Data From XMFT";
-            this.btnGetAllDataFromXMFT.UseVisualStyleBackColor = true;
-            this.btnGetAllDataFromXMFT.Click += new System.EventHandler(this.btnGetAllDataFromXMFT_Click);
+            this.Command.HeaderText = "Command";
+            this.Command.Name = "Command";
+            this.Command.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // SetValue
+            // 
+            this.SetValue.HeaderText = "SetValue";
+            this.SetValue.Name = "SetValue";
+            // 
+            // ReadValue
+            // 
+            this.ReadValue.HeaderText = "ReadValue";
+            this.ReadValue.Name = "ReadValue";
+            // 
+            // isReadValue
+            // 
+            this.isReadValue.HeaderText = "isReadValue";
+            this.isReadValue.Name = "isReadValue";
+            this.isReadValue.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.isReadValue.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // officeDataSourceObjectBindingSource
+            // 
+            this.officeDataSourceObjectBindingSource.DataSource = typeof(Microsoft.Office.Core.OfficeDataSourceObject);
             // 
             // frmComPort
             // 
@@ -435,9 +463,9 @@ namespace Kalipso
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.officeDataSourceObjectBindingSource)).EndInit();
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dGridXMFT)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.officeDataSourceObjectBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -473,12 +501,12 @@ namespace Kalipso
         private System.Windows.Forms.BindingSource officeDataSourceObjectBindingSource;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.DataGridView dGridXMFT;
+        private System.Windows.Forms.Button btnSendDataToXMFT;
+        private System.Windows.Forms.Button btnCheckXMFT;
+        private System.Windows.Forms.Button btnGetAllDataFromXMFT;
         private System.Windows.Forms.DataGridViewTextBoxColumn Command;
         private System.Windows.Forms.DataGridViewTextBoxColumn SetValue;
         private System.Windows.Forms.DataGridViewTextBoxColumn ReadValue;
         private System.Windows.Forms.DataGridViewCheckBoxColumn isReadValue;
-        private System.Windows.Forms.Button btnSendDataToXMFT;
-        private System.Windows.Forms.Button btnCheckXMFT;
-        private System.Windows.Forms.Button btnGetAllDataFromXMFT;
     }
 }

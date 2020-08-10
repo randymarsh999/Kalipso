@@ -2341,6 +2341,45 @@ namespace Kalipso
             Com.SendDataToComPort("ArduinoUno", "-");
         }
 
+
+        void getTempFromTermocontroller()
+        {
+            switch (frmMOpt.cbTermocontrollerDevModel.Text)
+            {
+                case "Varta":
+                    {
+                        GetTempFromVarta();
+                        break;
+                    }
+                case "XMFT":
+                    {
+                        GetTempFromXMFT();
+                        break;
+                    }
+                default:
+                    break;
+            } 
+
+            
+        }
+
+        void GetTempFromXMFT()
+        {
+            try
+            {
+                PiezoMathCalculation PM = new PiezoMathCalculation();
+                Com.GetTemperatureFromXMFT();
+                PP.Temperature1 = PM.ConvertCelciusToKelvin(Convert.ToDouble(Com.Temperature));
+                PP.TemperatureReserv = PP.Temperature1;
+                lbTemp.Text = PP.Temperature1.ToString();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                throw;
+            }
+        }
+
         /// <summary>
         /// Get Temp From Varta
         /// </summary>
@@ -2398,6 +2437,7 @@ namespace Kalipso
         /// </summary>
         void WorkMode_Cycle()
         {
+            
             if (PP.Direction == PP.heating && PP.Temperature1 >= PP.Temperature2 && PP.Temperature1 < PP.Temperature3)
             {
                 PP.Temperature2 = PP.Temperature1 + PP.TemperatureStep;
@@ -3106,8 +3146,6 @@ namespace Kalipso
         {
             //MainMeas_cycle_ramp();
             MainMeas();
-
-
         }
         /// <summary>
         /// Mains the meas cycle ramp.
@@ -5340,7 +5378,8 @@ namespace Kalipso
         {
             Stopwatch myStopwatch = new Stopwatch();
             myStopwatch.Start();
-            GetTempFromVarta();
+            getTempFromTermocontroller();
+            //GetTempFromVarta();
             WriteTempToFile();
             PiezoMathCalculation PM = new PiezoMathCalculation();
             //измерение и получение данных с прибора

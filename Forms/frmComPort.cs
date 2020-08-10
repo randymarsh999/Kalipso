@@ -11,7 +11,7 @@ using System.IO.Ports;
 using System.Runtime.InteropServices;
 using Mono.Security.Cryptography;
 using Kalipso.Сalculations;
-
+using System.Security.Cryptography;
 
 namespace Kalipso
 {
@@ -52,7 +52,6 @@ namespace Kalipso
         /// list of Device Address RS458
         /// </summary>
         public int[] listDeviceAddressRS458 { get; set; }
-
     }
 
     /// <summary>
@@ -155,8 +154,6 @@ namespace Kalipso
             }
             this.Close();
         }
-
-
         ///it's not used
         /// <summary>
         /// Открытие выбранного Com порта
@@ -301,6 +298,102 @@ namespace Kalipso
             openRandomPort();
         }
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="DeviceModel"></param>
+        /// <returns></returns>
+        public SerialPort SetComPortOptions(string DeviceModel)
+        {
+            SerialPort ComP = new SerialPort();
+
+            switch (DeviceModel)
+            {
+                case "Varta703I":
+                    {
+                        ComP.BaudRate = Convert.ToInt32(cmbBaudRate.Text);
+                        ComP.DataBits = 7;
+                        ComP.Parity = System.IO.Ports.Parity.None;
+                        ComP.StopBits = System.IO.Ports.StopBits.Two;
+                        break;
+                    }
+                case "LakeShore":
+                    {
+                        ComP.BaudRate = Convert.ToInt32(cmbBaudRate.Text); ;
+                        ComP.DataBits = 8;
+                        ComP.Parity = Parity.None;
+                        ComP.DiscardNull = false;
+                        ComP.ReadTimeout = 5;
+                        ComP.Parity = System.IO.Ports.Parity.None;
+                        ComP.StopBits = System.IO.Ports.StopBits.One;
+                        break;
+                    }
+                case "ITR2523":
+                    {
+                        ComP.BaudRate = Convert.ToInt32(cmbBaudRate.Text); ;
+                        ComP.DataBits = 7;
+                        ComP.Parity = System.IO.Ports.Parity.None;
+                        ComP.StopBits = System.IO.Ports.StopBits.Two;
+                        break;
+                    }
+                case "XMFT":
+                    {
+                        ComP.BaudRate = Convert.ToInt32(cmbBaudRate.Text); ;
+                        ComP.DataBits = 8;
+                        ComP.Parity = System.IO.Ports.Parity.None;
+                        ComP.StopBits = System.IO.Ports.StopBits.Two;
+
+                        break;
+                    }
+
+                case "ArduinoUno":
+                    {
+                        ComP.BaudRate = Convert.ToInt32(cmbBaudRate.Text);
+                        ComP.DataBits = 8;
+                        ComP.Parity = System.IO.Ports.Parity.None;
+                        ComP.StopBits = System.IO.Ports.StopBits.One;
+                        break;
+                    }
+                case "VoltageMeter HY-AV51-T":
+                    {
+                        ComP.BaudRate = Convert.ToInt32(cmbBaudRate.Text);
+                        ComP.Handshake = Handshake.None;
+                        ComP.DataBits = 8;
+                        ComP.Parity = System.IO.Ports.Parity.None;
+                        ComP.StopBits = System.IO.Ports.StopBits.One;
+                        break;
+                    }
+                case "E7-20":
+                    {
+                        ComP.BaudRate = Convert.ToInt32(cmbBaudRate.Text);
+                        ComP.Handshake = Handshake.None;
+                        ComP.DataBits = 8;
+                        ComP.Parity = System.IO.Ports.Parity.None;
+                        ComP.StopBits = System.IO.Ports.StopBits.One;
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
+            }
+            return ComP;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        void SetAdditionalPropertiesToComPort()
+        {
+            switch (cbComDevice.Text)
+            {
+                case "XMFT":
+                    {
+                        CheckXMTF();
+                        break;
+                    }
+                default: break;
+            }
+        }
+        /// <summary>
         /// Open Com Port and configurate 
         /// </summary>
         private void openRandomPort()
@@ -310,76 +403,7 @@ namespace Kalipso
             {
                 for (int i = 0; i < allComPort.Count(); i++)
                 {
-                    switch (cbComDevice.Text)
-                    {
-                        case "Varta703I":
-                            {
-                                ComP.BaudRate = Convert.ToInt32(cmbBaudRate.Text);
-                                ComP.DataBits = 7;
-                                ComP.Parity = System.IO.Ports.Parity.None;
-                                ComP.StopBits = System.IO.Ports.StopBits.Two;
-                                break;
-                            }
-                        case "LakeShore":
-                            {
-                                ComP.BaudRate = Convert.ToInt32(cmbBaudRate.Text); ;
-                                ComP.DataBits = 8;
-                                ComP.Parity = Parity.None;
-                                ComP.DiscardNull = false;
-                                ComP.ReadTimeout = 5;
-                                ComP.Parity = System.IO.Ports.Parity.None;
-                                ComP.StopBits = System.IO.Ports.StopBits.One;
-                                break;
-                            }
-                        case "ITR2523":
-                            {
-                                ComP.BaudRate = Convert.ToInt32(cmbBaudRate.Text); ;
-                                ComP.DataBits = 7;
-                                ComP.Parity = System.IO.Ports.Parity.None;
-                                ComP.StopBits = System.IO.Ports.StopBits.Two;
-                                break;
-                            }
-                        case "XMFT":
-                            {
-                                ComP.BaudRate = Convert.ToInt32(cmbBaudRate.Text); ;
-                                ComP.DataBits = 8;
-                                ComP.Parity = System.IO.Ports.Parity.None;
-                                ComP.StopBits = System.IO.Ports.StopBits.Two;
-                                break;
-                            }
-
-                        case "ArduinoUno":
-                            {
-                                ComP.BaudRate = Convert.ToInt32(cmbBaudRate.Text);
-                                ComP.DataBits = 8;
-                                ComP.Parity = System.IO.Ports.Parity.None;
-                                ComP.StopBits = System.IO.Ports.StopBits.One;
-                                break;
-                            }
-                        case "VoltageMeter HY-AV51-T":
-                            {
-                                ComP.BaudRate = Convert.ToInt32(cmbBaudRate.Text);
-                                ComP.Handshake = Handshake.None;
-                                ComP.DataBits = 8;
-                                ComP.Parity = System.IO.Ports.Parity.None;
-                                ComP.StopBits = System.IO.Ports.StopBits.One;
-                                break;
-                            }
-                        case "E7-20":
-                            {
-                                ComP.BaudRate = Convert.ToInt32(cmbBaudRate.Text);
-                                ComP.Handshake = Handshake.None;
-                                ComP.DataBits = 8;
-                                ComP.Parity = System.IO.Ports.Parity.None;
-                                ComP.StopBits = System.IO.Ports.StopBits.One;
-                                break;
-                            }
-                        default:
-                            {
-                                break;
-                            }
-
-                    }
+                    ComP = SetComPortOptions(cbComDevice.Text);
 
                     if (allComPort[i].DeviceName == null && ComP.IsOpen == false)
                     {
@@ -388,6 +412,9 @@ namespace Kalipso
                         allComPort[i].ActivePort = ComP;
                         allComPort[i].DeviceName = cbComDevice.Text;
                         txtComLog.AppendText(Environment.NewLine + cmbComPortList.SelectedItem.ToString() + " was opened" + Environment.NewLine);
+
+
+                        SetAdditionalPropertiesToComPort();
                         return;
                     }
 
@@ -1386,7 +1413,6 @@ namespace Kalipso
                 i++;
             }
             while (get[0] == 0);
-            //txtComLog.AppendText(i--.ToString());
             for (int j = 0; j < allComPort.Count() - 1; j++)
             {
                 if (allComPort[j].DeviceName == "XMFT")
@@ -1400,7 +1426,6 @@ namespace Kalipso
             //byte[] buf_out = new byte[] { 0x01, 0x04, 0x53, 0x00};
             //byte[] buf_out = new byte[] { nn[0], nn[1], nn[2], nn[3], nn[4], nn[5], tt[0], tt[1] };
             //byte[] buf_out = new byte[] { 0x01, 0x04, 0x00, 0x00, 0x00, 0x01,  0x31, 0xCA };
-
         }
 
 
@@ -1482,38 +1507,105 @@ namespace Kalipso
             GetAllDataFromXMFT();
         }
 
-        async void GetAllDataFromXMFT()
+
+        void fillOfXMFTDataGridView()
+        {
+            XMFT xmt = new XMFT();
+            for (int i = 0; i < xmt.XMFT_commands.Count(); i++)
+            {
+                dGridXMFT["Command", i].Value = xmt.XMFT_commands[i];
+                if (dGridXMFT.Rows.Count < xmt.XMFT_commands.Count() + 1)
+                {
+                    dGridXMFT.Rows.Add();
+                }
+
+            }
+
+        }
+        public void GetTemperatureFromXMFT()
         {
             byte[] nn = new byte[6];
             byte[] tt = new byte[2];
             short[] get = new short[8];
-            dGridXMFT.Rows.Add();
+
+            bool varta = false;
             for (int j = 0; j < allComPort.Count() - 1; j++)
             {
                 if (allComPort[j].DeviceName == "XMFT")
                 {
-                    for (int i = 0; i < 27; i++)
+                    nn[0] = Convert.ToByte(allComPort[j].deviceAddressRS458);
+                    nn[1] = 4;
+                    nn[2] = 0;
+                    nn[3] = 0;
+                    nn[4] = 0;
+                    nn[5] = 1;
+                    tt = CRC.ModbusCRC16Calc(nn);
+                    byte[] buf_out = new byte[] { nn[0], nn[1], nn[2], nn[3], nn[4], nn[5], tt[0], tt[1] };
+                    get = GetDataFromXMFT(buf_out);
+                    Temperature = (Convert.ToInt32(get[0])/10).ToString();
+                    varta = true;
+                    if (Temperature != "")
                     {
-                        nn[0] = Convert.ToByte(allComPort[j].deviceAddressRS458);
-                        nn[1] = 3;
-                        nn[2] = 0;
-                        nn[3] = 0;
-                        nn[4] = 0;
-                        nn[5] = Convert.ToByte(i); 
-                        tt = CRC.ModbusCRC16Calc(nn);
-                        byte[] buf_out = new byte[] { nn[0], nn[1], nn[2], nn[3], nn[4], nn[5], tt[0], tt[1] };
-                        get = GetDataFromXMFT(buf_out);
-                        dGridXMFT["ReadValue", i].Value = get[0];
-                        dGridXMFT.Rows.Add();
+                        TemperatureReserv = Temperature;
                     }
+                    else Temperature = 27.ToString();
 
+                }
+
+            }
+            if (varta == false)
+            {
+                Temperature = 27.ToString();
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public void GetAllDataFromXMFT()
+        {
+            XMFT xmt = new XMFT();
+            byte[] nn = new byte[6];
+            byte[] tt = new byte[2];
+            short[] get = new short[8];
+            if (dGridXMFT.Rows.Count < 2)
+            {
+                dGridXMFT.Rows.Add();
+            }
+            fillOfXMFTDataGridView();
+            for (int j = 0; j < allComPort.Count() - 1; j++)
+            {
+                if (allComPort[j].DeviceName == "XMFT")
+                {
+                    for (int i = 0; i < 26; i++)
+                    {
+                        if ((bool)dGridXMFT["isReadValue", i].EditedFormattedValue == true)
+                        {
+                            nn[0] = Convert.ToByte(allComPort[j].deviceAddressRS458);
+                            nn[1] = 3;
+                            nn[2] = 0;
+                            nn[3] = Convert.ToByte(i);
+                            nn[4] = 0;
+                            nn[5] = 1;
+                            tt = CRC.ModbusCRC16Calc(nn);
+                            byte[] buf_out = new byte[] { nn[0], nn[1], nn[2], nn[3], nn[4], nn[5], tt[0], tt[1] };
+                            get = GetDataFromXMFT(buf_out);
+                            dGridXMFT["ReadValue", i].Value = get[0];
+                            dGridXMFT["Command", i].Value = xmt.XMFT_commands[i];
+                        }
+                    }
                 }
             }
         }
 
-
-        async void WriteDataToXMFT(int command, int val )
+        /// <summary>
+        /// /
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="val"></param>
+        void WriteDataToXMFT(int command, int val)
         {
+            GetAllDataFromXMFT();
+
             byte[] nn = new byte[6];
             byte[] tt = new byte[2];
             short[] get = new short[8];
@@ -1525,11 +1617,11 @@ namespace Kalipso
                     for (int i = 0; i < 27; i++)
                     {
                         nn[0] = Convert.ToByte(allComPort[j].deviceAddressRS458);
-                        nn[1] = 3;
-                        nn[2] = 0;
+                        nn[1] = 4;
+                        nn[2] = Convert.ToByte(i);
                         nn[3] = 0;
                         nn[4] = 0;
-                        nn[5] = Convert.ToByte(i);
+                        nn[5] = 1;
                         tt = CRC.ModbusCRC16Calc(nn);
                         byte[] buf_out = new byte[] { nn[0], nn[1], nn[2], nn[3], nn[4], nn[5], tt[0], tt[1] };
                         get = GetDataFromXMFT(buf_out);

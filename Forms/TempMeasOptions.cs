@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -1087,6 +1088,16 @@ namespace Kalipso
                 //ExcelWorkBook.Close(true, null, null);
                 //ExcelApp.Quit();
             }
+        }
+
+        private void DGTempData_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            
+        }
+
+        private void DGTempData_MouseClick_1(object sender, MouseEventArgs e)
+        {
+
         }
     }
 }

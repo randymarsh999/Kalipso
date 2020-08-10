@@ -9,12 +9,16 @@ namespace Kalipso
 {
     class Objects
     {
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="DGW"></param>
         public void ExcelToDataGridView(DataGridView DGW)
         {
             int rCnt;
             int cCnt;
             OpenFileDialog opf = new OpenFileDialog();
+            opf.Title = "Open excel file";
             opf.Filter = "Файл Excel|*.XLSX;*.XLS";
             opf.ShowDialog();
             System.Data.DataTable tb = new System.Data.DataTable();
@@ -40,6 +44,9 @@ namespace Kalipso
             ExcelApp.Quit();
         }
 
+
+
+        
 
     }
 }
