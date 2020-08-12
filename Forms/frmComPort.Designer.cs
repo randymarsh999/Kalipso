@@ -60,12 +60,12 @@ namespace Kalipso
             this.panel3 = new System.Windows.Forms.Panel();
             this.btnGetAllDataFromXMFT = new System.Windows.Forms.Button();
             this.dGridXMFT = new System.Windows.Forms.DataGridView();
-            this.btnSendDataToXMFT = new System.Windows.Forms.Button();
-            this.btnCheckXMFT = new System.Windows.Forms.Button();
             this.Command = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SetValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ReadValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.isReadValue = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.btnSendDataToXMFT = new System.Windows.Forms.Button();
+            this.btnCheckXMFT = new System.Windows.Forms.Button();
             this.officeDataSourceObjectBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -201,7 +201,7 @@ namespace Kalipso
             "ArduinoUno",
             "VoltageMeter HY-AV51-T",
             "E7-20",
-            "XMFT"});
+            "XMTF"});
             this.cbComDevice.Location = new System.Drawing.Point(3, 39);
             this.cbComDevice.Name = "cbComDevice";
             this.cbComDevice.Size = new System.Drawing.Size(219, 21);
@@ -388,30 +388,6 @@ namespace Kalipso
             this.dGridXMFT.Size = new System.Drawing.Size(398, 367);
             this.dGridXMFT.TabIndex = 20;
             // 
-            // btnSendDataToXMFT
-            // 
-            this.btnSendDataToXMFT.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSendDataToXMFT.Location = new System.Drawing.Point(0, 407);
-            this.btnSendDataToXMFT.Name = "btnSendDataToXMFT";
-            this.btnSendDataToXMFT.Size = new System.Drawing.Size(131, 22);
-            this.btnSendDataToXMFT.TabIndex = 19;
-            this.btnSendDataToXMFT.Text = "SendDataToXMFT";
-            this.btnSendDataToXMFT.UseVisualStyleBackColor = true;
-            this.btnSendDataToXMFT.Click += new System.EventHandler(this.btnSendDataToXMFT_Click_1);
-            // 
-            // btnCheckXMFT
-            // 
-            this.btnCheckXMFT.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCheckXMFT.Location = new System.Drawing.Point(3, 379);
-            this.btnCheckXMFT.Name = "btnCheckXMFT";
-            this.btnCheckXMFT.Size = new System.Drawing.Size(131, 22);
-            this.btnCheckXMFT.TabIndex = 18;
-            this.btnCheckXMFT.Text = "checkXMFT";
-            this.btnCheckXMFT.UseVisualStyleBackColor = true;
-            this.btnCheckXMFT.Click += new System.EventHandler(this.btnCheckXMFT_Click_1);
-            // 
             // Command
             // 
             this.Command.HeaderText = "Command";
@@ -434,6 +410,30 @@ namespace Kalipso
             this.isReadValue.Name = "isReadValue";
             this.isReadValue.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.isReadValue.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // btnSendDataToXMFT
+            // 
+            this.btnSendDataToXMFT.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSendDataToXMFT.Location = new System.Drawing.Point(3, 407);
+            this.btnSendDataToXMFT.Name = "btnSendDataToXMFT";
+            this.btnSendDataToXMFT.Size = new System.Drawing.Size(131, 22);
+            this.btnSendDataToXMFT.TabIndex = 19;
+            this.btnSendDataToXMFT.Text = "SendDataToXMFT";
+            this.btnSendDataToXMFT.UseVisualStyleBackColor = true;
+            this.btnSendDataToXMFT.Click += new System.EventHandler(this.btnSendDataToXMFT_Click);
+            // 
+            // btnCheckXMFT
+            // 
+            this.btnCheckXMFT.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCheckXMFT.Location = new System.Drawing.Point(3, 379);
+            this.btnCheckXMFT.Name = "btnCheckXMFT";
+            this.btnCheckXMFT.Size = new System.Drawing.Size(131, 22);
+            this.btnCheckXMFT.TabIndex = 18;
+            this.btnCheckXMFT.Text = "checkXMFT";
+            this.btnCheckXMFT.UseVisualStyleBackColor = true;
+            this.btnCheckXMFT.Click += new System.EventHandler(this.btnCheckXMFT_Click_1);
             // 
             // officeDataSourceObjectBindingSource
             // 

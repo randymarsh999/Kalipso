@@ -140,25 +140,7 @@ namespace Kalipso
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void btnAddTemp_Click(object sender, EventArgs e)
         {
-            tTempList.Text = "";
-            int startTemp = Convert.ToInt32(txtTempStart.Text);
-            int endTemp = Convert.ToInt32(txtTempEnd.Text);
-            int stepTemp = Convert.ToInt32(txtTempStep.Text);
-            int a = (endTemp - startTemp) / stepTemp;
 
-            for (int i = 0; i < a; i++)
-            {
-
-                startTemp = startTemp + stepTemp;
-                tTempList.AppendText(startTemp.ToString() + Environment.NewLine);
-            }
-            tTempList.AppendText(endTemp.ToString() + Environment.NewLine);
-            for (int i = 0; i < a; i++)
-            {
-                endTemp = endTemp - stepTemp;
-                tTempList.AppendText(endTemp.ToString() + Environment.NewLine);
-            }
-            tTempList.AppendText(txtTempStart.Text);
         }
         /// <summary>
         /// Handles the Click event of the btnAddFreq control.
@@ -1096,6 +1078,11 @@ namespace Kalipso
         }
 
         private void DGTempData_MouseClick_1(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void btnAddTemp_Click_1(object sender, EventArgs e)
         {
 
         }

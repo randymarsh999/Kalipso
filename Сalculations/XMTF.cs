@@ -11,38 +11,127 @@ namespace Kalipso.Сalculations
 /// <summary>
 /// 
 /// </summary>
-    public class XMFT
+    public class XMTF
     {
+        /// <summary>
+        /// The XMT curr temporary
+        /// </summary>
         public const int xmt_curr_temp = 0;
+        /// <summary>
+        /// The XMT a l1
+        /// </summary>
         public const int xmt_AL1 = 1;
+        /// <summary>
+        /// The XMT a l2
+        /// </summary>
         public const int xmt_AL2 = 2;
+        /// <summary>
+        /// The XMT hy 1
+        /// </summary>
         public const int xmt_HY_1 = 3;
+        /// <summary>
+        /// The XMT hy 2
+        /// </summary>
         public const int xmt_HY_2 = 4;
+        /// <summary>
+        /// The XMT hy
+        /// </summary>
         public const int xmt_HY = 5;
+        /// <summary>
+        /// The XMT at
+        /// </summary>
         public const int xmt_At = 6;
+        /// <summary>
+        /// The XMT i
+        /// </summary>
         public const int xmt_I = 7;
+        /// <summary>
+        /// The XMT p
+        /// </summary>
         public const int xmt_P = 8;
+        /// <summary>
+        /// The XMT d
+        /// </summary>
         public const int xmt_D = 9;
+        /// <summary>
+        /// The XMT t
+        /// </summary>
         public const int xmt_t = 10;
+        /// <summary>
+        /// The XMT sn
+        /// </summary>
         public const int xmt_Sn = 11;
+        /// <summary>
+        /// The XMT dp
+        /// </summary>
         public const int xmt_dp = 12;
+        /// <summary>
+        /// The XMT p sl
+        /// </summary>
         public const int xmt_P_SL = 13;
+        /// <summary>
+        /// The XMT p sh
+        /// </summary>
         public const int xmt_P_SH = 14;
+        /// <summary>
+        /// The XMT pb
+        /// </summary>
         public const int xmt_Pb = 15;
+        /// <summary>
+        /// The XMT op a
+        /// </summary>
         public const int xmt_OP_A = 16;
+        /// <summary>
+        /// The XMT out
+        /// </summary>
         public const int xmt_out = 17;
+        /// <summary>
+        /// The XMT out h
+        /// </summary>
         public const int xmt_outH = 18;
+        /// <summary>
+        /// The XMT al p
+        /// </summary>
         public const int xmt_AL_P = 19;
+        /// <summary>
+        /// The XMT cool
+        /// </summary>
         public const int xmt_Cool = 20;
+        /// <summary>
+        /// The XMT baud
+        /// </summary>
         public const int xmt_Baud = 21;
+        /// <summary>
+        /// The XMT addr
+        /// </summary>
         public const int xmt_Addr = 22;
+        /// <summary>
+        /// The XMT fi lt
+        /// </summary>
         public const int xmt_FILt = 23;
+        /// <summary>
+        /// The XMT a m
+        /// </summary>
         public const int xmt_A_M = 24;
+        /// <summary>
+        /// The XMT lock
+        /// </summary>
         public const int xmt_Lock = 25;
-
+        /// <summary>
+        /// The XMT model
+        /// </summary>
+        public const string xmt_model= "XMTF";
+        /// <summary>
+        /// Gets or sets the XMFT commands.
+        /// </summary>
+        /// <value>
+        /// The XMFT commands.
+        /// </value>
         public string[] XMFT_commands { get; set; }
-
-        public XMFT()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="XMTF"/> class.
+        /// </summary>
+        public XMTF()
         {
             XMFT_commands = new string[26];
             XMFT_commands[0] = "xmt_curr_temp_set";

@@ -1635,9 +1635,13 @@
         private System.Windows.Forms.ProgressBar ProgressDB;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartMeasTemp1;
-#pragma warning disable CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmMain.cbChartGrafItems"
+        /// <summary>
+        /// The cb chart graf items
+        /// </summary>
         public System.Windows.Forms.ComboBox cbChartGrafItems;
-#pragma warning restore CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmMain.cbChartGrafItems"
+        /// <summary>
+        /// The chart meas temp2
+        /// </summary>
         private System.Windows.Forms.DataVisualization.Charting.Chart chartMeasTemp2;
         private System.Windows.Forms.TextBox txtM;
         private System.Windows.Forms.TextBox txtRho;
@@ -1674,6 +1678,9 @@
         private System.Windows.Forms.TextBox txtXmax2;
         private System.Windows.Forms.TextBox txtXmin2;
         private System.Windows.Forms.Label lbField;
+        /// <summary>
+        /// The cb cte limit
+        /// </summary>
         public System.Windows.Forms.ComboBox cbCTE_Limit;
     }
 }

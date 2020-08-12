@@ -765,11 +765,17 @@ public class PiezoParameters
     /// </value>
     public int CelSelPiezo { get; set; }
     /// <summary>
+    /// 
+    /// </summary>
+    public int CelSelTemp { get; set; }
+    
+    /// <summary>
     /// Gets or sets the number of regularization    
     /// </summary>
     /// <value>
     /// The rho.
     /// </value>
+    /// 
     public double RHO { get; set; } //number of regularization           
     /// <summary>
     /// Gets or sets the ip address.
@@ -824,7 +830,12 @@ public class PiezoParameters
     public string Polarity { get; set; }
     
     public string PolarityPositive { get; set; }
-
+    /// <summary>
+    /// Gets or sets the polarity negative.
+    /// </summary>
+    /// <value>
+    /// The polarity negative.
+    /// </value>
     public string PolarityNegative { get; set; }
     /// <summary>
     /// Gets or sets the step reversive long.
@@ -833,12 +844,20 @@ public class PiezoParameters
     /// The step reversive long.
     /// </value>
     public Int32 StepReversiveLong { get; set; }
+    /// <summary>
+    /// Gets or sets the col.
+    /// </summary>
+    /// <value>
+    /// The col.
+    /// </value>
     public List<string> Col { get => col; set => col = value; }
-
-
-
+    /// <summary>
+    /// Gets or sets a value indicating whether this <see cref="PiezoParameters"/> is hand.
+    /// </summary>
+    /// <value>
+    ///   <c>true</c> if hand; otherwise, <c>false</c>.
+    /// </value>
     public bool hand { get; set; }
-
     /// <summary>
     /// Constructor
     /// </summary>

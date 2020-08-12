@@ -172,7 +172,7 @@
     <Compile Include="Сalculations\Objects.cs" />
     <Compile Include="Сalculations\PiezoMathCalculation.cs" />
     <Compile Include="Сalculations\PiezoParameters.cs" />
-    <Compile Include="Сalculations\XMFT.cs" />
+    <Compile Include="Сalculations\XMTF.cs" />
     <EmbeddedResource Include="Forms\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>

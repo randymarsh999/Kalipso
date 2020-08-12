@@ -1887,6 +1887,10 @@ namespace Kalipso
                     {
                         PP.cycleCount = Convert.ToInt32(frmMOpt.txtCycleCount.Text);
                         PP.NewCycleTemperature = Convert.ToDouble(frmMOpt.txtNewCycleTemp.Text);
+                        PP.CelSelTemp = 0;
+                        initXMFT();
+
+
                         break;
                     }
                 case "Cycle_ramp":
@@ -2189,6 +2193,17 @@ namespace Kalipso
             }
             Directory.CreateDirectory(@"C:\\temp\\");
         }
+
+        /// <summary>
+        /// Initializes the XMFT.
+        /// </summary>
+        void initXMFT()
+        {
+            Com.WriteDataToXMFT(0, Convert.ToInt32(frmMOpt.DGTempData["Temp", 0].Value));
+            System.Threading.Thread.Sleep(250);
+            Com.WriteDataToXMFT(0, Convert.ToInt32(frmMOpt.DGTempData["TimeS", 0].Value));
+        }
+
         /// <summary>
         /// Gets the current ufrom arduino.
         /// </summary>
@@ -2362,7 +2377,9 @@ namespace Kalipso
 
             
         }
-
+        /// <summary>
+        /// GetTempFromXMFT()
+        /// </summary>
         void GetTempFromXMFT()
         {
             try
@@ -2372,6 +2389,7 @@ namespace Kalipso
                 PP.Temperature1 = PM.ConvertCelciusToKelvin(Convert.ToDouble(Com.Temperature));
                 PP.TemperatureReserv = PP.Temperature1;
                 lbTemp.Text = PP.Temperature1.ToString();
+                Thread.Sleep(100);
             }
             catch (Exception ex)
             {
@@ -2437,59 +2455,84 @@ namespace Kalipso
         /// </summary>
         void WorkMode_Cycle()
         {
+            getTempFromTermocontroller();
             
-            if (PP.Direction == PP.heating && PP.Temperature1 >= PP.Temperature2 && PP.Temperature1 < PP.Temperature3)
+            if (PP.TimeMeas<Convert.ToInt32(frmMOpt.DGTempData["TimerS", PP.CelSelTemp].Value))
             {
-                PP.Temperature2 = PP.Temperature1 + PP.TemperatureStep;
-                lbDirect.Text = PP.heating;
-                PP.Direction = PP.heating;
+                PP.cycleCurrentNum = Convert.ToInt32(frmMOpt.DGTempData["Cycle", PP.CelSelTemp].Value);
                 MainMeas();
-                endcycleAgilent4980();
+                
             }
-            //------------------------------------------------------------------------
-            if (PP.Direction == PP.heating &&
-                PP.Temperature1 >= PP.Temperature3
-               )
+            if (PP.TimeMeas >= Convert.ToInt32(frmMOpt.DGTempData["TimerS", PP.CelSelTemp].Value )
+                && frmMOpt.DGTempData["TimerS", PP.CelSelTemp+1].Value!="")
             {
-                PP.Temperature2 = PP.Temperature1 - PP.TemperatureStep;
-                lbDirect.Text = PP.cooling;
-                PP.Direction = PP.cooling;
-                frmMOpt.cDirect.SelectedIndex = 1;
+                PP.CelSelTemp = PP.CelSelTemp + 1;
+                PP.cycleCurrentNum = Convert.ToInt32(frmMOpt.DGTempData["Cycle", PP.CelSelTemp].Value);
+                Com.WriteDataToXMFT(0, Convert.ToInt32(frmMOpt.DGTempData["Temp", PP.CelSelTemp].Value));
+                //Com.WriteDataToXMFT(0, Convert.ToInt32(frmMOpt.DGTempData["Temp", PP.CelSelTemp].Value));
+                
                 MainMeas();
-                endcycleAgilent4980();
             }
-            //------------------------------------------------------------------------
-            if (PP.Direction == PP.cooling &&
-                PP.Temperature1 >= PP.NewCycleTemperature &&
-                PP.Temperature1 <= PP.Temperature2 &&
-                PP.cycleCurrentNum <= PP.cycleCount)
+            if (PP.TimeMeas >= Convert.ToInt32(frmMOpt.DGTempData["TimerS", PP.CelSelTemp].Value)
+                && frmMOpt.DGTempData["TimerS", PP.CelSelTemp + 1].Value == "")
             {
-                PP.Temperature2 = PP.Temperature1 - PP.TemperatureStep;
-                MainMeas();
-                endcycleAgilent4980();
+                timerMeas.Enabled = false;
+                MessageBox.Show("Measuring is done");
+
             }
-            //------------------------------------------------------------------------
-            if (PP.Direction == PP.cooling &&
-                PP.Temperature1 <= PP.NewCycleTemperature &&
-                PP.cycleCurrentNum <= PP.cycleCount
-                )
-            {
-                ++PP.cycleCurrentNum;
-                lbCycleNum.Text = PP.cycleCurrentNum.ToString();
-                lbDirect.Text = PP.heating;
-                PP.Direction = PP.heating;
-                frmMOpt.cDirect.SelectedIndex = 0;
-                MainMeas();
-                endcycleAgilent4980();
-            }
-            //------------------------------------------------------------------------
-            if (PP.Direction == PP.cooling &&
-                PP.cycleCurrentNum > PP.cycleCount &&
-                PP.Temperature1 <= PP.NewCycleTemperature)
-            {
-                MainMeas();
-                endcycleAgilent4980();
-            }
+
+            //if (PP.Direction == PP.heating && PP.Temperature1 >= PP.Temperature2 && PP.Temperature1 < PP.Temperature3)
+            //{
+            //    PP.Temperature2 = PP.Temperature1 + PP.TemperatureStep;
+            //    lbDirect.Text = PP.heating;
+            //    PP.Direction = PP.heating;
+            //    MainMeas();
+            //    endcycleAgilent4980();
+            //}
+            ////------------------------------------------------------------------------
+            //if (PP.Direction == PP.heating &&
+            //    PP.Temperature1 >= PP.Temperature3
+            //   )
+            //{
+            //    PP.Temperature2 = PP.Temperature1 - PP.TemperatureStep;
+            //    lbDirect.Text = PP.cooling;
+            //    PP.Direction = PP.cooling;
+            //    frmMOpt.cDirect.SelectedIndex = 1;
+            //    MainMeas();
+            //    endcycleAgilent4980();
+            //}
+            ////------------------------------------------------------------------------
+            //if (PP.Direction == PP.cooling &&
+            //    PP.Temperature1 >= PP.NewCycleTemperature &&
+            //    PP.Temperature1 <= PP.Temperature2 &&
+            //    PP.cycleCurrentNum <= PP.cycleCount)
+            //{
+            //    PP.Temperature2 = PP.Temperature1 - PP.TemperatureStep;
+            //    MainMeas();
+            //    endcycleAgilent4980();
+            //}
+            ////------------------------------------------------------------------------
+            //if (PP.Direction == PP.cooling &&
+            //    PP.Temperature1 <= PP.NewCycleTemperature &&
+            //    PP.cycleCurrentNum <= PP.cycleCount
+            //    )
+            //{
+            //    ++PP.cycleCurrentNum;
+            //    lbCycleNum.Text = PP.cycleCurrentNum.ToString();
+            //    lbDirect.Text = PP.heating;
+            //    PP.Direction = PP.heating;
+            //    frmMOpt.cDirect.SelectedIndex = 0;
+            //    MainMeas();
+            //    endcycleAgilent4980();
+            //}
+            ////------------------------------------------------------------------------
+            //if (PP.Direction == PP.cooling &&
+            //    PP.cycleCurrentNum > PP.cycleCount &&
+            //    PP.Temperature1 <= PP.NewCycleTemperature)
+            //{
+            //    MainMeas();
+            //    endcycleAgilent4980();
+            //}
         }
         /// <summary>
         /// WorkMode C(dU_df)
@@ -5778,7 +5821,8 @@ namespace Kalipso
         {
             System.Diagnostics.Stopwatch myStopwatch = new System.Diagnostics.Stopwatch();
             myStopwatch.Start();
-            GetTempFromVarta();
+            getTempFromTermocontroller();
+            //GetTempFromVarta();
             WriteTempToFile();
             
                 if (frmMOpt.cWorkMode.Text == "Magnit_hand")
@@ -5934,10 +5978,8 @@ namespace Kalipso
                     dGridTempMeas["Date", i].Value = DateTime.Now.ToShortDateString();
                     dGridTempMeas["Time", i].Value = dateT.ToString(dateformat);
                     dGridTempMeas["operator", i].Value = frmMOpt.cmbOperator.Text;
-
                     myStopwatch.Stop();
                     PP.TimeMeas = PP.TimeMeas + (Convert.ToDouble(myStopwatch.ElapsedMilliseconds.ToString()) * timeCoef) + 0.14;
-
                     dGridTempMeas["Timer", i].Value = (PP.TimeMeas).ToString();
                     dGridTempMeas["Polarity", i].Value = PP.Polarity;
                     dGridTempMeas["Direction", i].Value = PP.Direction;
@@ -5952,16 +5994,15 @@ namespace Kalipso
                         if (chartMeasTemp1.Series[u].Name == freq)
                         {
                             chartMeasTemp1.Series[u].Points.AddXY(lbTemp, e_e0);
-                            chartMeasTemp2.Series[u].Points.AddXY(lbTemp, tgper);
                         }
                     }
+                    chartMeasTemp2.Series[0].Points.AddXY(PP.TimeMeas, lbTemp);
                 }
                 catch (Exception ex)
                 {
                     ex.ToString();
                 }
             }
-
 
             if (frmMOpt.cbExportDBMeasTemp.Text == "Export to DB parallel" && frmDBConnection.DataBaseConnected == true)
             {
@@ -6020,20 +6061,13 @@ namespace Kalipso
                 dGridTempMeas["Date", 0].Value = DateTime.Now.ToShortDateString();
                 dGridTempMeas["Time", 0].Value = dateT.ToString(dateformat);
                 dGridTempMeas["Step", 0].Value = PP.CurrentStep;
-
-
-
                 DirectionChoice();
-
-
-
 
                 dGridTempMeas["Direction", 0].Value = PP.Direction;
                 dGridTempMeas["Polarity", 0].Value = PP.Polarity;
                 dGridTempMeas["operator", 0].Value = frmMOpt.cmbOperator.Text;
                 myStopwatch.Stop();
                 PP.TimeMeas = PP.TimeMeas + (Convert.ToDouble(myStopwatch.ElapsedMilliseconds.ToString()) * timeCoef) + 0.14;
-
                 dGridTempMeas["Timer", 0].Value = (PP.TimeMeas).ToString();
                 dGridTempMeas["Meas_type", 0].Value = frmMOpt.cWorkMode.Text;
 
@@ -6069,7 +6103,7 @@ namespace Kalipso
                                     if (frmMOpt.cbGraphOptions.Text == "e(T)" && e_e0 > 0 && e_e0 < 1e25)
                                     {
                                         chartMeasTemp1.Series[u].Points.AddXY(Convert.ToDouble(PP.Temperature1), e_e0);
-                                        chartMeasTemp2.Series[u].Points.AddXY(Convert.ToDouble(PP.Temperature1), tgper);
+                                        chartMeasTemp2.Series[u].Points.AddXY(PP.TimeMeas, Convert.ToDouble(PP.Temperature1));
                                         chartMeasTemp1.Update();
                                         chartMeasTemp2.Update();
                                     }

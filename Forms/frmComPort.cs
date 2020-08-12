@@ -385,7 +385,7 @@ namespace Kalipso
         {
             switch (cbComDevice.Text)
             {
-                case "XMFT":
+                case XMTF.xmt_model:
                     {
                         CheckXMTF();
                         break;
@@ -1315,12 +1315,27 @@ namespace Kalipso
 
 
 
-
+        /// <summary>
+        /// Writes the data to XMFT.
+        /// </summary>
+        /// <param name="nn">The nn.</param>
+        public void WriteDataToXMFT(byte[] nn)
+        {
+            int offset = 0;
+            for (int j = 0; j < allComPort.Count() - 1; j++)
+            {
+                if (allComPort[j].DeviceName == "XMFT")
+                {
+                    allComPort[j].ActivePort.Write(nn, offset, 8);
+                }
+            }
+        }
 
         /// <summary>
-        /// 
+        /// Gets the data from XMFT.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="nn">The nn.</param>
+        /// <returns>required value</returns>
         public short[] GetDataFromXMFT(byte[] nn)
         {
             int offset = 0;
@@ -1488,7 +1503,7 @@ namespace Kalipso
 
         private void btnSendDataToXMFT_Click(object sender, EventArgs e)
         {
-
+            WriteDataToXMFT(1,1);
         }
 
         private void btnCheckXMFT_Click_1(object sender, EventArgs e)
@@ -1501,16 +1516,21 @@ namespace Kalipso
 
 
         }
-
+        /// <summary>
+        /// Handles the Click event of the btnGetAllDataFromXMFT control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void btnGetAllDataFromXMFT_Click(object sender, EventArgs e)
         {
             GetAllDataFromXMFT();
         }
-
-
+        /// <summary>
+        /// Fills the of XMFT data grid view.
+        /// </summary>
         void fillOfXMFTDataGridView()
         {
-            XMFT xmt = new XMFT();
+            XMTF xmt = new XMTF();
             for (int i = 0; i < xmt.XMFT_commands.Count(); i++)
             {
                 dGridXMFT["Command", i].Value = xmt.XMFT_commands[i];
@@ -1522,6 +1542,9 @@ namespace Kalipso
             }
 
         }
+        /// <summary>
+        /// Get Temperature From XMFT
+        /// </summary>
         public void GetTemperatureFromXMFT()
         {
             byte[] nn = new byte[6];
@@ -1531,7 +1554,7 @@ namespace Kalipso
             bool varta = false;
             for (int j = 0; j < allComPort.Count() - 1; j++)
             {
-                if (allComPort[j].DeviceName == "XMFT")
+                if (allComPort[j].DeviceName == XMTF.xmt_model)
                 {
                     nn[0] = Convert.ToByte(allComPort[j].deviceAddressRS458);
                     nn[1] = 4;
@@ -1551,7 +1574,6 @@ namespace Kalipso
                     else Temperature = 27.ToString();
 
                 }
-
             }
             if (varta == false)
             {
@@ -1559,11 +1581,11 @@ namespace Kalipso
             }
         }
         /// <summary>
-        /// 
+        /// Gets all data from XMFT.
         /// </summary>
         public void GetAllDataFromXMFT()
         {
-            XMFT xmt = new XMFT();
+            XMTF xmt = new XMTF();
             byte[] nn = new byte[6];
             byte[] tt = new byte[2];
             short[] get = new short[8];
@@ -1574,7 +1596,7 @@ namespace Kalipso
             fillOfXMFTDataGridView();
             for (int j = 0; j < allComPort.Count() - 1; j++)
             {
-                if (allComPort[j].DeviceName == "XMFT")
+                if (allComPort[j].DeviceName == XMTF.xmt_model)
                 {
                     for (int i = 0; i < 26; i++)
                     {
@@ -1596,13 +1618,42 @@ namespace Kalipso
                 }
             }
         }
-
         /// <summary>
-        /// /
+        /// Writes the data to XMFT.
         /// </summary>
-        /// <param name="command"></param>
-        /// <param name="val"></param>
-        void WriteDataToXMFT(int command, int val)
+        /// <param name="command">The command.</param>
+        /// <param name="val">The value.</param>
+        public void WriteDataToXMFT(int command, int val)
+        {
+            byte[] nn = new byte[6];
+            byte[] tt = new byte[2];
+            byte[] val_byte = new byte[4];
+            int offset = 0;
+            val_byte = BitConverter.GetBytes(val);
+            for (int j = 0; j < allComPort.Count() - 1; j++)
+            {
+                if (allComPort[j].DeviceName == XMTF.xmt_model)
+                {
+                    for (int i = 0; i < 27; i++)
+                    {
+                        nn[0] = Convert.ToByte(allComPort[j].deviceAddressRS458);
+                        nn[1] = 6;
+                        nn[2] = 0;
+                        nn[3] = Convert.ToByte(command);
+                        nn[4] = val_byte[1];
+                        nn[5] = val_byte[0];
+                        tt = CRC.ModbusCRC16Calc(nn);
+                        allComPort[j].ActivePort.Write(new byte[] { nn[0], nn[1], nn[2], nn[3], nn[4], nn[5], tt[0], tt[1] }, offset, 8);
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Updates the data XMFT.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="val">The value.</param>
+        void UpdateDataXMFT(int command, int val)
         {
             GetAllDataFromXMFT();
 
@@ -1612,7 +1663,7 @@ namespace Kalipso
             dGridXMFT.Rows.Add();
             for (int j = 0; j < allComPort.Count() - 1; j++)
             {
-                if (allComPort[j].DeviceName == "XMFT")
+                if (allComPort[j].DeviceName == XMTF.xmt_model)
                 {
                     for (int i = 0; i < 27; i++)
                     {

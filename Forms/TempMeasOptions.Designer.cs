@@ -1,5 +1,9 @@
 ﻿namespace Kalipso
 {
+    /// <summary>
+    ///
+    /// </summary>
+    /// <seealso cref="System.Windows.Forms.Form" />
     partial class frmMeasTempOpt
     {
         /// <summary>
@@ -28,24 +32,64 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabControl4 = new System.Windows.Forms.TabControl();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.chTest = new System.Windows.Forms.CheckBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.txtTempSint = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txtComposition = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.txtSampleNumber = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.cmbOperator = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtDiameter = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtHeight = new System.Windows.Forms.TextBox();
+            this.tabPage9 = new System.Windows.Forms.TabPage();
+            this.Direct = new System.Windows.Forms.Label();
+            this.cDirect = new System.Windows.Forms.ComboBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.cbTempMode = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtTempStep = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtCycleCount = new System.Windows.Forms.TextBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.txtTempEnd = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtTempStart = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txtNewCycleTemp = new System.Windows.Forms.TextBox();
+            this.tabPage10 = new System.Windows.Forms.TabPage();
+            this.label33 = new System.Windows.Forms.Label();
+            this.cbExportDBMeasTemp = new System.Windows.Forms.ComboBox();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.label51 = new System.Windows.Forms.Label();
+            this.cbTermocontrollerDevModel = new System.Windows.Forms.ComboBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.cbGPIBDevModel = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabControl3 = new System.Windows.Forms.TabControl();
             this.tabPage7 = new System.Windows.Forms.TabPage();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.label12 = new System.Windows.Forms.Label();
-            this.tTimerList = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.tVoltageList = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.tFreqList = new System.Windows.Forms.TextBox();
+            this.tabControl5 = new System.Windows.Forms.TabControl();
+            this.tabPage11 = new System.Windows.Forms.TabPage();
             this.tTempList = new System.Windows.Forms.TextBox();
             this.DGTempData = new System.Windows.Forms.DataGridView();
             this.Temp = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TimeS = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.label9 = new System.Windows.Forms.Label();
+            this.Cycle = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tabPage12 = new System.Windows.Forms.TabPage();
+            this.label12 = new System.Windows.Forms.Label();
+            this.tTimerList = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.tVoltageList = new System.Windows.Forms.TextBox();
+            this.tabPage13 = new System.Windows.Forms.TabPage();
+            this.label10 = new System.Windows.Forms.Label();
+            this.tFreqList = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.cbClear = new System.Windows.Forms.CheckBox();
             this.cbDefaultFreq = new System.Windows.Forms.CheckBox();
@@ -137,53 +181,21 @@
             this.opnFileVoltage = new System.Windows.Forms.OpenFileDialog();
             this.opnFileTimer = new System.Windows.Forms.OpenFileDialog();
             this.opnFileExcel = new System.Windows.Forms.OpenFileDialog();
-            this.tabControl4 = new System.Windows.Forms.TabControl();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.tabPage9 = new System.Windows.Forms.TabPage();
-            this.label3 = new System.Windows.Forms.Label();
-            this.txtDiameter = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.txtHeight = new System.Windows.Forms.TextBox();
-            this.tabPage10 = new System.Windows.Forms.TabPage();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.label51 = new System.Windows.Forms.Label();
-            this.cbTermocontrollerDevModel = new System.Windows.Forms.ComboBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.cbGPIBDevModel = new System.Windows.Forms.ComboBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.cmbOperator = new System.Windows.Forms.ComboBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.txtNewCycleTemp = new System.Windows.Forms.TextBox();
-            this.label20 = new System.Windows.Forms.Label();
-            this.txtTempEnd = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.txtTempStart = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.txtSampleNumber = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.txtCycleCount = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.txtTempStep = new System.Windows.Forms.TextBox();
-            this.label22 = new System.Windows.Forms.Label();
-            this.txtTempSint = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.txtComposition = new System.Windows.Forms.TextBox();
-            this.label21 = new System.Windows.Forms.Label();
-            this.cbTempMode = new System.Windows.Forms.ComboBox();
-            this.Direct = new System.Windows.Forms.Label();
-            this.cDirect = new System.Windows.Forms.ComboBox();
-            this.label33 = new System.Windows.Forms.Label();
-            this.cbExportDBMeasTemp = new System.Windows.Forms.ComboBox();
-            this.chTest = new System.Windows.Forms.CheckBox();
-            this.xMFTBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.xMFTcommandsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.tabControl4.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.tabPage9.SuspendLayout();
+            this.tabPage10.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabControl3.SuspendLayout();
             this.tabPage7.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.tabControl5.SuspendLayout();
+            this.tabPage11.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGTempData)).BeginInit();
+            this.tabPage12.SuspendLayout();
+            this.tabPage13.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tabPage8.SuspendLayout();
             this.tabControl2.SuspendLayout();
@@ -193,13 +205,6 @@
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
-            this.tabControl4.SuspendLayout();
-            this.tabPage3.SuspendLayout();
-            this.tabPage9.SuspendLayout();
-            this.tabPage10.SuspendLayout();
-            this.panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.xMFTBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.xMFTcommandsBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -211,7 +216,7 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 27);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1349, 608);
+            this.tabControl1.Size = new System.Drawing.Size(1172, 608);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -220,10 +225,439 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1341, 582);
+            this.tabPage1.Size = new System.Drawing.Size(1164, 582);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Sample value";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabControl4
+            // 
+            this.tabControl4.Controls.Add(this.tabPage3);
+            this.tabControl4.Controls.Add(this.tabPage9);
+            this.tabControl4.Controls.Add(this.tabPage10);
+            this.tabControl4.Location = new System.Drawing.Point(6, 6);
+            this.tabControl4.Name = "tabControl4";
+            this.tabControl4.SelectedIndex = 0;
+            this.tabControl4.Size = new System.Drawing.Size(267, 277);
+            this.tabControl4.TabIndex = 38;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.chTest);
+            this.tabPage3.Controls.Add(this.label22);
+            this.tabPage3.Controls.Add(this.txtTempSint);
+            this.tabPage3.Controls.Add(this.label7);
+            this.tabPage3.Controls.Add(this.txtComposition);
+            this.tabPage3.Controls.Add(this.label8);
+            this.tabPage3.Controls.Add(this.txtSampleNumber);
+            this.tabPage3.Controls.Add(this.label15);
+            this.tabPage3.Controls.Add(this.cmbOperator);
+            this.tabPage3.Controls.Add(this.label3);
+            this.tabPage3.Controls.Add(this.txtDiameter);
+            this.tabPage3.Controls.Add(this.label1);
+            this.tabPage3.Controls.Add(this.txtHeight);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(259, 251);
+            this.tabPage3.TabIndex = 0;
+            this.tabPage3.Text = "Sample Opt.";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // chTest
+            // 
+            this.chTest.AutoSize = true;
+            this.chTest.Location = new System.Drawing.Point(31, 208);
+            this.chTest.Name = "chTest";
+            this.chTest.Size = new System.Drawing.Size(43, 17);
+            this.chTest.TabIndex = 40;
+            this.chTest.Text = "test";
+            this.chTest.UseVisualStyleBackColor = true;
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label22.Location = new System.Drawing.Point(112, 67);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(71, 23);
+            this.label22.TabIndex = 39;
+            this.label22.Text = "Tsint., K";
+            // 
+            // txtTempSint
+            // 
+            this.txtTempSint.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtTempSint.Location = new System.Drawing.Point(112, 93);
+            this.txtTempSint.Name = "txtTempSint";
+            this.txtTempSint.Size = new System.Drawing.Size(100, 29);
+            this.txtTempSint.TabIndex = 38;
+            this.txtTempSint.Text = "1470";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label7.Location = new System.Drawing.Point(112, 9);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(107, 23);
+            this.label7.TabIndex = 37;
+            this.label7.Text = "Composition";
+            // 
+            // txtComposition
+            // 
+            this.txtComposition.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtComposition.Location = new System.Drawing.Point(112, 35);
+            this.txtComposition.Name = "txtComposition";
+            this.txtComposition.Size = new System.Drawing.Size(100, 29);
+            this.txtComposition.TabIndex = 36;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label8.Location = new System.Drawing.Point(6, 125);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(105, 23);
+            this.label8.TabIndex = 35;
+            this.label8.Text = "№ of sample";
+            // 
+            // txtSampleNumber
+            // 
+            this.txtSampleNumber.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtSampleNumber.Location = new System.Drawing.Point(6, 151);
+            this.txtSampleNumber.Name = "txtSampleNumber";
+            this.txtSampleNumber.Size = new System.Drawing.Size(100, 29);
+            this.txtSampleNumber.TabIndex = 34;
+            this.txtSampleNumber.Text = "1";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label15.Location = new System.Drawing.Point(112, 125);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(77, 23);
+            this.label15.TabIndex = 33;
+            this.label15.Text = "Operator";
+            // 
+            // cmbOperator
+            // 
+            this.cmbOperator.FormattingEnabled = true;
+            this.cmbOperator.Items.AddRange(new object[] {
+            "Andryushin K.P.",
+            "Andryushina I.N.",
+            "Talanov M.V.",
+            "Pavelko A.A.",
+            "Pavlenko A.V.",
+            "Boldyrev N.V.",
+            "Glazunova E.V.",
+            "Sadykov H.A."});
+            this.cmbOperator.Location = new System.Drawing.Point(112, 151);
+            this.cmbOperator.Name = "cmbOperator";
+            this.cmbOperator.Size = new System.Drawing.Size(100, 21);
+            this.cmbOperator.TabIndex = 32;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label3.Location = new System.Drawing.Point(6, 67);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(68, 23);
+            this.label3.TabIndex = 9;
+            this.label3.Text = "Diametr";
+            // 
+            // txtDiameter
+            // 
+            this.txtDiameter.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtDiameter.Location = new System.Drawing.Point(6, 93);
+            this.txtDiameter.Name = "txtDiameter";
+            this.txtDiameter.Size = new System.Drawing.Size(100, 29);
+            this.txtDiameter.TabIndex = 8;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Location = new System.Drawing.Point(6, 9);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(64, 22);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "Height";
+            // 
+            // txtHeight
+            // 
+            this.txtHeight.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtHeight.Location = new System.Drawing.Point(6, 35);
+            this.txtHeight.Name = "txtHeight";
+            this.txtHeight.Size = new System.Drawing.Size(100, 29);
+            this.txtHeight.TabIndex = 6;
+            // 
+            // tabPage9
+            // 
+            this.tabPage9.Controls.Add(this.Direct);
+            this.tabPage9.Controls.Add(this.cDirect);
+            this.tabPage9.Controls.Add(this.label21);
+            this.tabPage9.Controls.Add(this.cbTempMode);
+            this.tabPage9.Controls.Add(this.label4);
+            this.tabPage9.Controls.Add(this.txtTempStep);
+            this.tabPage9.Controls.Add(this.label5);
+            this.tabPage9.Controls.Add(this.txtCycleCount);
+            this.tabPage9.Controls.Add(this.label20);
+            this.tabPage9.Controls.Add(this.txtTempEnd);
+            this.tabPage9.Controls.Add(this.label2);
+            this.tabPage9.Controls.Add(this.txtTempStart);
+            this.tabPage9.Controls.Add(this.label6);
+            this.tabPage9.Controls.Add(this.txtNewCycleTemp);
+            this.tabPage9.Location = new System.Drawing.Point(4, 22);
+            this.tabPage9.Name = "tabPage9";
+            this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage9.Size = new System.Drawing.Size(259, 251);
+            this.tabPage9.TabIndex = 1;
+            this.tabPage9.Text = "Temp.";
+            this.tabPage9.UseVisualStyleBackColor = true;
+            // 
+            // Direct
+            // 
+            this.Direct.AutoSize = true;
+            this.Direct.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Direct.Location = new System.Drawing.Point(6, 194);
+            this.Direct.Name = "Direct";
+            this.Direct.Size = new System.Drawing.Size(54, 23);
+            this.Direct.TabIndex = 39;
+            this.Direct.Text = "Direct";
+            // 
+            // cDirect
+            // 
+            this.cDirect.FormattingEnabled = true;
+            this.cDirect.Items.AddRange(new object[] {
+            "Heat",
+            "Cool",
+            "Positive",
+            "Negative"});
+            this.cDirect.Location = new System.Drawing.Point(3, 220);
+            this.cDirect.Name = "cDirect";
+            this.cDirect.Size = new System.Drawing.Size(121, 21);
+            this.cDirect.TabIndex = 38;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label21.Location = new System.Drawing.Point(120, 133);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(104, 23);
+            this.label21.TabIndex = 37;
+            this.label21.Text = "Temp. mode";
+            this.label21.Visible = false;
+            // 
+            // cbTempMode
+            // 
+            this.cbTempMode.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.25F);
+            this.cbTempMode.FormattingEnabled = true;
+            this.cbTempMode.Items.AddRange(new object[] {
+            "Step",
+            "Ramp",
+            "Ramp_reversive"});
+            this.cbTempMode.Location = new System.Drawing.Point(120, 161);
+            this.cbTempMode.Name = "cbTempMode";
+            this.cbTempMode.Size = new System.Drawing.Size(100, 30);
+            this.cbTempMode.TabIndex = 36;
+            this.cbTempMode.Visible = false;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label4.Location = new System.Drawing.Point(6, 133);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(44, 23);
+            this.label4.TabIndex = 35;
+            this.label4.Text = "Step";
+            // 
+            // txtTempStep
+            // 
+            this.txtTempStep.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtTempStep.Location = new System.Drawing.Point(6, 162);
+            this.txtTempStep.Name = "txtTempStep";
+            this.txtTempStep.Size = new System.Drawing.Size(100, 29);
+            this.txtTempStep.TabIndex = 34;
+            this.txtTempStep.Text = "1";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label5.Location = new System.Drawing.Point(116, 67);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(83, 23);
+            this.label5.TabIndex = 33;
+            this.label5.Text = "Cycle col.";
+            // 
+            // txtCycleCount
+            // 
+            this.txtCycleCount.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtCycleCount.Location = new System.Drawing.Point(120, 93);
+            this.txtCycleCount.Name = "txtCycleCount";
+            this.txtCycleCount.Size = new System.Drawing.Size(100, 29);
+            this.txtCycleCount.TabIndex = 32;
+            this.txtCycleCount.Text = "40";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label20.Location = new System.Drawing.Point(2, 67);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(91, 23);
+            this.label20.TabIndex = 31;
+            this.label20.Text = "Temp. End";
+            // 
+            // txtTempEnd
+            // 
+            this.txtTempEnd.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtTempEnd.Location = new System.Drawing.Point(6, 96);
+            this.txtTempEnd.Name = "txtTempEnd";
+            this.txtTempEnd.Size = new System.Drawing.Size(100, 29);
+            this.txtTempEnd.TabIndex = 30;
+            this.txtTempEnd.Text = "723";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label2.Location = new System.Drawing.Point(6, 3);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(96, 23);
+            this.label2.TabIndex = 29;
+            this.label2.Text = "Temp. Start";
+            // 
+            // txtTempStart
+            // 
+            this.txtTempStart.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtTempStart.Location = new System.Drawing.Point(6, 29);
+            this.txtTempStart.Name = "txtTempStart";
+            this.txtTempStart.Size = new System.Drawing.Size(100, 29);
+            this.txtTempStart.TabIndex = 28;
+            this.txtTempStart.Text = "300";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label6.Location = new System.Drawing.Point(120, 3);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(132, 23);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "New cycle temp.";
+            // 
+            // txtNewCycleTemp
+            // 
+            this.txtNewCycleTemp.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtNewCycleTemp.Location = new System.Drawing.Point(120, 29);
+            this.txtNewCycleTemp.Name = "txtNewCycleTemp";
+            this.txtNewCycleTemp.Size = new System.Drawing.Size(100, 29);
+            this.txtNewCycleTemp.TabIndex = 12;
+            this.txtNewCycleTemp.Text = "348";
+            // 
+            // tabPage10
+            // 
+            this.tabPage10.Controls.Add(this.label33);
+            this.tabPage10.Controls.Add(this.cbExportDBMeasTemp);
+            this.tabPage10.Controls.Add(this.panel3);
+            this.tabPage10.Location = new System.Drawing.Point(4, 22);
+            this.tabPage10.Name = "tabPage10";
+            this.tabPage10.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage10.Size = new System.Drawing.Size(259, 251);
+            this.tabPage10.TabIndex = 2;
+            this.tabPage10.Text = "Meters";
+            this.tabPage10.UseVisualStyleBackColor = true;
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label33.Location = new System.Drawing.Point(6, 138);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(97, 23);
+            this.label33.TabIndex = 41;
+            this.label33.Text = "Data export";
+            // 
+            // cbExportDBMeasTemp
+            // 
+            this.cbExportDBMeasTemp.FormattingEnabled = true;
+            this.cbExportDBMeasTemp.Items.AddRange(new object[] {
+            "None",
+            "Export to DB parallel",
+            "Export to DB(only)"});
+            this.cbExportDBMeasTemp.Location = new System.Drawing.Point(10, 164);
+            this.cbExportDBMeasTemp.Name = "cbExportDBMeasTemp";
+            this.cbExportDBMeasTemp.Size = new System.Drawing.Size(121, 21);
+            this.cbExportDBMeasTemp.TabIndex = 40;
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.label51);
+            this.panel3.Controls.Add(this.cbTermocontrollerDevModel);
+            this.panel3.Controls.Add(this.label14);
+            this.panel3.Controls.Add(this.cbGPIBDevModel);
+            this.panel3.Location = new System.Drawing.Point(7, 16);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(195, 109);
+            this.panel3.TabIndex = 39;
+            // 
+            // label51
+            // 
+            this.label51.AutoSize = true;
+            this.label51.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label51.Location = new System.Drawing.Point(9, 56);
+            this.label51.Name = "label51";
+            this.label51.Size = new System.Drawing.Size(183, 23);
+            this.label51.TabIndex = 23;
+            this.label51.Text = "Termocontroller model";
+            // 
+            // cbTermocontrollerDevModel
+            // 
+            this.cbTermocontrollerDevModel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbTermocontrollerDevModel.DisplayMember = "Length";
+            this.cbTermocontrollerDevModel.FormattingEnabled = true;
+            this.cbTermocontrollerDevModel.Items.AddRange(new object[] {
+            "Varta",
+            "XMFT"});
+            this.cbTermocontrollerDevModel.Location = new System.Drawing.Point(13, 79);
+            this.cbTermocontrollerDevModel.Name = "cbTermocontrollerDevModel";
+            this.cbTermocontrollerDevModel.Size = new System.Drawing.Size(174, 21);
+            this.cbTermocontrollerDevModel.TabIndex = 22;
+            this.cbTermocontrollerDevModel.ValueMember = "Length";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label14.Location = new System.Drawing.Point(9, 6);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(103, 23);
+            this.label14.TabIndex = 21;
+            this.label14.Text = "Meter model";
+            // 
+            // cbGPIBDevModel
+            // 
+            this.cbGPIBDevModel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbGPIBDevModel.FormattingEnabled = true;
+            this.cbGPIBDevModel.Items.AddRange(new object[] {
+            "Agilent4980A",
+            "Agilent4285A",
+            "Agilent4263B",
+            "Agilent34401A",
+            "WayneKerr6500B",
+            "WayneKerr4300",
+            "E7-20"});
+            this.cbGPIBDevModel.Location = new System.Drawing.Point(13, 32);
+            this.cbGPIBDevModel.Name = "cbGPIBDevModel";
+            this.cbGPIBDevModel.Size = new System.Drawing.Size(174, 21);
+            this.cbGPIBDevModel.TabIndex = 20;
             // 
             // tabPage2
             // 
@@ -231,7 +665,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1341, 582);
+            this.tabPage2.Size = new System.Drawing.Size(1164, 582);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Work options";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -243,120 +677,65 @@
             this.tabControl3.Location = new System.Drawing.Point(6, 6);
             this.tabControl3.Name = "tabControl3";
             this.tabControl3.SelectedIndex = 0;
-            this.tabControl3.Size = new System.Drawing.Size(1289, 570);
+            this.tabControl3.Size = new System.Drawing.Size(1095, 570);
             this.tabControl3.TabIndex = 71;
             // 
             // tabPage7
             // 
-            this.tabPage7.Controls.Add(this.panel2);
+            this.tabPage7.Controls.Add(this.tabControl5);
             this.tabPage7.Controls.Add(this.panel1);
             this.tabPage7.Location = new System.Drawing.Point(4, 22);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage7.Size = new System.Drawing.Size(1281, 544);
+            this.tabPage7.Size = new System.Drawing.Size(1087, 544);
             this.tabPage7.TabIndex = 0;
             this.tabPage7.Text = "Experiment mode";
             this.tabPage7.UseVisualStyleBackColor = true;
             // 
-            // panel2
+            // tabControl5
             // 
-            this.panel2.Controls.Add(this.label12);
-            this.panel2.Controls.Add(this.tTimerList);
-            this.panel2.Controls.Add(this.label11);
-            this.panel2.Controls.Add(this.tVoltageList);
-            this.panel2.Controls.Add(this.label10);
-            this.panel2.Controls.Add(this.tFreqList);
-            this.panel2.Controls.Add(this.tTempList);
-            this.panel2.Controls.Add(this.DGTempData);
-            this.panel2.Controls.Add(this.label9);
-            this.panel2.Location = new System.Drawing.Point(441, 6);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(626, 526);
-            this.panel2.TabIndex = 123;
+            this.tabControl5.Controls.Add(this.tabPage11);
+            this.tabControl5.Controls.Add(this.tabPage12);
+            this.tabControl5.Controls.Add(this.tabPage13);
+            this.tabControl5.Location = new System.Drawing.Point(454, 8);
+            this.tabControl5.Name = "tabControl5";
+            this.tabControl5.SelectedIndex = 0;
+            this.tabControl5.Size = new System.Drawing.Size(561, 517);
+            this.tabControl5.TabIndex = 124;
             // 
-            // label12
+            // tabPage11
             // 
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label12.Location = new System.Drawing.Point(498, 6);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(49, 23);
-            this.label12.TabIndex = 128;
-            this.label12.Text = "Timer";
-            // 
-            // tTimerList
-            // 
-            this.tTimerList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.tTimerList.Location = new System.Drawing.Point(491, 32);
-            this.tTimerList.Multiline = true;
-            this.tTimerList.Name = "tTimerList";
-            this.tTimerList.Size = new System.Drawing.Size(128, 400);
-            this.tTimerList.TabIndex = 127;
-            this.tTimerList.Text = "0\r\n10\r\n20\r\n30\r\n40";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label11.Location = new System.Drawing.Point(364, 6);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(63, 23);
-            this.label11.TabIndex = 126;
-            this.label11.Text = "Voltage";
-            // 
-            // tVoltageList
-            // 
-            this.tVoltageList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.tVoltageList.Location = new System.Drawing.Point(357, 32);
-            this.tVoltageList.Multiline = true;
-            this.tVoltageList.Name = "tVoltageList";
-            this.tVoltageList.Size = new System.Drawing.Size(128, 400);
-            this.tVoltageList.TabIndex = 125;
-            this.tVoltageList.Text = "0\r\n0\r\n20\r\n30\r\n40";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label10.Location = new System.Drawing.Point(230, 6);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(85, 23);
-            this.label10.TabIndex = 124;
-            this.label10.Text = "Frequency";
-            // 
-            // tFreqList
-            // 
-            this.tFreqList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.tFreqList.Location = new System.Drawing.Point(223, 32);
-            this.tFreqList.Multiline = true;
-            this.tFreqList.Name = "tFreqList";
-            this.tFreqList.Size = new System.Drawing.Size(128, 400);
-            this.tFreqList.TabIndex = 123;
+            this.tabPage11.Controls.Add(this.tTempList);
+            this.tabPage11.Controls.Add(this.DGTempData);
+            this.tabPage11.Location = new System.Drawing.Point(4, 22);
+            this.tabPage11.Name = "tabPage11";
+            this.tabPage11.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage11.Size = new System.Drawing.Size(553, 491);
+            this.tabPage11.TabIndex = 0;
+            this.tabPage11.Text = "Temperature";
+            this.tabPage11.UseVisualStyleBackColor = true;
             // 
             // tTempList
             // 
             this.tTempList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.tTempList.Location = new System.Drawing.Point(3, 437);
+            this.tTempList.Location = new System.Drawing.Point(446, 3);
             this.tTempList.Multiline = true;
             this.tTempList.Name = "tTempList";
-            this.tTempList.Size = new System.Drawing.Size(202, 86);
-            this.tTempList.TabIndex = 122;
+            this.tTempList.Size = new System.Drawing.Size(104, 482);
+            this.tTempList.TabIndex = 127;
             // 
             // DGTempData
             // 
             this.DGTempData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGTempData.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Temp,
-            this.TimeS});
-            this.DGTempData.Location = new System.Drawing.Point(3, 32);
+            this.TimeS,
+            this.Cycle});
+            this.DGTempData.Location = new System.Drawing.Point(6, 3);
             this.DGTempData.Name = "DGTempData";
-            this.DGTempData.Size = new System.Drawing.Size(202, 370);
-            this.DGTempData.TabIndex = 121;
-            this.DGTempData.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DGTempData_CellMouseClick);
+            this.DGTempData.Size = new System.Drawing.Size(434, 482);
+            this.DGTempData.TabIndex = 126;
             this.DGTempData.MouseClick += new System.Windows.Forms.MouseEventHandler(this.DGTempData_MouseClick);
             // 
             // Temp
@@ -369,15 +748,98 @@
             this.TimeS.HeaderText = "Time, min";
             this.TimeS.Name = "TimeS";
             // 
-            // label9
+            // Cycle
             // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label9.Location = new System.Drawing.Point(3, 8);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(99, 23);
-            this.label9.TabIndex = 111;
-            this.label9.Text = "Temperature";
+            this.Cycle.HeaderText = "CycleNum";
+            this.Cycle.Name = "Cycle";
+            // 
+            // tabPage12
+            // 
+            this.tabPage12.Controls.Add(this.label12);
+            this.tabPage12.Controls.Add(this.tTimerList);
+            this.tabPage12.Controls.Add(this.label11);
+            this.tabPage12.Controls.Add(this.tVoltageList);
+            this.tabPage12.Location = new System.Drawing.Point(4, 22);
+            this.tabPage12.Name = "tabPage12";
+            this.tabPage12.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage12.Size = new System.Drawing.Size(553, 491);
+            this.tabPage12.TabIndex = 1;
+            this.tabPage12.Text = "Voltage";
+            this.tabPage12.UseVisualStyleBackColor = true;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label12.Location = new System.Drawing.Point(190, 14);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(49, 23);
+            this.label12.TabIndex = 130;
+            this.label12.Text = "Timer";
+            // 
+            // tTimerList
+            // 
+            this.tTimerList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.tTimerList.Location = new System.Drawing.Point(190, 40);
+            this.tTimerList.Multiline = true;
+            this.tTimerList.Name = "tTimerList";
+            this.tTimerList.Size = new System.Drawing.Size(150, 400);
+            this.tTimerList.TabIndex = 129;
+            this.tTimerList.Text = "0\r\n10\r\n20\r\n30\r\n40";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label11.Location = new System.Drawing.Point(20, 14);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(63, 23);
+            this.label11.TabIndex = 128;
+            this.label11.Text = "Voltage";
+            // 
+            // tVoltageList
+            // 
+            this.tVoltageList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.tVoltageList.Location = new System.Drawing.Point(20, 40);
+            this.tVoltageList.Multiline = true;
+            this.tVoltageList.Name = "tVoltageList";
+            this.tVoltageList.Size = new System.Drawing.Size(150, 400);
+            this.tVoltageList.TabIndex = 127;
+            this.tVoltageList.Text = "0\r\n0\r\n20\r\n30\r\n40";
+            // 
+            // tabPage13
+            // 
+            this.tabPage13.Controls.Add(this.label10);
+            this.tabPage13.Controls.Add(this.tFreqList);
+            this.tabPage13.Location = new System.Drawing.Point(4, 22);
+            this.tabPage13.Name = "tabPage13";
+            this.tabPage13.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage13.Size = new System.Drawing.Size(553, 491);
+            this.tabPage13.TabIndex = 2;
+            this.tabPage13.Text = "Frequency";
+            this.tabPage13.UseVisualStyleBackColor = true;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label10.Location = new System.Drawing.Point(13, 14);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(85, 23);
+            this.label10.TabIndex = 126;
+            this.label10.Text = "Frequency";
+            // 
+            // tFreqList
+            // 
+            this.tFreqList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.tFreqList.Location = new System.Drawing.Point(6, 40);
+            this.tFreqList.Multiline = true;
+            this.tFreqList.Name = "tFreqList";
+            this.tFreqList.Size = new System.Drawing.Size(166, 445);
+            this.tFreqList.TabIndex = 125;
             // 
             // panel1
             // 
@@ -440,7 +902,7 @@
             // cbDefaultFreq
             // 
             this.cbDefaultFreq.AutoSize = true;
-            this.cbDefaultFreq.Location = new System.Drawing.Point(16, 523);
+            this.cbDefaultFreq.Location = new System.Drawing.Point(16, 518);
             this.cbDefaultFreq.Name = "cbDefaultFreq";
             this.cbDefaultFreq.Size = new System.Drawing.Size(84, 17);
             this.cbDefaultFreq.TabIndex = 143;
@@ -478,6 +940,7 @@
             this.btnAddTemp.TabIndex = 140;
             this.btnAddTemp.Text = "Add temp.";
             this.btnAddTemp.UseVisualStyleBackColor = true;
+            this.btnAddTemp.Click += new System.EventHandler(this.btnAddTemp_Click_1);
             // 
             // btnAddFreq
             // 
@@ -487,6 +950,7 @@
             this.btnAddFreq.TabIndex = 139;
             this.btnAddFreq.Text = "Add freq.";
             this.btnAddFreq.UseVisualStyleBackColor = true;
+            this.btnAddFreq.Click += new System.EventHandler(this.btnAddFreq_Click);
             // 
             // label19
             // 
@@ -932,7 +1396,7 @@
             this.tabPage8.Location = new System.Drawing.Point(4, 22);
             this.tabPage8.Name = "tabPage8";
             this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage8.Size = new System.Drawing.Size(1281, 544);
+            this.tabPage8.Size = new System.Drawing.Size(1087, 544);
             this.tabPage8.TabIndex = 1;
             this.tabPage8.Text = "Experiment res.";
             this.tabPage8.UseVisualStyleBackColor = true;
@@ -1423,443 +1887,6 @@
             this.opnFileExcel.FileName = "openFileDialog1";
             this.opnFileExcel.FileOk += new System.ComponentModel.CancelEventHandler(this.opnFileExcel_FileOk);
             // 
-            // tabControl4
-            // 
-            this.tabControl4.Controls.Add(this.tabPage3);
-            this.tabControl4.Controls.Add(this.tabPage9);
-            this.tabControl4.Controls.Add(this.tabPage10);
-            this.tabControl4.Location = new System.Drawing.Point(6, 6);
-            this.tabControl4.Name = "tabControl4";
-            this.tabControl4.SelectedIndex = 0;
-            this.tabControl4.Size = new System.Drawing.Size(267, 277);
-            this.tabControl4.TabIndex = 38;
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.Controls.Add(this.chTest);
-            this.tabPage3.Controls.Add(this.label22);
-            this.tabPage3.Controls.Add(this.txtTempSint);
-            this.tabPage3.Controls.Add(this.label7);
-            this.tabPage3.Controls.Add(this.txtComposition);
-            this.tabPage3.Controls.Add(this.label8);
-            this.tabPage3.Controls.Add(this.txtSampleNumber);
-            this.tabPage3.Controls.Add(this.label15);
-            this.tabPage3.Controls.Add(this.cmbOperator);
-            this.tabPage3.Controls.Add(this.label3);
-            this.tabPage3.Controls.Add(this.txtDiameter);
-            this.tabPage3.Controls.Add(this.label1);
-            this.tabPage3.Controls.Add(this.txtHeight);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(237, 251);
-            this.tabPage3.TabIndex = 0;
-            this.tabPage3.Text = "Sample Opt.";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // tabPage9
-            // 
-            this.tabPage9.Controls.Add(this.Direct);
-            this.tabPage9.Controls.Add(this.cDirect);
-            this.tabPage9.Controls.Add(this.label21);
-            this.tabPage9.Controls.Add(this.cbTempMode);
-            this.tabPage9.Controls.Add(this.label4);
-            this.tabPage9.Controls.Add(this.txtTempStep);
-            this.tabPage9.Controls.Add(this.label5);
-            this.tabPage9.Controls.Add(this.txtCycleCount);
-            this.tabPage9.Controls.Add(this.label20);
-            this.tabPage9.Controls.Add(this.txtTempEnd);
-            this.tabPage9.Controls.Add(this.label2);
-            this.tabPage9.Controls.Add(this.txtTempStart);
-            this.tabPage9.Controls.Add(this.label6);
-            this.tabPage9.Controls.Add(this.txtNewCycleTemp);
-            this.tabPage9.Location = new System.Drawing.Point(4, 22);
-            this.tabPage9.Name = "tabPage9";
-            this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage9.Size = new System.Drawing.Size(259, 251);
-            this.tabPage9.TabIndex = 1;
-            this.tabPage9.Text = "Temp.";
-            this.tabPage9.UseVisualStyleBackColor = true;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label3.Location = new System.Drawing.Point(6, 67);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(68, 23);
-            this.label3.TabIndex = 9;
-            this.label3.Text = "Diametr";
-            // 
-            // txtDiameter
-            // 
-            this.txtDiameter.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtDiameter.Location = new System.Drawing.Point(6, 93);
-            this.txtDiameter.Name = "txtDiameter";
-            this.txtDiameter.Size = new System.Drawing.Size(100, 29);
-            this.txtDiameter.TabIndex = 8;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(6, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(64, 22);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "Height";
-            // 
-            // txtHeight
-            // 
-            this.txtHeight.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtHeight.Location = new System.Drawing.Point(6, 35);
-            this.txtHeight.Name = "txtHeight";
-            this.txtHeight.Size = new System.Drawing.Size(100, 29);
-            this.txtHeight.TabIndex = 6;
-            // 
-            // tabPage10
-            // 
-            this.tabPage10.Controls.Add(this.label33);
-            this.tabPage10.Controls.Add(this.cbExportDBMeasTemp);
-            this.tabPage10.Controls.Add(this.panel3);
-            this.tabPage10.Location = new System.Drawing.Point(4, 22);
-            this.tabPage10.Name = "tabPage10";
-            this.tabPage10.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage10.Size = new System.Drawing.Size(259, 251);
-            this.tabPage10.TabIndex = 2;
-            this.tabPage10.Text = "Meters";
-            this.tabPage10.UseVisualStyleBackColor = true;
-            // 
-            // panel3
-            // 
-            this.panel3.Controls.Add(this.label51);
-            this.panel3.Controls.Add(this.cbTermocontrollerDevModel);
-            this.panel3.Controls.Add(this.label14);
-            this.panel3.Controls.Add(this.cbGPIBDevModel);
-            this.panel3.Location = new System.Drawing.Point(7, 16);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(195, 109);
-            this.panel3.TabIndex = 39;
-            // 
-            // label51
-            // 
-            this.label51.AutoSize = true;
-            this.label51.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label51.Location = new System.Drawing.Point(9, 56);
-            this.label51.Name = "label51";
-            this.label51.Size = new System.Drawing.Size(183, 23);
-            this.label51.TabIndex = 23;
-            this.label51.Text = "Termocontroller model";
-            // 
-            // cbTermocontrollerDevModel
-            // 
-            this.cbTermocontrollerDevModel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbTermocontrollerDevModel.FormattingEnabled = true;
-            this.cbTermocontrollerDevModel.Items.AddRange(new object[] {
-            "Varta",
-            "XMFT"});
-            this.cbTermocontrollerDevModel.Location = new System.Drawing.Point(13, 79);
-            this.cbTermocontrollerDevModel.Name = "cbTermocontrollerDevModel";
-            this.cbTermocontrollerDevModel.Size = new System.Drawing.Size(174, 21);
-            this.cbTermocontrollerDevModel.TabIndex = 22;
-            this.cbTermocontrollerDevModel.ValueMember = "Length";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label14.Location = new System.Drawing.Point(9, 6);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(103, 23);
-            this.label14.TabIndex = 21;
-            this.label14.Text = "Meter model";
-            // 
-            // cbGPIBDevModel
-            // 
-            this.cbGPIBDevModel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbGPIBDevModel.FormattingEnabled = true;
-            this.cbGPIBDevModel.Items.AddRange(new object[] {
-            "Agilent4980A",
-            "Agilent4285A",
-            "Agilent4263B",
-            "Agilent34401A",
-            "WayneKerr6500B",
-            "WayneKerr4300",
-            "E7-20"});
-            this.cbGPIBDevModel.Location = new System.Drawing.Point(13, 32);
-            this.cbGPIBDevModel.Name = "cbGPIBDevModel";
-            this.cbGPIBDevModel.Size = new System.Drawing.Size(174, 21);
-            this.cbGPIBDevModel.TabIndex = 20;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label15.Location = new System.Drawing.Point(112, 125);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(77, 23);
-            this.label15.TabIndex = 33;
-            this.label15.Text = "Operator";
-            // 
-            // cmbOperator
-            // 
-            this.cmbOperator.FormattingEnabled = true;
-            this.cmbOperator.Items.AddRange(new object[] {
-            "Andryushin K.P.",
-            "Andryushina I.N.",
-            "Talanov M.V.",
-            "Pavelko A.A.",
-            "Pavlenko A.V.",
-            "Boldyrev N.V.",
-            "Glazunova E.V.",
-            "Sadykov H.A."});
-            this.cmbOperator.Location = new System.Drawing.Point(112, 151);
-            this.cmbOperator.Name = "cmbOperator";
-            this.cmbOperator.Size = new System.Drawing.Size(100, 21);
-            this.cmbOperator.TabIndex = 32;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label6.Location = new System.Drawing.Point(120, 3);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(132, 23);
-            this.label6.TabIndex = 13;
-            this.label6.Text = "New cycle temp.";
-            // 
-            // txtNewCycleTemp
-            // 
-            this.txtNewCycleTemp.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtNewCycleTemp.Location = new System.Drawing.Point(120, 29);
-            this.txtNewCycleTemp.Name = "txtNewCycleTemp";
-            this.txtNewCycleTemp.Size = new System.Drawing.Size(100, 29);
-            this.txtNewCycleTemp.TabIndex = 12;
-            this.txtNewCycleTemp.Text = "348";
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label20.Location = new System.Drawing.Point(2, 67);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(91, 23);
-            this.label20.TabIndex = 31;
-            this.label20.Text = "Temp. End";
-            // 
-            // txtTempEnd
-            // 
-            this.txtTempEnd.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtTempEnd.Location = new System.Drawing.Point(6, 96);
-            this.txtTempEnd.Name = "txtTempEnd";
-            this.txtTempEnd.Size = new System.Drawing.Size(100, 29);
-            this.txtTempEnd.TabIndex = 30;
-            this.txtTempEnd.Text = "723";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(6, 3);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(96, 23);
-            this.label2.TabIndex = 29;
-            this.label2.Text = "Temp. Start";
-            // 
-            // txtTempStart
-            // 
-            this.txtTempStart.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtTempStart.Location = new System.Drawing.Point(6, 29);
-            this.txtTempStart.Name = "txtTempStart";
-            this.txtTempStart.Size = new System.Drawing.Size(100, 29);
-            this.txtTempStart.TabIndex = 28;
-            this.txtTempStart.Text = "300";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label8.Location = new System.Drawing.Point(6, 125);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(105, 23);
-            this.label8.TabIndex = 35;
-            this.label8.Text = "№ of sample";
-            // 
-            // txtSampleNumber
-            // 
-            this.txtSampleNumber.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtSampleNumber.Location = new System.Drawing.Point(6, 151);
-            this.txtSampleNumber.Name = "txtSampleNumber";
-            this.txtSampleNumber.Size = new System.Drawing.Size(100, 29);
-            this.txtSampleNumber.TabIndex = 34;
-            this.txtSampleNumber.Text = "1";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label5.Location = new System.Drawing.Point(116, 67);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(83, 23);
-            this.label5.TabIndex = 33;
-            this.label5.Text = "Cycle col.";
-            // 
-            // txtCycleCount
-            // 
-            this.txtCycleCount.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtCycleCount.Location = new System.Drawing.Point(120, 93);
-            this.txtCycleCount.Name = "txtCycleCount";
-            this.txtCycleCount.Size = new System.Drawing.Size(100, 29);
-            this.txtCycleCount.TabIndex = 32;
-            this.txtCycleCount.Text = "40";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label4.Location = new System.Drawing.Point(6, 133);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(44, 23);
-            this.label4.TabIndex = 35;
-            this.label4.Text = "Step";
-            // 
-            // txtTempStep
-            // 
-            this.txtTempStep.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtTempStep.Location = new System.Drawing.Point(6, 162);
-            this.txtTempStep.Name = "txtTempStep";
-            this.txtTempStep.Size = new System.Drawing.Size(100, 29);
-            this.txtTempStep.TabIndex = 34;
-            this.txtTempStep.Text = "1";
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label22.Location = new System.Drawing.Point(112, 67);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(71, 23);
-            this.label22.TabIndex = 39;
-            this.label22.Text = "Tsint., K";
-            // 
-            // txtTempSint
-            // 
-            this.txtTempSint.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtTempSint.Location = new System.Drawing.Point(112, 93);
-            this.txtTempSint.Name = "txtTempSint";
-            this.txtTempSint.Size = new System.Drawing.Size(100, 29);
-            this.txtTempSint.TabIndex = 38;
-            this.txtTempSint.Text = "1470";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label7.Location = new System.Drawing.Point(112, 9);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(107, 23);
-            this.label7.TabIndex = 37;
-            this.label7.Text = "Composition";
-            // 
-            // txtComposition
-            // 
-            this.txtComposition.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtComposition.Location = new System.Drawing.Point(112, 35);
-            this.txtComposition.Name = "txtComposition";
-            this.txtComposition.Size = new System.Drawing.Size(100, 29);
-            this.txtComposition.TabIndex = 36;
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label21.Location = new System.Drawing.Point(120, 133);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(104, 23);
-            this.label21.TabIndex = 37;
-            this.label21.Text = "Temp. mode";
-            this.label21.Visible = false;
-            // 
-            // cbTempMode
-            // 
-            this.cbTempMode.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.25F);
-            this.cbTempMode.FormattingEnabled = true;
-            this.cbTempMode.Items.AddRange(new object[] {
-            "Step",
-            "Ramp",
-            "Ramp_reversive"});
-            this.cbTempMode.Location = new System.Drawing.Point(120, 161);
-            this.cbTempMode.Name = "cbTempMode";
-            this.cbTempMode.Size = new System.Drawing.Size(100, 30);
-            this.cbTempMode.TabIndex = 36;
-            this.cbTempMode.Visible = false;
-            // 
-            // Direct
-            // 
-            this.Direct.AutoSize = true;
-            this.Direct.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Direct.Location = new System.Drawing.Point(6, 194);
-            this.Direct.Name = "Direct";
-            this.Direct.Size = new System.Drawing.Size(54, 23);
-            this.Direct.TabIndex = 39;
-            this.Direct.Text = "Direct";
-            // 
-            // cDirect
-            // 
-            this.cDirect.FormattingEnabled = true;
-            this.cDirect.Items.AddRange(new object[] {
-            "Heat",
-            "Cool",
-            "Positive",
-            "Negative"});
-            this.cDirect.Location = new System.Drawing.Point(3, 220);
-            this.cDirect.Name = "cDirect";
-            this.cDirect.Size = new System.Drawing.Size(121, 21);
-            this.cDirect.TabIndex = 38;
-            // 
-            // label33
-            // 
-            this.label33.AutoSize = true;
-            this.label33.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label33.Location = new System.Drawing.Point(6, 138);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(97, 23);
-            this.label33.TabIndex = 41;
-            this.label33.Text = "Data export";
-            // 
-            // cbExportDBMeasTemp
-            // 
-            this.cbExportDBMeasTemp.FormattingEnabled = true;
-            this.cbExportDBMeasTemp.Items.AddRange(new object[] {
-            "None",
-            "Export to DB parallel",
-            "Export to DB(only)"});
-            this.cbExportDBMeasTemp.Location = new System.Drawing.Point(10, 164);
-            this.cbExportDBMeasTemp.Name = "cbExportDBMeasTemp";
-            this.cbExportDBMeasTemp.Size = new System.Drawing.Size(121, 21);
-            this.cbExportDBMeasTemp.TabIndex = 40;
-            // 
-            // chTest
-            // 
-            this.chTest.AutoSize = true;
-            this.chTest.Location = new System.Drawing.Point(31, 208);
-            this.chTest.Name = "chTest";
-            this.chTest.Size = new System.Drawing.Size(43, 17);
-            this.chTest.TabIndex = 40;
-            this.chTest.Text = "test";
-            this.chTest.UseVisualStyleBackColor = true;
-            // 
-            // xMFTBindingSource
-            // 
-            this.xMFTBindingSource.DataSource = typeof(Kalipso.Сalculations.XMFT);
-            // 
-            // xMFTcommandsBindingSource
-            // 
-            this.xMFTcommandsBindingSource.DataMember = "XMFT_commands";
-            this.xMFTcommandsBindingSource.DataSource = this.xMFTBindingSource;
-            // 
             // frmMeasTempOpt
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1880,12 +1907,26 @@
             this.VisibleChanged += new System.EventHandler(this.FrmMeasTempOpt_VisibleChanged);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.tabControl4.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
+            this.tabPage9.ResumeLayout(false);
+            this.tabPage9.PerformLayout();
+            this.tabPage10.ResumeLayout(false);
+            this.tabPage10.PerformLayout();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabControl3.ResumeLayout(false);
             this.tabPage7.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
+            this.tabControl5.ResumeLayout(false);
+            this.tabPage11.ResumeLayout(false);
+            this.tabPage11.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGTempData)).EndInit();
+            this.tabPage12.ResumeLayout(false);
+            this.tabPage12.PerformLayout();
+            this.tabPage13.ResumeLayout(false);
+            this.tabPage13.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.tabPage8.ResumeLayout(false);
@@ -1901,17 +1942,6 @@
             this.groupBox1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.tabControl4.ResumeLayout(false);
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage3.PerformLayout();
-            this.tabPage9.ResumeLayout(false);
-            this.tabPage9.PerformLayout();
-            this.tabPage10.ResumeLayout(false);
-            this.tabPage10.PerformLayout();
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.xMFTBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.xMFTcommandsBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2040,18 +2070,6 @@
         private System.Windows.Forms.Label label48;
         public System.Windows.Forms.TextBox txtApproxD33_A_20;
         private System.Windows.Forms.TabPage tabPage7;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label label12;
-        public System.Windows.Forms.TextBox tTimerList;
-        private System.Windows.Forms.Label label11;
-        public System.Windows.Forms.TextBox tVoltageList;
-        private System.Windows.Forms.Label label10;
-        public System.Windows.Forms.TextBox tFreqList;
-        public System.Windows.Forms.TextBox tTempList;
-        private System.Windows.Forms.DataGridView DGTempData;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Temp;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TimeS;
-        private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.CheckBox cbClear;
         private System.Windows.Forms.CheckBox cbDefaultFreq;
@@ -2132,8 +2150,21 @@
         public System.Windows.Forms.ComboBox cbTermocontrollerDevModel;
         private System.Windows.Forms.Label label14;
         public System.Windows.Forms.ComboBox cbGPIBDevModel;
-        private System.Windows.Forms.BindingSource xMFTcommandsBindingSource;
-        private System.Windows.Forms.BindingSource xMFTBindingSource;
+        private System.Windows.Forms.TabControl tabControl5;
+        private System.Windows.Forms.TabPage tabPage11;
+        public System.Windows.Forms.TextBox tTempList;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Temp;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TimeS;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Cycle;
+        private System.Windows.Forms.TabPage tabPage12;
+        private System.Windows.Forms.Label label12;
+        public System.Windows.Forms.TextBox tTimerList;
+        private System.Windows.Forms.Label label11;
+        public System.Windows.Forms.TextBox tVoltageList;
+        private System.Windows.Forms.TabPage tabPage13;
+        private System.Windows.Forms.Label label10;
+        public System.Windows.Forms.TextBox tFreqList;
+        public System.Windows.Forms.DataGridView DGTempData;
 #pragma warning restore CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmMeasTempOpt.txtTimerReversive"
     }
 }
