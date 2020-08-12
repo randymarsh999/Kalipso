@@ -28,7 +28,9 @@ namespace Kalipso
 #pragma warning disable CS0414 // Полю "frmGPIBConfig.deviceUSB" присвоено значение, но оно ни разу не использовано.
         UsbSession deviceUSB = null;
 #pragma warning restore CS0414 // Полю "frmGPIBConfig.deviceUSB" присвоено значение, но оно ни разу не использовано.
-
+        /// <summary>
+        /// 
+        /// </summary>
         public MessageBasedSession mbSession;
         /// <summary>
         /// Answer from device
@@ -45,8 +47,8 @@ namespace Kalipso
         /// <summary>
         /// Initializes a new instance of the <see cref="frmGPIBConfig"/> class.
         /// </summary>
-        
-        
+
+
         public frmGPIBConfig()
         {
             InitializeComponent();
@@ -63,7 +65,7 @@ namespace Kalipso
             cbInterfaceType.SelectedIndex = 0;
             cbInterfaceType.SelectedIndex = 0;
             txtCommand.Text = ":FREQ 20";
-            
+
         }
         /// <summary>
         /// Handles the Click event of the btnSendCommand control.
@@ -77,7 +79,6 @@ namespace Kalipso
                 case "GPIB":
                     {
                         WriteCommandDev(txtCommand.Text);
-                        ReadDeviceAnswer();
                         break;
                     }
                 case "USB":
@@ -85,8 +86,7 @@ namespace Kalipso
                         try
                         {
                             string textToWrite = ReplaceCommonEscapeSequences(txtCommand.Text);
-                            string responseString = mbSession.Query(textToWrite);
-                            txtAnswer.AppendText (Environment.NewLine+ InsertCommonEscapeSequences(responseString));
+                            
                         }
                         catch (Exception exp)
                         {
@@ -405,10 +405,11 @@ namespace Kalipso
         {
 
         }
-
-#pragma warning disable CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmGPIBConfig.GetAnswerEthernet()"
+/// <summary>
+/// 
+/// </summary>
+/// <returns></returns>
         public string GetAnswerEthernet()
-#pragma warning restore CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmGPIBConfig.GetAnswerEthernet()"
         {
             return "";
         }
@@ -522,60 +523,61 @@ namespace Kalipso
                         break;
                     }
                 case "USB":
-
-                    //deviceUSB = viFindRsrc
-                    string[] resources = ResourceManager.GetLocalManager().FindResources("?*");
-
-                    try
                     {
-                        string ResourceName = resources[0];
-                        mbSession = (MessageBasedSession)ResourceManager.GetLocalManager().Open(ResourceName);
-                        txtAnswer.AppendText(Environment.NewLine + ResourceName);
-
-                        foreach (string s in resources)
+                        //deviceUSB = viFindRsrc
+                        string[] resources = ResourceManager.GetLocalManager().FindResources("?*");
+                        try
                         {
-                            HardwareInterfaceType intType;
-                            short intNum;
-                            ResourceManager.GetLocalManager().ParseResource(s, out intType, out intNum);
-                            //AddToResourceNode(s, intType);
+                            string ResourceName = resources[0];
+                            mbSession = (MessageBasedSession)ResourceManager.GetLocalManager().Open(ResourceName);
+                            txtAnswer.AppendText(Environment.NewLine + ResourceName);
+
+                            //foreach (string s in resources)
+                            //{
+                            //    HardwareInterfaceType intType;
+                            //    short intNum;
+                            //    ResourceManager.GetLocalManager().ParseResource(s, out intType, out intNum);
+                            //}
                         }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
+                        break;
                     }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
-                    ////var rmSession = new ResourceManager.;
-                    //foreach (string s in resources)
-                    //{
-                    //    txtAnswer.AppendText(Environment.NewLine+ s);
-                    //}
 
-                    //foreach (string s in rmSession.Find("(ASRL|GPIB|TCPIP|USB)?*INSTR"))
-                    //{
-                    //    Console.WriteLine(s);
-                    //}
-                    //rmSession.Dispose();
+                ////var rmSession = new ResourceManager.;
+                //foreach (string s in resources)
+                //{
+                //    txtAnswer.AppendText(Environment.NewLine+ s);
+                //}
+
+                //foreach (string s in rmSession.Find("(ASRL|GPIB|TCPIP|USB)?*INSTR"))
+                //{
+                //    Console.WriteLine(s);
+                //}
+                //rmSession.Dispose();
 
 
 
 
-                    //deviceUSB.Write("");
-                    //mbSession = (MessageBasedSession)ResourceManager.GetLocalManager().Open("GPIB0::17::INSTR");
-                    //try
-                    //{
-                    //    mbSession = (MessageBasedSession)ResourceManager.GetLocalManager().
-                    //    Open("GPIB0::17::INSTR");
-                    //    mbSession.Write(":FREQ 20");
-                    //}
-                    //catch (InvalidCastException)
-                    //{
-                    //    MessageBox.Show("Resource selected must be a message-based session");
-                    //}
-                    //catch (Exception exp)
-                    //{
-                    //    MessageBox.Show(exp.Message);
-                    //}
-                    break;
+                //deviceUSB.Write("");
+                //mbSession = (MessageBasedSession)ResourceManager.GetLocalManager().Open("GPIB0::17::INSTR");
+                //try
+                //{
+                //    mbSession = (MessageBasedSession)ResourceManager.GetLocalManager().
+                //    Open("GPIB0::17::INSTR");
+                //    mbSession.Write(":FREQ 20");
+                //}
+                //catch (InvalidCastException)
+                //{
+                //    MessageBox.Show("Resource selected must be a message-based session");
+                //}
+                //catch (Exception exp)
+                //{
+                //    MessageBox.Show(exp.Message);
+                //}
+                //break;
                 case "ETHERNET":
                     WriteCommandDev("idn?");
                     txtAnswer.Text = answer;
@@ -639,14 +641,29 @@ namespace Kalipso
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void btnReadGPIB_Click(object sender, EventArgs e)
         {
-            try
+            switch (cbInterfaceType.Text)
             {
-                device.BeginRead(new AsyncCallback(OnReadComplete), null);
+                case "GPIB":
+                    {
+                        try
+                        {
+                            device.BeginRead(new AsyncCallback(OnReadComplete), null);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
+                        break;
+                    }
+                case "USB":
+                    {
+                        answer = mbSession.ReadString();
+                        break;
+                    }
+                default:
+                    break;
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+
         }
         /// <summary>
         /// Reads the gpib answer.
@@ -660,7 +677,7 @@ namespace Kalipso
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                ex.ToString();
             }
         }
         /// <summary>
@@ -676,7 +693,7 @@ namespace Kalipso
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                ex.ToString();
             }
         }
         /// <summary>
@@ -692,7 +709,7 @@ namespace Kalipso
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                ex.ToString();
             }
         }
         /// <summary>
@@ -707,7 +724,7 @@ namespace Kalipso
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                ex.ToString();
             }
             txtElementsTransferred.Text = device.LastCount.ToString();
             txtLastIOStatus.Text = device.LastStatus.ToString();
@@ -719,6 +736,7 @@ namespace Kalipso
         /// <param name="e">The <see cref="FormClosingEventArgs"/> instance containing the event data.</param>
         private void frmGPIBConfig_FormClosing(object sender, FormClosingEventArgs e)
         {
+            Properties.Settings.Default.defGPIBAddress = DeviceAddressUD.Text;
             e.Cancel = true;
             this.Hide();
         }
@@ -772,14 +790,16 @@ namespace Kalipso
                     {
                         if (device == null)
                         {
-                            MessageBox.Show("Chek device");
+                            MessageBox.Show("Check device");
                             return false;
                         }
                         device.Write(ReplaceCommonEscapeSequences(command));
                         return true;
                     }
                 case "USB":
-                    return false;
+                    mbSession.Write(ReplaceCommonEscapeSequences(command));
+                    //txtAnswer.AppendText(Environment.NewLine + InsertCommonEscapeSequences(responseString));
+                    return true;
                 case "ETHERNET":
                     {
                         answer = SendCmdViaEhternet(command, Convert.ToInt32(txtIpPort.Text), txtIpHost.Text);
@@ -873,27 +893,72 @@ namespace Kalipso
                             ex.ToString();
                             switch (cbInterfaceType.Text)
                             {
-                                default:{
-                                    txtAnswer.Text = "+0,+1.00000E-00,+1.00000E-00\n";
-                                    answer= "+0,+1.00000E-00,+1.00000E-00\n";
-                                    break;
-                                }
+                                default:
+                                    {
+                                        txtAnswer.Text = "+0,+1.00000E-00,+1.00000E-00\n";
+                                        answer = "+0,+1.00000E-00,+1.00000E-00\n";
+                                        break;
+                                    }
                             }
-                            
-
                         }
-
-                        
                         break;
                     }
                 case "USB":
-                    break;
+                    {
+                        answer = mbSession.ReadString();
+                        txtAnswer.Text = answer;
+                        break;
+                    }
+
                 case "ETHERNET":
                     break;
                 default:
                     break;
             }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="query"></param>
+        public void ReadDeviceAnswer(string query)
+        {
+            switch (cbInterfaceType.Text)
+            {
+                case "GPIB":
+                    {
+                        answer = "";
+                        try
+                        {
+                            answer = device.ReadString();
+                            txtAnswer.Text = answer;
+                        }
+                        catch (Exception ex)
+                        {
+                            ex.ToString();
+                            switch (cbInterfaceType.Text)
+                            {
+                                default:
+                                    {
+                                        txtAnswer.Text = "+0,+1.00000E-00,+1.00000E-00\n";
+                                        answer = "+0,+1.00000E-00,+1.00000E-00\n";
+                                        break;
+                                    }
+                            }
+                        }
+                        break;
+                    }
+                case "USB":
+                    {
+                        answer = mbSession.Query(query);
+                        break;
+                    }
+                case "ETHERNET":
+                    break;
+                default:
+                    break;
+            }
+        }
+
 
         private void txtAnswer_TextChanged(object sender, EventArgs e)
         {
@@ -905,10 +970,7 @@ namespace Kalipso
 
         }
 
-        private void frmGPIBConfig_Load(object sender, EventArgs e)
-        {
 
-        }
 
         private void button3_Click(object sender, EventArgs e)
         {
@@ -936,6 +998,13 @@ namespace Kalipso
                         btnSendCommand.Enabled = true;
                         break;
                     }
+                case "USB":
+                    {
+                        txtAnswer.Enabled = true;
+                        btnSendCommand.Enabled = true;
+                        btnReadGPIB.Enabled = true;
+                        break;
+                    }
                 default:
                     break;
             }
@@ -946,9 +1015,6 @@ namespace Kalipso
             WriteCommandDev(":SOUR:FREQ 1000;:TRIG;FETCh?");
             ReadDeviceAnswer();
 
-            
-
-
             //work it
             //txtAnswer.Text = SendCmdViaEhternet(txtCommand.Text, Convert.ToInt32(txtIpPort.Text), txtIpHost.Text);
             //Regex reg = new Regex(@"^[-+][0-9][.][0-9]{5}[E][-+][0-9]{2}[,][-+][0-9][.][0-9]{5}[E][-+][0-9]{1}");
@@ -957,11 +1023,6 @@ namespace Kalipso
             //{
             //    txtAnswer.Text = "Ok";
             //}
-
-
-
-
-
 
 
 
@@ -990,8 +1051,67 @@ namespace Kalipso
 
         }
 
-
-
-
+        private void Button1_Click_1(object sender, EventArgs e)
+        {
+            switch (cbInterfaceType.Text)
+            {
+                case "GPIB":
+                    {
+                        WriteCommandDev(txtCommand.Text);
+                        ReadDeviceAnswer();
+                        break;
+                    }
+                case "USB":
+                    {
+                        try
+                        {
+                            string textToWrite = ReplaceCommonEscapeSequences(txtCommand.Text);
+                            string responseString = mbSession.Query(textToWrite);
+                            txtAnswer.AppendText(Environment.NewLine + InsertCommonEscapeSequences(responseString));
+                        }
+                        catch (Exception exp)
+                        {
+                            MessageBox.Show(exp.Message);
+                        }
+                        finally
+                        {
+                            Cursor.Current = Cursors.Default;
+                        }
+                        break;
+                    }
+                default:
+                    break;
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void frmGPIBConfig_Load(object sender, EventArgs e)
+        {
+            DeviceAddressUD.Text = Properties.Settings.Default.defGPIBAddress;
+            
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DeviceAddressUD_ValueChanged(object sender, EventArgs e)
+        {
+            //Properties.Settings.Default.defGPIBAddress = DeviceAddressUD.Text;
+            //Properties.Settings.Default.Save();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void frmGPIBConfig_VisibleChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.defGPIBAddress = DeviceAddressUD.Text;
+            Properties.Settings.Default.Save();
+        }
     }
 }

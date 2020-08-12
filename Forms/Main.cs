@@ -17,9 +17,7 @@ using ExcelObj = Microsoft.Office.Interop.Excel;
 using Kalipso.Forms;
 using System.Reflection;
 using System.Xml;
-
-
-
+using Microsoft.Office.Core;
 
 namespace Kalipso
 {
@@ -269,7 +267,8 @@ namespace Kalipso
             }
             catch (Exception ex)
             {
-                MessageBox.Show("ERROR: " + ex.ToString());
+                ex.ToString();
+                //MessageBox.Show("ERROR: " + ex.ToString());
                 lbTemp.Text = "None";
                 return;
             }
@@ -1716,6 +1715,11 @@ namespace Kalipso
             {
                 case "d33Rev":
                     {
+                        frmGPIB.WriteCommandDev("init");
+                        break;
+                    }
+                case "CTE":
+                    {
                         break;
                     }
                 default:
@@ -1777,6 +1781,7 @@ namespace Kalipso
                 case "Piezo": timerMeas.Interval = 1000; break;
                 case "Ramp": timerMeas.Interval = 1000; break;
                 case "C(dU)_auto_reversive": timerMeas.Interval = 1000; break;
+                case "d33Rev": timerMeas.Interval = 500; break;
                 default:
                     timerMeas.Interval = 1000;
                     break;
@@ -1873,10 +1878,19 @@ namespace Kalipso
                         hand = true;
                         break;
                     }
+                case "Magnit_hand":
+                    {
+                        hand = true;
+                        break;
+                    }
                 case "Cycle":
                     {
                         PP.cycleCount = Convert.ToInt32(frmMOpt.txtCycleCount.Text);
                         PP.NewCycleTemperature = Convert.ToDouble(frmMOpt.txtNewCycleTemp.Text);
+                        PP.CelSelTemp = 0;
+                        initXMFT();
+
+
                         break;
                     }
                 case "Cycle_ramp":
@@ -1980,7 +1994,7 @@ namespace Kalipso
                         DGJ.AddColumn(dGridTempMeas, "Ubias_V_conv", "double precision");
                         DGJ.AddColumn(dGridTempMeas, "Xi", "double precision");
                         DGJ.AddColumn(dGridTempMeas, "Xi0", "double precision");
-                        DGJ.AddColumn(dGridTempMeas, "Xi-Xi0", "double precision");
+                        DGJ.AddColumn(dGridTempMeas, "conv_coef", "double precision");
                         DGJ.AddColumn(dGridTempMeas, "Uout_V", "double precision");
                         DGJ.AddColumn(dGridTempMeas, "E_kV_Div_cm", "double precision");
                         DGJ.AddColumn(dGridTempMeas, "k_10_E_4", "double precision");
@@ -1995,6 +2009,7 @@ namespace Kalipso
                         {
                             PP.ListTimer[i] = frmMOpt.tTimerList.Lines[i];
                         }
+                        DGJ.AddColumn(dGridTempMeas, "Ubias_V_conv", "double precision");
                         DGJ.AddColumn(dGridTempMeas, "Xi", "double precision");
                         DGJ.AddColumn(dGridTempMeas, "Xi0", "double precision");
                         DGJ.AddColumn(dGridTempMeas, "Xi-Xi0", "double precision");
@@ -2002,6 +2017,18 @@ namespace Kalipso
                         DGJ.AddColumn(dGridTempMeas, "E_kV_Div_cm", "double precision");
                         DGJ.AddColumn(dGridTempMeas, "k_10_E_4", "double precision");
                         DGJ.AddColumn(dGridTempMeas, "d33rev", "double precision");
+                        PP.Xi0.Clear();
+                        break;
+                    }
+                case "CTE":
+                    {
+                        PP.ListTimer = new string[frmMOpt.tTimerList.Lines.Count()];
+                        for (int i = 0; i < frmMOpt.tTimerList.Lines.Count(); i++)
+                        {
+                            PP.ListTimer[i] = frmMOpt.tTimerList.Lines[i];
+                        }
+                        DGJ.AddColumn(dGridTempMeas, "Uout_V", "double precision");
+                        DGJ.AddColumn(dGridTempMeas, "Xi", "double precision");
                         PP.Xi0.Clear();
                         break;
                     }
@@ -2095,8 +2122,10 @@ namespace Kalipso
                 case "d33Rev":
                     {
                         Random rnd = new Random();
-                        graphs.IninitialezedGrafSeries("Xi", rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255), chartMeasTemp1);
-                        graphs.IninitialezedGrafSeries("d33rev", rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255), chartMeasTemp2);
+                        //graphs.IninitialezedGrafSeries("Xi", rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255), chartMeasTemp1);
+                        graphs.IninitialezedGrafSeries("Xi", 0, 0, 0, chartMeasTemp1);
+                        graphs.IninitialezedGrafSeries("Xi", 0, 0, 0, chartMeasTemp2);
+                        //graphs.IninitialezedGrafSeries("d33rev", rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255), chartMeasTemp2);
                         break;
                     }
                 default:
@@ -2164,6 +2193,17 @@ namespace Kalipso
             }
             Directory.CreateDirectory(@"C:\\temp\\");
         }
+
+        /// <summary>
+        /// Initializes the XMFT.
+        /// </summary>
+        void initXMFT()
+        {
+            Com.WriteDataToXMFT(0, Convert.ToInt32(frmMOpt.DGTempData["Temp", 0].Value));
+            System.Threading.Thread.Sleep(250);
+            Com.WriteDataToXMFT(0, Convert.ToInt32(frmMOpt.DGTempData["TimeS", 0].Value));
+        }
+
         /// <summary>
         /// Gets the current ufrom arduino.
         /// </summary>
@@ -2316,18 +2356,60 @@ namespace Kalipso
             Com.SendDataToComPort("ArduinoUno", "-");
         }
 
+
+        void getTempFromTermocontroller()
+        {
+            switch (frmMOpt.cbTermocontrollerDevModel.Text)
+            {
+                case "Varta":
+                    {
+                        GetTempFromVarta();
+                        break;
+                    }
+                case "XMFT":
+                    {
+                        GetTempFromXMFT();
+                        break;
+                    }
+                default:
+                    break;
+            } 
+
+            
+        }
+        /// <summary>
+        /// GetTempFromXMFT()
+        /// </summary>
+        void GetTempFromXMFT()
+        {
+            try
+            {
+                PiezoMathCalculation PM = new PiezoMathCalculation();
+                Com.GetTemperatureFromXMFT();
+                PP.Temperature1 = PM.ConvertCelciusToKelvin(Convert.ToDouble(Com.Temperature));
+                PP.TemperatureReserv = PP.Temperature1;
+                lbTemp.Text = PP.Temperature1.ToString();
+                Thread.Sleep(100);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                throw;
+            }
+        }
+
         /// <summary>
         /// Get Temp From Varta
         /// </summary>
         public void GetTempFromVarta()
         {
             PiezoMathCalculation PM = new PiezoMathCalculation();
+
             if (frmMOpt.chTest.Checked == false)
             {
                 try
                 {
                     Com.GetDataFromVarta();
-                    //Com.GetDataFromVarta("Varta703I");
                     PP.Temperature1 = PM.ConvertCelciusToKelvin(Convert.ToDouble(Com.Temperature));
                     PP.TemperatureReserv = PP.Temperature1;
                     lbTemp.Text = PP.Temperature1.ToString();
@@ -2359,7 +2441,7 @@ namespace Kalipso
                 frmMOpt.cDirect.SelectedIndex = 1;
                 lbDirect.Text = PP.cooling;
                 PP.Direction = PP.cooling;
-                PP.Temperature2 = PP.Temperature1 - PP.TemperatureStep;
+                PP.Temperature2 = PP.Temperature3 - PP.TemperatureStep;
                 MainMeas();
             }
             if (PP.Temperature2 >= PP.Temperature1 && PP.Direction == PP.cooling)
@@ -2373,58 +2455,84 @@ namespace Kalipso
         /// </summary>
         void WorkMode_Cycle()
         {
-            if (PP.Direction == PP.heating && PP.Temperature1 >= PP.Temperature2 && PP.Temperature1 < PP.Temperature3)
+            getTempFromTermocontroller();
+            
+            if (PP.TimeMeas<Convert.ToInt32(frmMOpt.DGTempData["TimerS", PP.CelSelTemp].Value))
             {
-                PP.Temperature2 = PP.Temperature1 + PP.TemperatureStep;
-                lbDirect.Text = PP.heating;
-                PP.Direction = PP.heating;
+                PP.cycleCurrentNum = Convert.ToInt32(frmMOpt.DGTempData["Cycle", PP.CelSelTemp].Value);
                 MainMeas();
-                endcycleAgilent4980();
+                
             }
-            //------------------------------------------------------------------------
-            if (PP.Direction == PP.heating &&
-                PP.Temperature1 >= PP.Temperature3
-               )
+            if (PP.TimeMeas >= Convert.ToInt32(frmMOpt.DGTempData["TimerS", PP.CelSelTemp].Value )
+                && frmMOpt.DGTempData["TimerS", PP.CelSelTemp+1].Value!="")
             {
-                PP.Temperature2 = PP.Temperature1 - PP.TemperatureStep;
-                lbDirect.Text = PP.cooling;
-                PP.Direction = PP.cooling;
-                frmMOpt.cDirect.SelectedIndex = 1;
+                PP.CelSelTemp = PP.CelSelTemp + 1;
+                PP.cycleCurrentNum = Convert.ToInt32(frmMOpt.DGTempData["Cycle", PP.CelSelTemp].Value);
+                Com.WriteDataToXMFT(0, Convert.ToInt32(frmMOpt.DGTempData["Temp", PP.CelSelTemp].Value));
+                //Com.WriteDataToXMFT(0, Convert.ToInt32(frmMOpt.DGTempData["Temp", PP.CelSelTemp].Value));
+                
                 MainMeas();
-                endcycleAgilent4980();
             }
-            //------------------------------------------------------------------------
-            if (PP.Direction == PP.cooling &&
-                PP.Temperature1 >= PP.NewCycleTemperature &&
-                PP.Temperature1 <= PP.Temperature2 &&
-                PP.cycleCurrentNum <= PP.cycleCount)
+            if (PP.TimeMeas >= Convert.ToInt32(frmMOpt.DGTempData["TimerS", PP.CelSelTemp].Value)
+                && frmMOpt.DGTempData["TimerS", PP.CelSelTemp + 1].Value == "")
             {
-                PP.Temperature2 = PP.Temperature1 - PP.TemperatureStep;
-                MainMeas();
-                endcycleAgilent4980();
+                timerMeas.Enabled = false;
+                MessageBox.Show("Measuring is done");
+
             }
-            //------------------------------------------------------------------------
-            if (PP.Direction == PP.cooling &&
-                PP.Temperature1 <= PP.NewCycleTemperature &&
-                PP.cycleCurrentNum <= PP.cycleCount
-                )
-            {
-                ++PP.cycleCurrentNum;
-                lbCycleNum.Text = PP.cycleCurrentNum.ToString();
-                lbDirect.Text = PP.heating;
-                PP.Direction = PP.heating;
-                frmMOpt.cDirect.SelectedIndex = 0;
-                MainMeas();
-                endcycleAgilent4980();
-            }
-            //------------------------------------------------------------------------
-            if (PP.Direction == PP.cooling &&
-                PP.cycleCurrentNum > PP.cycleCount &&
-                PP.Temperature1 <= PP.NewCycleTemperature)
-            {
-                MainMeas();
-                endcycleAgilent4980();
-            }
+
+            //if (PP.Direction == PP.heating && PP.Temperature1 >= PP.Temperature2 && PP.Temperature1 < PP.Temperature3)
+            //{
+            //    PP.Temperature2 = PP.Temperature1 + PP.TemperatureStep;
+            //    lbDirect.Text = PP.heating;
+            //    PP.Direction = PP.heating;
+            //    MainMeas();
+            //    endcycleAgilent4980();
+            //}
+            ////------------------------------------------------------------------------
+            //if (PP.Direction == PP.heating &&
+            //    PP.Temperature1 >= PP.Temperature3
+            //   )
+            //{
+            //    PP.Temperature2 = PP.Temperature1 - PP.TemperatureStep;
+            //    lbDirect.Text = PP.cooling;
+            //    PP.Direction = PP.cooling;
+            //    frmMOpt.cDirect.SelectedIndex = 1;
+            //    MainMeas();
+            //    endcycleAgilent4980();
+            //}
+            ////------------------------------------------------------------------------
+            //if (PP.Direction == PP.cooling &&
+            //    PP.Temperature1 >= PP.NewCycleTemperature &&
+            //    PP.Temperature1 <= PP.Temperature2 &&
+            //    PP.cycleCurrentNum <= PP.cycleCount)
+            //{
+            //    PP.Temperature2 = PP.Temperature1 - PP.TemperatureStep;
+            //    MainMeas();
+            //    endcycleAgilent4980();
+            //}
+            ////------------------------------------------------------------------------
+            //if (PP.Direction == PP.cooling &&
+            //    PP.Temperature1 <= PP.NewCycleTemperature &&
+            //    PP.cycleCurrentNum <= PP.cycleCount
+            //    )
+            //{
+            //    ++PP.cycleCurrentNum;
+            //    lbCycleNum.Text = PP.cycleCurrentNum.ToString();
+            //    lbDirect.Text = PP.heating;
+            //    PP.Direction = PP.heating;
+            //    frmMOpt.cDirect.SelectedIndex = 0;
+            //    MainMeas();
+            //    endcycleAgilent4980();
+            //}
+            ////------------------------------------------------------------------------
+            //if (PP.Direction == PP.cooling &&
+            //    PP.cycleCurrentNum > PP.cycleCount &&
+            //    PP.Temperature1 <= PP.NewCycleTemperature)
+            //{
+            //    MainMeas();
+            //    endcycleAgilent4980();
+            //}
         }
         /// <summary>
         /// WorkMode C(dU_df)
@@ -3079,7 +3187,8 @@ namespace Kalipso
         /// </summary>
         void WorkMode_Cycle_ramp()
         {
-            MainMeas_cycle_ramp();
+            //MainMeas_cycle_ramp();
+            MainMeas();
         }
         /// <summary>
         /// Mains the meas cycle ramp.
@@ -3172,7 +3281,6 @@ namespace Kalipso
             //-------------------------------------------------------------
             InitialiezeFreq(0);
             this.Refresh();
-
         }
 
         /// <summary>
@@ -3276,11 +3384,226 @@ namespace Kalipso
                         WorkModeD33rev_auto();
                         break;
                     }
+                case "Magnit_hand":
+                    {
+                        MeasMagnit_Hand();
+                        break;
+                    }
+                case "CTE":
+                    {
+                        CTE_meas();
+                        break;
+                    }
                 default:
                     break;
             }
             this.Refresh();
         }
+
+        private void CTE_meas()
+        {
+            ParseStringTab PS = new ParseStringTab();
+            //string s = "";
+            #region  Get_data_from_Varta703I
+            GetTempFromVarta();
+            #endregion
+
+            #region  Get_data_from_micron
+            //do
+            //{
+            //    Com.SendDataToComPort("ArduinoUno", "m");
+            //    s = Com.ComReadString();
+            //} while (s.Length < 7);
+            //PS.AddUMicron(s);
+
+
+            frmGPIB.WriteCommandDev("init;fetch?");
+            frmGPIB.ReadDeviceAnswer();
+            
+            #endregion
+
+            double Uin = Convert.ToDouble(frmGPIB.answer);
+
+            System.Diagnostics.Stopwatch myStopwatch = new System.Diagnostics.Stopwatch();
+            myStopwatch.Start();
+            double timeCoef = 0.001;
+            PiezoMathCalculation PM = new PiezoMathCalculation();
+            switch (frmMOpt.cbExportDBMeasTemp.Text)
+            {
+                case "Export to DB(only)":
+                    {
+                        myStopwatch.Stop();
+                        PP.TimeMeas = PP.TimeMeas + (Convert.ToDouble(myStopwatch.ElapsedMilliseconds.ToString()) * timeCoef) + 0.14;
+
+                        AddParametersVal();
+                        //PM.SetXiMas();
+                        //PM.SetUMicronOutMas();
+                        dGridTempMeas["Uout_V", 0].Value = Uin.ToString();//PM.XiVal(PM.FindUmicron(Uin));
+                                                                          //dGridTempMeas["Xi", 0].Value = PM.XiVal_Law_linear(Uin, Convert.ToDouble(frmMOpt.txtApproxCTE_A.Text), Convert.ToDouble(frmMOpt.txtApproxCTE_B.Text)).ToString();//PM.XiVal(PM.FindUmicron(Uin));
+                        //if direction is heating
+                        if (PP.Temperature1 <= Convert.ToDouble(frmMOpt.txtTempEnd.Text) && PP.Direction == "Heating")
+                        {
+                            
+                            dGridTempMeas["Direction", 0].Value = "Heating";
+                            lbDirect.Text = "Heating";
+                        }
+                        // if heating and max temperature
+                        if (PP.Temperature1 >= Convert.ToDouble(frmMOpt.txtTempEnd.Text) && PP.Direction == "Heating")
+                        {
+                            dGridTempMeas["Direction", 0].Value = PP.Direction;
+                            lbDirect.Text = "Cooling";
+                            PP.Direction = "Cooling";
+                        }
+                        //if direction is cooling
+                        if ( PP.Direction == "Cooling")
+                        {
+                            PP.Direction = "Cooling";
+                            dGridTempMeas["Direction", 0].Value = PP.Direction;
+                            lbDirect.Text = PP.Direction;
+
+                        }
+                        
+                        //limits
+                        switch (cbCTE_Limit.Text)
+                        {
+                            case "20":
+                                {
+                                    //dGridTempMeas["Xi", 0].Value = PM.XiVal_Law_linear(Uin, Convert.ToDouble(frmMOpt.txtApproxCTE_A_20.Text),  1.2904).ToString();
+                                    dGridTempMeas["Xi", 0].Value = PM.XiVal_Law_linear(Uin, Convert.ToDouble(frmMOpt.txtApproxCTE_A_20.Text), Convert.ToDouble(frmMOpt.txtApproxCTE_B_20.Text)).ToString();
+                                    dGridTempMeas["Y", 0].Value = "20";
+                                    break;
+                                }
+                            case "200":
+                                {
+                                    //dGridTempMeas["Xi", 0].Value = PM.XiVal_Law_linear(Uin, 207.72,  13.621).ToString();
+                                    dGridTempMeas["Xi", 0].Value = PM.XiVal_Law_linear(Uin, Convert.ToDouble(frmMOpt.txtApproxCTE_A_200.Text), Convert.ToDouble(frmMOpt.txtApproxCTE_B_200.Text)).ToString();
+                                    dGridTempMeas["Y", 0].Value = "200";
+                                    break;
+                                }
+                            case "2000":
+                                {
+                                    //dGridTempMeas["Xi", 0].Value = PM.XiVal_Law_linear(Uin, 2069.5,  133.15).ToString();
+                                    dGridTempMeas["Xi", 0].Value = PM.XiVal_Law_linear(Uin, Convert.ToDouble(frmMOpt.txtApproxCTE_A_2000.Text), Convert.ToDouble(frmMOpt.txtApproxCTE_B_2000.Text)).ToString();
+                                    dGridTempMeas["Y", 0].Value = "2000";
+                                    break;
+                                }
+                            default:
+                                break;
+                        }
+                            //double ave = 0;
+                            //for (int j = 0; j < PP.Xi0.Count(); j++)
+                            //{
+                            //    ave += PP.Xi0[j];
+                            //}
+                        ++PP.CelSel;
+                        switch (frmMOpt.cWorkMode.Text)
+                        {
+                            case "CTE":
+                                {
+                                    chartMeasTemp1.Series[0].Points.AddXY(Convert.ToDouble(dGridTempMeas["T_K", 0].Value), Convert.ToDouble(dGridTempMeas["Xi", 0].Value));
+                                    break;
+                                }
+                            default:
+                                {
+                                    break;
+                                }
+                        }
+
+                        DBConn dBConn = new DBConn();
+                        string sql = dBConn.DBExportDataString(this.dGridTempMeas, PP.DBTableName, 0);
+                        FileJob FJ = new FileJob();
+                        FJ.WriteF(sql, PP.FileNameSaveTempMeasDB);
+                        break;
+                    }
+                default:
+                    break;
+
+            }
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        void WorkModeMagnit_hand()
+        {
+            Stopwatch myStopwatch = new Stopwatch();
+            myStopwatch.Start();
+            GetTempFromVarta();
+            WriteTempToFile();
+            PiezoMathCalculation PM = new PiezoMathCalculation();
+            if (PP.Temperature1 > Convert.ToDouble(frmMOpt.txtTempEnd.Text)) PP.Direction = "Cooling";
+            //измерение и получение данных с прибора
+            for (int i = 0; i < PP.ListFreq.Length; i++)
+            {
+                InitialiezeFreq(i);
+                InitialiezeTrig();
+
+                switch (frmMOpt.cbGPIBDevModel.Text)
+                {
+                    case "Agilent4980A":
+                        Regex reg = new Regex(@"^[-+][0-9][.][0-9]{5}[E][-+][0-9]{2}[,][-+][0-9][.][0-9]{5}[E][-+][0-9]{2}[,][-+][0-9]{1}");
+                        Regex reg1 = new Regex(@"^[-+][0-9][.][0-9]{5}[E][-+][0-9]{2}[,][-+][0-9][.][0-9]{5}[E][-+][0-9]{1}");
+
+                        switch (frmGPIB.cbInterfaceType.Text)
+                        {
+                            case "ETHERNET":
+                                frmGPIB.WriteCommandDev(PP.FetchGPIBDevices);
+
+                                string s1 = "";
+                                string[] rr;
+                                bool match = false;
+                                do
+                                {
+                                    char splitchar = (char)'\n';
+                                    string[] sss = frmGPIB.answer.Split(splitchar);
+                                    if (sss.Count() > 1)
+                                    {
+                                        s1 = sss[2];
+                                        s1 = s1.Substring(12, 28);
+                                        string ff = s1;
+                                        rr = sss[2].Split('\0');
+                                        rr = rr[0].Split((char)3);
+                                        if (reg.IsMatch(rr[1]) == true)
+                                        {
+                                            match = true;
+                                            frmGPIB.answer = rr[1];
+                                        }
+                                        if (reg1.IsMatch(rr[1]) == true)
+                                        {
+                                            match = true;
+                                            frmGPIB.answer = rr[1];
+                                        }
+                                    }
+                                } while (match == false);
+                                break;
+                            case "GPIB":
+                                frmGPIB.WriteCommandDev(PM.ReplaceCommonEscapeSequences(PP.FetchAgilent4980));
+                                frmGPIB.ReadDeviceAnswer();
+                                break;
+                            default:
+                                break;
+                        }
+
+                        break;
+                    case "Agilent4263B":
+                        break;
+                    default:
+                        frmGPIB.ReadDeviceAnswer();
+                        break;
+                }
+
+                myStopwatch.Stop();
+                PP.TimeMeas = PP.TimeMeas + (Convert.ToDouble(myStopwatch.ElapsedMilliseconds.ToString()) * 0.001) + PP.AvarageIncTime;
+                MeasMagnit(PP.ListFreq[i]);
+                ++PP.CelSel;
+                this.Refresh();
+            }
+            //-------------------------------------------------------------
+            InitialiezeFreq(0);
+            this.Refresh();
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -3363,6 +3686,930 @@ namespace Kalipso
             this.Refresh();
 
         }
+
+        private void MeasMagnit_Hand()
+        {
+
+            Stopwatch myStopwatch = new Stopwatch();
+            myStopwatch.Start();
+            GetTempFromVarta();
+            WriteTempToFile();
+            PiezoMathCalculation PM = new PiezoMathCalculation();
+            //измерение и получение данных с прибора
+            for (int i = 0; i < PP.ListFreq.Length; i++)
+            {
+                InitialiezeFreq(i);
+                InitialiezeTrig();
+
+                switch (frmMOpt.cbGPIBDevModel.Text)
+                {
+                    case "Agilent4980A":
+                        Regex reg = new Regex(@"^[-+][0-9][.][0-9]{5}[E][-+][0-9]{2}[,][-+][0-9][.][0-9]{5}[E][-+][0-9]{2}[,][-+][0-9]{1}");
+                        Regex reg1 = new Regex(@"^[-+][0-9][.][0-9]{5}[E][-+][0-9]{2}[,][-+][0-9][.][0-9]{5}[E][-+][0-9]{1}");
+                        switch (frmGPIB.cbInterfaceType.Text)
+                        {
+                            case "ETHERNET":
+                                frmGPIB.WriteCommandDev(PP.FetchGPIBDevices);
+                                string s1 = "";
+                                string[] rr;
+                                bool match = false;
+                                do
+                                {
+                                    char splitchar = (char)'\n';
+                                    string[] sss = frmGPIB.answer.Split(splitchar);
+                                    if (sss.Count() > 1)
+                                    {
+                                        s1 = sss[2];
+                                        s1 = s1.Substring(12, 28);
+                                        string ff = s1;
+                                        rr = sss[2].Split('\0');
+                                        rr = rr[0].Split((char)3);
+                                        if (reg.IsMatch(rr[1]) == true)
+                                        {
+                                            match = true;
+                                            frmGPIB.answer = rr[1];
+                                        }
+                                        if (reg1.IsMatch(rr[1]) == true)
+                                        {
+                                            match = true;
+                                            frmGPIB.answer = rr[1];
+                                        }
+                                    }
+                                } while (match == false);
+                                break;
+                            case "GPIB":
+                                frmGPIB.WriteCommandDev(PM.ReplaceCommonEscapeSequences(PP.FetchAgilent4980));
+                                frmGPIB.ReadDeviceAnswer();
+                                break;
+                            case "USB":
+                                {
+                                    frmGPIB.ReadDeviceAnswer(PP.FetchAgilent4980);
+                                    break;
+                                }
+
+                            default:
+                                break;
+                        }
+                        break;
+                    case "E7-20":
+                        {
+                            PiezoMathCalculation pm = new PiezoMathCalculation();
+                            do
+                            {
+                                System.Threading.Thread.Sleep(500);
+                                PP.bufE7_20 = Com.GetDataFromCOMDevice("E7-20", 0, 22);
+                                if (PP.bufE7_20[14] != 0)
+                                {
+                                    PP.bufE7_20[12] = (byte)(PP.bufE7_20[12] ^ 0xff);
+                                    PP.bufE7_20[13] = (byte)(PP.bufE7_20[13] ^ 0xff);
+                                    PP.bufE7_20[14] = (byte)(PP.bufE7_20[14] ^ 0xff);
+                                    PP.param2_E7_20 = (-1 - PP.bufE7_20[12] - (PP.bufE7_20[13] + PP.bufE7_20[14] * 256) * 256) * Math.Pow(Math.Pow(10, 256 - (int)(PP.bufE7_20[15])), -1);
+                                }
+                                else PP.param2_E7_20 = pm.BytesToDouble(PP.bufE7_20, 12, 3) * Math.Pow(Math.Pow(10, 256 - (int)(PP.bufE7_20[15])), -1);
+                                if (PP.bufE7_20[18] != 0)
+                                {
+                                    PP.bufE7_20[16] = (byte)(PP.bufE7_20[16] ^ 0xff);
+                                    PP.bufE7_20[17] = (byte)(PP.bufE7_20[17] ^ 0xff);
+                                    PP.bufE7_20[18] = (byte)(PP.bufE7_20[18] ^ 0xff);
+                                    PP.param1_E7_20 = (-1 - PP.bufE7_20[16] - (PP.bufE7_20[17] + PP.bufE7_20[18] * 256) * 256) * Math.Pow(Math.Pow(10, 256 - (int)(PP.bufE7_20[19])), -1);
+
+                                }
+                                else PP.param1_E7_20 = pm.BytesToDouble(PP.bufE7_20, 16, 3) * Math.Pow(Math.Pow(10, 256 - (int)(PP.bufE7_20[19])), -1);
+                                //if (m1 == false) PP.param1_E7_20 = pm.BytesToDouble(PP.bufE7_20, 16, 3) * Math.Pow(Math.Pow(10, 256 - (int)(PP.bufE7_20[19])), -1);
+                                //if (m2 == false) PP.param2_E7_20 = pm.BytesToDouble(PP.bufE7_20, 12, 3) * Math.Pow(Math.Pow(10, 256 - (int)(PP.bufE7_20[15])), -1);
+                            } while (PP.bufE7_20[3] == 0 || PP.param1_E7_20 > 1e25);
+
+                            break;
+                        }
+                    default:
+                        break;
+                }
+
+                myStopwatch.Stop();
+                PP.TimeMeas = PP.TimeMeas + (Convert.ToDouble(myStopwatch.ElapsedMilliseconds.ToString()) * 0.001) + PP.AvarageIncTime;
+                MeasMagnit(PP.ListFreq[i]);
+                ++PP.CelSel;
+                this.Refresh();
+            }
+            //-------------------------------------------------------------
+            InitialiezeFreq(0);
+            this.Refresh();
+
+
+            //System.Diagnostics.Stopwatch myStopwatch = new System.Diagnostics.Stopwatch();
+            //myStopwatch.Start();
+            //GetTempFromVarta();
+            //WriteTempToFile();
+
+
+            //double timeCoef = 0.001;
+            //string s = frmGPIB.answer;
+            //double e_e0;
+            //double tgper, Y;
+            //double e_e2;
+            ////double emk;
+            //double t;
+            //double d;
+            //double val1 = 0;
+            //double val2 = 0;
+            //PiezoMathCalculation PM = new PiezoMathCalculation();
+            //ParseStringTab PS = new ParseStringTab();
+            //switch (frmMOpt.cbGPIBDevModel.Text)
+            //{
+            //    case "Agilent4980A":
+            //        {
+            //            PS.AddMeasStringAgilent4980(s);
+            //            switch (frmGPIB.cbInterfaceType.Text)
+            //            {
+            //                case "GPIB":
+            //                    val1 = Convert.ToDouble(PS.ElementAt(0));
+            //                    val2 = Convert.ToDouble(PS.ElementAt(1));
+            //                    break;
+            //                case "ETHERNET":
+            //                    val1 = Convert.ToDouble(PS.ElementAt(1));
+            //                    val2 = Convert.ToDouble(PS.ElementAt(2));
+            //                    break;
+            //                default:
+            //                    break;
+            //            }
+            //            break;
+            //        }
+            //    case "Agilent4285A": PS.AddMeasStringAgilent4980(s); break;
+            //    case "Agilent4263B":
+            //        {
+            //            PS.AddMeasStringAgilent4263(s);
+            //            val1 = Convert.ToDouble(PS.ElementAt(1));
+            //            val2 = Convert.ToDouble(PS.DeleteZero(PS.ElementAt(2)));
+            //            break;
+            //        }
+            //    case "Agilent34401A": PS.AddMeasStringAgilent4980(s); break;
+            //    case "WayneKerr6500B": PS.AddMeasStringWayneKerr6500B(s); break;
+            //    case "WayneKerr4300":
+            //        {
+            //            //+8.2556835e-13,-1.6205449e+00
+            //            PS.AddMeasStringWayneKerr4300(s);
+            //            val1 = Convert.ToDouble(PS.ElementAt(0));
+            //            val2 = Convert.ToDouble(PS.ElementAt(1));
+            //            break;
+            //        }
+            //    default:
+            //        PS.AddMeasStringAgilent4980(s);
+            //        break;
+            //}
+
+            //if (txtHBias.Text == "")
+            //{
+            //    txtHBias.Text = "0";
+            //}
+            //if (txtUbias.Text == "")
+            //{
+            //    txtUbias.Text = "0";
+            //}
+
+            //if (frmMOpt.cbExportDBMeasTemp.Text == "Export to DB(only)")
+            //{
+            //    string dateformat = "hh:mm:ss.fff";
+            //    DateTime dateT = new DateTime();
+            //    dateT = DateTime.Now;
+            //    dateT.AddMilliseconds(1);
+            //    dGridTempMeas["id", 0].Value = PP.CelSel.ToString();
+            //    dGridTempMeas["id_section", 0].Value = frmMOpt.txtComposition.Text;
+            //    dGridTempMeas["id_sample", 0].Value = frmMOpt.txtSampleNumber.Text;
+            //    dGridTempMeas["Tsint_K", 0].Value = frmMOpt.txtTempSint.Text;
+            //    dGridTempMeas["t_cm", 0].Value = frmMOpt.txtHeight.Text;
+            //    t = Convert.ToDouble(frmMOpt.txtHeight.Text);
+            //    dGridTempMeas["d_cm", 0].Value = frmMOpt.txtDiameter.Text;
+            //    d = Convert.ToDouble(frmMOpt.txtDiameter.Text);
+            //    dGridTempMeas["T_K", 0].Value = lbTemp.Text;
+            //    dGridTempMeas["f_Hz", 0].Value = freq;
+            //    dGridTempMeas["C_pF", 0].Value = (Convert.ToDouble(val1) * 1e12).ToString();
+            //    e_e0 = PM.e_re(t, d, Convert.ToDouble(dGridTempMeas["C_pF", 0].Value));
+            //    dGridTempMeas["e_re", 0].Value = e_e0.ToString();
+            //    dGridTempMeas["tgd", 0].Value = val2;
+            //    tgper = Convert.ToDouble(dGridTempMeas["tgd", 0].Value);
+            //    dGridTempMeas["tgd1e2", 0].Value = PM.tgdE2(tgper).ToString();
+            //    e_e2 = PM.e_im(e_e0, Convert.ToDouble(dGridTempMeas["tgd", 0].Value));
+            //    dGridTempMeas["e_im", 0].Value = e_e2.ToString();
+            //    Y = e_e2 * Convert.ToInt32(freq) * 2 * 3.14;
+            //    dGridTempMeas["Y", 0].Value = Y.ToString();
+
+            //    PP.BiasUCurrent = GetUFromVoltmeter();
+            //    if (chPolarity.Checked == true)
+            //    {
+            //        PP.Polarity = PP.PolarityPositive;
+            //    }
+            //    if (chPolarity.Checked == false)
+            //    {
+            //        PP.Polarity = PP.PolarityNegative;
+            //    }
+
+
+            //    if (PP.Polarity == PP.PolarityPositive)
+            //    {
+            //        if (PP.BiasUCurrent != 0)
+            //        {
+            //            PP.BiasHCurrent = 6e-8 * Math.Pow(PP.BiasUCurrent,3)- 4e-5 * Math.Pow(PP.BiasUCurrent,2) + 0.0098 * PP.BiasUCurrent - 0.0312;
+            //            dGridTempMeas["Hbias_T", 0].Value = PP.BiasHCurrent;
+            //            txtHBias.Text = PP.BiasHCurrent.ToString();
+            //        }
+            //        else { dGridTempMeas["Hbias_T", 0].Value = 0;
+            //        }
+            //    }
+            //    if (PP.Polarity == PP.PolarityNegative)
+            //    {
+            //        if (PP.BiasUCurrent != 0)
+            //        {
+            //            PP.BiasHCurrent = (6e-8 * Math.Pow(PP.BiasUCurrent, 3) - 4e-5 * Math.Pow(PP.BiasUCurrent, 2) + 0.0098 * PP.BiasUCurrent - 0.0312)*(-1);
+            //            dGridTempMeas["Hbias_T", 0].Value = PP.BiasHCurrent;
+            //            txtHBias.Text = PP.BiasHCurrent.ToString();
+            //        }
+            //        else { dGridTempMeas["Hbias_T", 0].Value = 0; }
+            //    }
+
+            //    dGridTempMeas["Hbias_T", 0].Value = PP.BiasHCurrent.ToString(); 
+            //    dGridTempMeas["Cycle", 0].Value = PP.cycleCurrentNum.ToString();
+            //    dGridTempMeas["Date", 0].Value = DateTime.Now.ToShortDateString();
+            //    dGridTempMeas["Time", 0].Value = dateT.ToString(dateformat);
+            //    dGridTempMeas["Step", 0].Value = PP.CurrentStep;
+            //    dGridTempMeas["Direction", 0].Value = PP.Direction;
+            //    dGridTempMeas["Polarity", 0].Value = PP.Polarity;
+            //    dGridTempMeas["operator", 0].Value = frmMOpt.cmbOperator.Text;
+            //    myStopwatch.Stop();
+            //    PP.TimeMeas = PP.TimeMeas + (Convert.ToDouble(myStopwatch.ElapsedMilliseconds.ToString()) * timeCoef) + 0.14;
+
+
+            //    dGridTempMeas["Timer", 0].Value = (PP.TimeMeas).ToString();
+            //    dGridTempMeas["Meas_type", 0].Value = frmMOpt.cWorkMode.Text;
+            //    txtUbias.Text = dGridTempMeas["Ubias_V", 0].Value.ToString();
+
+            //    //if (frmMOpt.cWorkMode.Text == "Magnit_hand")
+            //    //{
+            //    //    dGridTempMeas["Step", 0].Value = PP.CurrentStep.ToString();
+            //    //    dGridTempMeas["Direction", 0].Value = PP.Direction.ToString();
+            //    //    dGridTempMeas["Polarity", 0].Value = PP.Polarity.ToString();
+            //    //}
+
+            //    switch (frmMOpt.cWorkMode.Text)
+            //    {
+            //        default:
+            //            {
+            //                for (int u = 0; u < chartMeasTemp1.Series.Count; u++)
+            //                {
+            //                    if (chartMeasTemp1.Series[u].Name.ToString() == (dGridTempMeas["f_Hz", 0].Value + "\r").ToString() ||
+            //                        chartMeasTemp1.Series[u].Name.ToString() == dGridTempMeas["f_Hz", 0].Value.ToString())
+            //                    {
+            //                        double num0;
+            //                        bool isNum0 = double.TryParse(dGridTempMeas["e_re", 0].Value.ToString(), out num0);
+            //                        double num1;
+            //                        bool isNum1 = double.TryParse(dGridTempMeas["e_im", 0].Value.ToString(), out num1);
+
+            //                        if (Convert.ToDouble(dGridTempMeas["e_re", 0].Value) < 1e40 &&
+            //                            Convert.ToDouble(dGridTempMeas["e_re", 0].Value) > -1e10 &&
+            //                            Convert.ToDouble(dGridTempMeas["e_im", 0].Value) < 1e40 &&
+            //                            Convert.ToDouble(dGridTempMeas["e_im", 0].Value) > -1e40 &&
+            //                            isNum0 == true && isNum1 == true)
+            //                        {
+            //                            switch (frmMOpt.cbGraphOptions.Text)
+            //                            {
+            //                                case "e(T)":
+            //                                    {
+            //                                        chartMeasTemp1.Series[u].Points.AddXY(Convert.ToDouble(dGridTempMeas["T_K", 0].Value), Convert.ToDouble(dGridTempMeas["e_re", 0].Value));
+            //                                        chartMeasTemp2.Series[u].Points.AddXY(Convert.ToDouble(dGridTempMeas["T_K", 0].Value), Convert.ToDouble(dGridTempMeas["e_im", 0].Value));
+            //                                        break;
+            //                                    }
+            //                                case "e(E)":
+            //                                    {
+            //                                        chartMeasTemp1.Series[u].Points.AddXY(Convert.ToDouble(dGridTempMeas["Ubias_V", 0].Value), Convert.ToDouble(dGridTempMeas["e_re", 0].Value));
+            //                                        chartMeasTemp2.Series[u].Points.AddXY(Convert.ToDouble(dGridTempMeas["Ubias_V", 0].Value), Convert.ToDouble(dGridTempMeas["e_im", 0].Value));
+            //                                        break;
+            //                                    }
+            //                                case "e(f)":
+            //                                    {
+            //                                        chartMeasTemp1.Series[u].Points.AddXY(Convert.ToDouble(dGridTempMeas["f_Hz", 0].Value), Convert.ToDouble(dGridTempMeas["e_re", 0].Value));
+            //                                        chartMeasTemp2.Series[u].Points.AddXY(Convert.ToDouble(dGridTempMeas["f_Hz", 0].Value), Convert.ToDouble(dGridTempMeas["e_im", 0].Value));
+            //                                        break;
+            //                                    }
+            //                                default:
+            //                                    {
+            //                                        break;
+            //                                    }
+
+            //                            }
+            //                        }
+
+            //                    }
+            //                }
+            //                break;
+            //            }
+            //    }
+            //    DBConn dBConn = new DBConn();
+            //    string sql = dBConn.DBExportDataString(this.dGridTempMeas, PP.DBTableName, 0);
+            //    FileJob FJ = new FileJob();
+            //    FJ.WriteF(sql, PP.FileNameSaveTempMeasDB);
+            //}
+            //this.Refresh();
+        }
+
+
+        private void MeasMagnit(string freq)
+        {
+
+            System.Diagnostics.Stopwatch myStopwatch = new System.Diagnostics.Stopwatch();
+            myStopwatch.Start();
+            GetTempFromVarta();
+            WriteTempToFile();
+
+            if (frmMOpt.cWorkMode.Text == "Magnit_hand")
+            {
+                PP.BiasUCurrent = GetUFromVoltmeter();
+                txtHBias.Text = PP.BiasUCurrent.ToString();
+
+
+                if (PP.Polarity == PP.PolarityPositive)
+                {
+                    if (PP.BiasUCurrent != 0)
+                    {
+                        PP.BiasHCurrent = 6e-8 * Math.Pow(PP.BiasUCurrent, 3) - 4e-5 * Math.Pow(PP.BiasUCurrent, 2) + 0.0098 * PP.BiasUCurrent - 0.0312;
+                        dGridTempMeas["Hbias_T", 0].Value = PP.BiasHCurrent;
+                        txtHBias.Text = PP.BiasHCurrent.ToString();
+                    }
+                    else { dGridTempMeas["Hbias_T", 0].Value = 0; }
+                }
+                if (PP.Polarity == PP.PolarityNegative)
+                {
+                    if (PP.BiasUCurrent != 0)
+                    {
+                        PP.BiasHCurrent = (6e-8 * Math.Pow(PP.BiasUCurrent, 3) - 4e-5 * Math.Pow(PP.BiasUCurrent, 2) + 0.0098 * PP.BiasUCurrent - 0.0312) * (-1);
+                        dGridTempMeas["Hbias_T", 0].Value = PP.BiasHCurrent;
+                        txtHBias.Text = PP.BiasHCurrent.ToString();
+                    }
+                    else { dGridTempMeas["Hbias_T", 0].Value = 0; }
+                }
+
+            }
+
+            double timeCoef = 0.001;
+            //string s = frmGPIB.answer;
+            double e_e0;
+            double tgper, Y;
+            double e_e2;
+            double emk;
+            double t;
+            double d;
+            double val1 = 0;
+            double val2 = 0;
+
+            PiezoMathCalculation PM = new PiezoMathCalculation();
+            ParseStringTab PS = new ParseStringTab();
+
+            PP.BiasHCurrent = Convert.ToDouble(txtHBias.Text);
+            switch (frmMOpt.cbGPIBDevModel.Text)
+            {
+                case "Agilent4980A":
+                    {
+                        PS.AddMeasStringAgilent4980(frmGPIB.answer);
+                        switch (frmGPIB.cbInterfaceType.Text)
+                        {
+                            case "GPIB":
+                                val1 = Convert.ToDouble(PS.ElementAt(0));
+                                val2 = Convert.ToDouble(PS.ElementAt(1));
+                                break;
+                            case "ETHERNET":
+                                val1 = Convert.ToDouble(PS.ElementAt(1));
+                                val2 = Convert.ToDouble(PS.ElementAt(2));
+                                break;
+                            default:
+                                val1 = Convert.ToDouble(PS.ElementAt(0));
+                                val2 = Convert.ToDouble(PS.ElementAt(1));
+                                break;
+                        }
+                        break;
+                    }
+                case "Agilent4285A":
+                    PS.AddMeasStringAgilent4285A(frmGPIB.answer);
+                    try
+                    {
+                        val1 = Convert.ToDouble(PS.ElementAt(0));
+                        val2 = Convert.ToDouble(PS.ElementAt(1));
+                    }
+                    catch (Exception ex)
+                    {
+                        ex.ToString();
+                    }
+                    break;
+
+                case "Agilent4263B":
+                    {
+                        PS.AddMeasStringAgilent4263(frmGPIB.answer);
+                        val1 = Convert.ToDouble(PS.ElementAt(1));
+                        val2 = Convert.ToDouble(PS.DeleteZero(PS.ElementAt(2)));
+                        break;
+                    }
+                case "Agilent34401A": PS.AddMeasStringAgilent4980(frmGPIB.answer); break;
+                case "WayneKerr6500B": PS.AddMeasStringWayneKerr6500B(frmGPIB.answer); break;
+                case "WayneKerr4300":
+                    {
+                        //+8.2556835e-13,-1.6205449e+00
+                        PS.AddMeasStringWayneKerr4300(frmGPIB.answer);
+                        val1 = Convert.ToDouble(PS.ElementAt(0));
+                        val2 = Convert.ToDouble(PS.ElementAt(1));
+                        break;
+                    }
+                case "E7-20":
+                    {
+                        val2 = PP.param2_E7_20;
+                        val1 = PP.param1_E7_20;
+                        break;
+                    }
+                default:
+                    PS.AddMeasStringAgilent4980(frmGPIB.answer);
+                    break;
+            }
+            if (frmMOpt.cWorkMode.Text != "Magnit_hand")
+            {
+                if (txtHBias.Text == "")
+                {
+                    txtHBias.Text = "0";
+                }
+                if (txtUbias.Text == "")
+                {
+                    txtUbias.Text = "0";
+                }
+            }
+            if (frmMOpt.cbExportDBMeasTemp.Text == "None")
+            {
+                try
+                {
+                    string dateformat = "hh:mm:ss.fff";
+                    DateTime dateT = new DateTime();
+                    dateT = DateTime.Now;
+                    dateT.AddMilliseconds(1);
+                    dGridTempMeas["id", PP.CelSel].Value = PP.CelSel.ToString();
+                    dGridTempMeas["id_section", 0].Value = frmMOpt.txtComposition.Text;
+                    dGridTempMeas["id_sample", 0].Value = frmMOpt.txtSampleNumber.Text;
+                    dGridTempMeas["Tsint_K", 0].Value = frmMOpt.txtTempSint.Text;
+                    dGridTempMeas["t_cm", 0].Value = frmMOpt.txtHeight.Text;
+                    t = Convert.ToDouble(frmMOpt.txtHeight.Text);
+                    dGridTempMeas["d_cm", 0].Value = frmMOpt.txtDiameter.Text;
+                    d = Convert.ToDouble(frmMOpt.txtDiameter.Text);
+                    dGridTempMeas["T_K", 0].Value = lbTemp.Text;
+                    dGridTempMeas["f_Hz", 0].Value = freq;
+                    emk = val1 * 1e12;
+                    dGridTempMeas["C_pF", 0].Value = emk.ToString();
+                    e_e0 = PM.e_re(t, d, emk);
+                    dGridTempMeas["e_re", 0].Value = e_e0.ToString();
+                    dGridTempMeas["tgd", 0].Value = val2;
+                    tgper = Convert.ToDouble(dGridTempMeas["tgd", 0].Value);
+                    dGridTempMeas["tgd1e2", 0].Value = PM.tgdE2(tgper).ToString();
+                    e_e2 = PM.e_im(e_e0, tgper);
+                    dGridTempMeas["e_im", 0].Value = e_e2.ToString();
+                    Y = e_e2 * Convert.ToInt32(freq) * 2 * 3.14;
+                    dGridTempMeas["Y", 0].Value = Y.ToString();
+                    //dGridTempMeas["Direct", i].Value = lbDirect.Text;
+                    dGridTempMeas["Ubias_V", 0].Value = txtUbias.Text;
+                    dGridTempMeas["Hbias_T", 0].Value = txtHBias.Text;
+                    dGridTempMeas["Cycle", 0].Value = PP.cycleCurrentNum.ToString();
+                    dGridTempMeas["Date", 0].Value = DateTime.Now.ToShortDateString();
+                    dGridTempMeas["Time", 0].Value = dateT.ToString(dateformat);
+                    dGridTempMeas["operator", 0].Value = frmMOpt.cmbOperator.Text;
+
+                    myStopwatch.Stop();
+                    PP.TimeMeas = PP.TimeMeas + (Convert.ToDouble(myStopwatch.ElapsedMilliseconds.ToString()) * timeCoef) + 0.14;
+
+                    dGridTempMeas["Timer", 0].Value = (PP.TimeMeas).ToString();
+                    dGridTempMeas["Polarity", 0].Value = PP.Polarity;
+                    dGridTempMeas["Direction", 0].Value = PP.Direction;
+                    dGridTempMeas["Step", 0].Value = PP.CurrentStep;
+                    dGridTempMeas["Meas_type", 0].Value = frmMOpt.cWorkMode.Text;
+                    dGridTempMeas.Rows.Add();
+                    AutoSaveMeas(PP.FileNameSaveTempMeas);
+                    this.Refresh();
+
+                    for (int u = 0; u < chartMeasTemp1.Series.Count; u++)
+                    {
+                        if (chartMeasTemp1.Series[u].Name == freq)
+                        {
+                            chartMeasTemp1.Series[u].Points.AddXY(lbTemp, e_e0);
+                            chartMeasTemp2.Series[u].Points.AddXY(lbTemp, tgper);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ex.ToString();
+                }
+            }
+
+
+            if (frmMOpt.cbExportDBMeasTemp.Text == "Export to DB parallel" && frmDBConnection.DataBaseConnected == true)
+            {
+                try
+                {
+                    NpgsqlConnection pgcon = new NpgsqlConnection(frmDBConnection.ConnectionStringToDB);
+                    pgcon.Open();
+                    string sql = "";
+                    NpgsqlCommand CSend = new NpgsqlCommand(sql, pgcon);
+                    string sql_data = "";
+                    for (int j = 1; j < dGridTempMeas.ColumnCount + 1; j++)
+                    {
+                        sql_data = sql_data + dGridTempMeas.Rows[0].Cells[j].Value.ToString() + ", ";
+                    }
+                    sql_data = sql_data.Substring(0, sql_data.Length - 2);
+                    sql = "Insert into " + frmMOpt.txtComposition + " values (" + sql_data + ");";
+                    CSend.ExecuteNonQuery();
+                    FileJob FJ = new FileJob();
+                    FJ.WriteF(sql, PP.FileNameSaveTempMeas + ".log");
+                }
+                catch (Exception ex)
+                {
+                    ex.ToString();
+                }
+            }
+
+            if (frmMOpt.cbExportDBMeasTemp.Text == "Export to DB(only)")
+            {
+                string dateformat = "hh:mm:ss.fff";
+                DateTime dateT = new DateTime();
+                dateT = DateTime.Now;
+                dateT.AddMilliseconds(1);
+                dGridTempMeas["id", 0].Value = PP.CelSel.ToString();
+                dGridTempMeas["id_section", 0].Value = frmMOpt.txtComposition.Text;
+                dGridTempMeas["id_sample", 0].Value = frmMOpt.txtSampleNumber.Text;
+                dGridTempMeas["Tsint_K", 0].Value = frmMOpt.txtTempSint.Text;
+                dGridTempMeas["t_cm", 0].Value = frmMOpt.txtHeight.Text;
+                t = Convert.ToDouble(frmMOpt.txtHeight.Text);
+                dGridTempMeas["d_cm", 0].Value = frmMOpt.txtDiameter.Text;
+                d = Convert.ToDouble(frmMOpt.txtDiameter.Text);
+                dGridTempMeas["T_K", 0].Value = lbTemp.Text;
+                dGridTempMeas["f_Hz", 0].Value = freq;
+                dGridTempMeas["C_pF", 0].Value = (Convert.ToDouble(val1) * 1e12).ToString();
+                e_e0 = PM.e_re(t, d, Convert.ToDouble(dGridTempMeas["C_pF", 0].Value));
+                dGridTempMeas["e_re", 0].Value = e_e0.ToString();
+                dGridTempMeas["tgd", 0].Value = val2;
+                tgper = Convert.ToDouble(dGridTempMeas["tgd", 0].Value);
+                dGridTempMeas["tgd1e2", 0].Value = PM.tgdE2(tgper).ToString();
+                e_e2 = PM.e_im(e_e0, Convert.ToDouble(dGridTempMeas["tgd", 0].Value));
+                dGridTempMeas["e_im", 0].Value = e_e2.ToString();
+                Y = e_e2 * Convert.ToInt32(freq) * 2 * 3.14;
+                dGridTempMeas["Y", 0].Value = Y.ToString();
+                dGridTempMeas["Ubias_V", 0].Value = PP.BiasUCurrent;
+
+
+
+
+
+
+
+                PP.BiasHCurrent = GetUFromVoltmeter();
+                txtHBias.Text = PP.BiasHCurrent.ToString();
+                //PP.BiasUCurrent = 0.0825 * (PP.BiasUCurrent) + 0.1728;
+
+
+                if (chPolarity.Checked == true)
+                {
+                    PP.Polarity = PP.PolarityPositive;
+                }
+                if (chPolarity.Checked == false)
+                {
+                    PP.Polarity = PP.PolarityNegative;
+                }
+
+
+
+
+
+
+                if (PP.Polarity == PP.PolarityPositive)
+                {
+                    if (PP.BiasUCurrent != 0)
+                    {
+                        //dGridTempMeas["Ubias_V", 0].Value = Convert.ToDouble(frmMOpt.txtApproxA) * PP.BiasUCurrent + Convert.ToDouble(frmMOpt.txtApproxB);
+                        dGridTempMeas["Ubias_V", 0].Value = PP.BiasHCurrent;
+                    }
+                    else { dGridTempMeas["Hbias_T", 0].Value = 0; }
+                }
+                if (PP.Polarity == PP.PolarityNegative)
+                {
+                    if (PP.BiasUCurrent != 0)
+                    {
+                        //dGridTempMeas["Ubias_V", 0].Value = (21.13 * PP.BiasUCurrent - 3.9299) * (-1);
+                        dGridTempMeas["Ubias_V", 0].Value = PP.BiasHCurrent * (-1);
+                    }
+                    else { dGridTempMeas["Hbias_T", 0].Value = 0; }
+                }
+
+                //dGridTempMeas["Hbias_T", 0].Value = txtHBias.Text;
+
+
+
+                dGridTempMeas["Hbias_T", 0].Value = PP.BiasHCurrent;
+                dGridTempMeas["Cycle", 0].Value = PP.cycleCurrentNum.ToString();
+                dGridTempMeas["Date", 0].Value = DateTime.Now.ToShortDateString();
+                dGridTempMeas["Time", 0].Value = dateT.ToString(dateformat);
+                dGridTempMeas["Step", 0].Value = PP.CurrentStep;
+                dGridTempMeas["Direction", 0].Value = PP.Direction;
+                dGridTempMeas["Polarity", 0].Value = PP.Polarity;
+                dGridTempMeas["operator", 0].Value = frmMOpt.cmbOperator.Text;
+                myStopwatch.Stop();
+                PP.TimeMeas = PP.TimeMeas + (Convert.ToDouble(myStopwatch.ElapsedMilliseconds.ToString()) * timeCoef) + 0.14;
+
+                dGridTempMeas["Timer", 0].Value = (PP.TimeMeas).ToString();
+                dGridTempMeas["Meas_type", 0].Value = frmMOpt.cWorkMode.Text;
+
+                if (frmMOpt.cWorkMode.Text == "C(dU)_auto_reversive")
+                {
+                    dGridTempMeas["Step", 0].Value = PP.CurrentStep.ToString();
+                    dGridTempMeas["Direction", 0].Value = PP.Direction.ToString();
+                    dGridTempMeas["Polarity", 0].Value = PP.Polarity.ToString();
+                }
+
+                switch (frmMOpt.cWorkMode.Text)
+                {
+                    case "C(dU,dt,df)_relaxation_(law from file)":
+                        {
+                            for (int u = 0; u < chartMeasTemp1.Series.Count; u++)
+                            {
+                                if (chartMeasTemp1.Series[u].Name == freq)
+                                {
+                                    chartMeasTemp1.Series[u].Points.AddXY(PP.TimeMeas, e_e0);
+                                    chartMeasTemp2.Series[u].Points.AddXY(PP.TimeMeas, tgper);
+                                    chartMeasTemp1.Update();
+                                    chartMeasTemp2.Update();
+                                }
+                            }
+                            break;
+                        }
+                    default:
+                        {
+                            for (int u = 0; u < chartMeasTemp1.Series.Count; u++)
+                            {
+                                if (chartMeasTemp1.Series[u].Name == freq + "\r")
+                                {
+                                    if (frmMOpt.cbGraphOptions.Text == "e(T)" && e_e0 > 0 && e_e0 < 1e25)
+                                    {
+                                        chartMeasTemp1.Series[u].Points.AddXY(Convert.ToDouble(PP.Temperature1), e_e0);
+                                        chartMeasTemp2.Series[u].Points.AddXY(Convert.ToDouble(PP.Temperature1), tgper);
+                                        chartMeasTemp1.Update();
+                                        chartMeasTemp2.Update();
+                                    }
+                                    if (frmMOpt.cbGraphOptions.Text == "e(E)" && e_e0 > 0 && e_e0 < 1e25)
+                                    {
+                                        chartMeasTemp1.Series[u].Points.AddXY(Convert.ToDouble(PP.BiasUCurrent), e_e0);
+                                        chartMeasTemp2.Series[u].Points.AddXY(Convert.ToDouble(PP.BiasUCurrent), tgper);
+                                        chartMeasTemp1.Update();
+                                        chartMeasTemp2.Update();
+                                    }
+
+                                    if (frmMOpt.cbGraphOptions.Text == "e(f)" && e_e0 > 0 && e_e0 < 1e25)
+                                    {
+                                        chartMeasTemp1.Series[u].Points.AddXY(Convert.ToDouble(freq), e_e0);
+                                        chartMeasTemp2.Series[u].Points.AddXY(Convert.ToDouble(freq), tgper);
+                                        chartMeasTemp1.Update();
+                                        chartMeasTemp2.Update();
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                }
+                DBConn dBConn = new DBConn();
+                string sql = dBConn.DBExportDataString(this.dGridTempMeas, PP.DBTableName, 0);
+                FileJob FJ = new FileJob();
+                FJ.WriteF(sql, PP.FileNameSaveTempMeasDB);
+            }
+            this.Refresh();
+
+
+
+
+
+
+
+
+
+
+
+            //System.Diagnostics.Stopwatch myStopwatch = new System.Diagnostics.Stopwatch();
+            //myStopwatch.Start();
+            //GetTempFromVarta();
+            //WriteTempToFile();
+
+
+            //double timeCoef = 0.001;
+            //string s = frmGPIB.answer;
+            //double e_e0;
+            //double tgper, Y;
+            //double e_e2;
+            ////double emk;
+            //double t;
+            //double d;
+            //double val1 = 0;
+            //double val2 = 0;
+            //PiezoMathCalculation PM = new PiezoMathCalculation();
+            //ParseStringTab PS = new ParseStringTab();
+            //switch (frmMOpt.cbGPIBDevModel.Text)
+            //{
+            //    case "Agilent4980A":
+            //        {
+            //            PS.AddMeasStringAgilent4980(s);
+            //            switch (frmGPIB.cbInterfaceType.Text)
+            //            {
+            //                case "GPIB":
+            //                    val1 = Convert.ToDouble(PS.ElementAt(0));
+            //                    val2 = Convert.ToDouble(PS.ElementAt(1));
+            //                    break;
+            //                case "ETHERNET":
+            //                    val1 = Convert.ToDouble(PS.ElementAt(1));
+            //                    val2 = Convert.ToDouble(PS.ElementAt(2));
+            //                    break;
+            //                default:
+            //                    break;
+            //            }
+            //            break;
+            //        }
+            //    case "Agilent4285A": PS.AddMeasStringAgilent4980(s); break;
+            //    case "Agilent4263B":
+            //        {
+            //            PS.AddMeasStringAgilent4263(s);
+            //            val1 = Convert.ToDouble(PS.ElementAt(1));
+            //            val2 = Convert.ToDouble(PS.DeleteZero(PS.ElementAt(2)));
+            //            break;
+            //        }
+            //    case "Agilent34401A": PS.AddMeasStringAgilent4980(s); break;
+            //    case "WayneKerr6500B": PS.AddMeasStringWayneKerr6500B(s); break;
+            //    case "WayneKerr4300":
+            //        {
+            //            //+8.2556835e-13,-1.6205449e+00
+            //            PS.AddMeasStringWayneKerr4300(s);
+            //            val1 = Convert.ToDouble(PS.ElementAt(0));
+            //            val2 = Convert.ToDouble(PS.ElementAt(1));
+            //            break;
+            //        }
+            //    default:
+            //        PS.AddMeasStringAgilent4980(s);
+            //        break;
+            //}
+
+            //if (txtHBias.Text == "")
+            //{
+            //    txtHBias.Text = "0";
+            //}
+            //if (txtUbias.Text == "")
+            //{
+            //    txtUbias.Text = "0";
+            //}
+
+            //if (frmMOpt.cbExportDBMeasTemp.Text == "Export to DB(only)")
+            //{
+            //    string dateformat = "hh:mm:ss.fff";
+            //    DateTime dateT = new DateTime();
+            //    dateT = DateTime.Now;
+            //    dateT.AddMilliseconds(1);
+            //    dGridTempMeas["id", 0].Value = PP.CelSel.ToString();
+            //    dGridTempMeas["id_section", 0].Value = frmMOpt.txtComposition.Text;
+            //    dGridTempMeas["id_sample", 0].Value = frmMOpt.txtSampleNumber.Text;
+            //    dGridTempMeas["Tsint_K", 0].Value = frmMOpt.txtTempSint.Text;
+            //    dGridTempMeas["t_cm", 0].Value = frmMOpt.txtHeight.Text;
+            //    t = Convert.ToDouble(frmMOpt.txtHeight.Text);
+            //    dGridTempMeas["d_cm", 0].Value = frmMOpt.txtDiameter.Text;
+            //    d = Convert.ToDouble(frmMOpt.txtDiameter.Text);
+            //    dGridTempMeas["T_K", 0].Value = lbTemp.Text;
+            //    dGridTempMeas["f_Hz", 0].Value = freq;
+            //    dGridTempMeas["C_pF", 0].Value = (Convert.ToDouble(val1) * 1e12).ToString();
+            //    e_e0 = PM.e_re(t, d, Convert.ToDouble(dGridTempMeas["C_pF", 0].Value));
+            //    dGridTempMeas["e_re", 0].Value = e_e0.ToString();
+            //    dGridTempMeas["tgd", 0].Value = val2;
+            //    tgper = Convert.ToDouble(dGridTempMeas["tgd", 0].Value);
+            //    dGridTempMeas["tgd1e2", 0].Value = PM.tgdE2(tgper).ToString();
+            //    e_e2 = PM.e_im(e_e0, Convert.ToDouble(dGridTempMeas["tgd", 0].Value));
+            //    dGridTempMeas["e_im", 0].Value = e_e2.ToString();
+            //    Y = e_e2 * Convert.ToInt32(freq) * 2 * 3.14;
+            //    dGridTempMeas["Y", 0].Value = Y.ToString();
+            //    //dGridTempMeas["Direct", 0].Value = lbDirect.Text;
+
+            //    PP.BiasHCurrent = GetUFromVoltmeter();
+            //    txtHBias.Text= PP.BiasHCurrent.ToString();
+            //    //PP.BiasUCurrent = 0.0825 * (PP.BiasUCurrent) + 0.1728;
+
+
+            //    if (chPolarity.Checked == true)
+            //    {
+            //        PP.Polarity = PP.PolarityPositive;
+            //    }
+            //    if (chPolarity.Checked == false)
+            //    {
+            //        PP.Polarity = PP.PolarityNegative;
+            //    }
+
+
+
+
+
+
+            //    if (PP.Polarity == PP.PolarityPositive)
+            //    {
+            //        if (PP.BiasUCurrent != 0)
+            //        {
+            //            //dGridTempMeas["Ubias_V", 0].Value = Convert.ToDouble(frmMOpt.txtApproxA) * PP.BiasUCurrent + Convert.ToDouble(frmMOpt.txtApproxB);
+            //            dGridTempMeas["Ubias_V", 0].Value = PP.BiasHCurrent;
+            //        }
+            //        else { dGridTempMeas["Hbias_V", 0].Value = 0; }
+            //    }
+            //    if (PP.Polarity == PP.PolarityNegative)
+            //    {
+            //        if (PP.BiasUCurrent != 0)
+            //        {
+            //            //dGridTempMeas["Ubias_V", 0].Value = (21.13 * PP.BiasUCurrent - 3.9299) * (-1);
+            //            dGridTempMeas["Hbias_V", 0].Value = PP.BiasHCurrent*(-1);
+            //        }
+            //        else { dGridTempMeas["Hbias_V", 0].Value = 0; }
+            //    }
+
+            //    //dGridTempMeas["Hbias_T", 0].Value = txtHBias.Text;
+            //    dGridTempMeas["Cycle", 0].Value = PP.cycleCurrentNum.ToString();
+            //    dGridTempMeas["Date", 0].Value = DateTime.Now.ToShortDateString();
+            //    dGridTempMeas["Time", 0].Value = dateT.ToString(dateformat);
+            //    dGridTempMeas["Step", 0].Value = PP.CurrentStep;
+            //    dGridTempMeas["Direction", 0].Value = PP.Direction;
+            //    dGridTempMeas["Polarity", 0].Value = PP.Polarity;
+            //    dGridTempMeas["operator", 0].Value = frmMOpt.cmbOperator.Text;
+            //    myStopwatch.Stop();
+            //    PP.TimeMeas = PP.TimeMeas + (Convert.ToDouble(myStopwatch.ElapsedMilliseconds.ToString()) * timeCoef) + 0.14;
+
+
+            //    dGridTempMeas["Timer", 0].Value = (PP.TimeMeas).ToString();
+            //    dGridTempMeas["Meas_type", 0].Value = frmMOpt.cWorkMode.Text;
+            //    txtUbias.Text = dGridTempMeas["Ubias_V", 0].Value.ToString();
+
+            //    if (frmMOpt.cWorkMode.Text == "C(dU)_auto_reversive")
+            //    {
+            //        dGridTempMeas["Step", 0].Value = PP.CurrentStep.ToString();
+            //        dGridTempMeas["Direction", 0].Value = PP.Direction.ToString();
+            //        dGridTempMeas["Polarity", 0].Value = PP.Polarity.ToString();
+            //    }
+
+            //    switch (frmMOpt.cWorkMode.Text)
+            //    {
+            //        default:
+            //            {
+            //                for (int u = 0; u < chartMeasTemp1.Series.Count; u++)
+            //                {
+            //                    if (chartMeasTemp1.Series[u].Name.ToString() == (dGridTempMeas["f_Hz", 0].Value + "\r").ToString() ||
+            //                        chartMeasTemp1.Series[u].Name.ToString() == dGridTempMeas["f_Hz", 0].Value.ToString())
+            //                    {
+            //                        double num0;
+            //                        bool isNum0 = double.TryParse(dGridTempMeas["e_re", 0].Value.ToString(), out num0);
+            //                        double num1;
+            //                        bool isNum1 = double.TryParse(dGridTempMeas["e_im", 0].Value.ToString(), out num1);
+
+            //                        if (Convert.ToDouble(dGridTempMeas["e_re", 0].Value) < 1e40 &&
+            //                            Convert.ToDouble(dGridTempMeas["e_re", 0].Value) > -1e10 &&
+            //                            Convert.ToDouble(dGridTempMeas["e_im", 0].Value) < 1e40 &&
+            //                            Convert.ToDouble(dGridTempMeas["e_im", 0].Value) > -1e40 &&
+            //                            isNum0 == true && isNum1 == true)
+            //                        {
+            //                            switch (frmMOpt.cbGraphOptions.Text)
+            //                            {
+            //                                case "e(T)":
+            //                                    {
+            //                                        chartMeasTemp1.Series[u].Points.AddXY(Convert.ToDouble(dGridTempMeas["T_K", 0].Value), Convert.ToDouble(dGridTempMeas["e_re", 0].Value));
+            //                                        chartMeasTemp2.Series[u].Points.AddXY(Convert.ToDouble(dGridTempMeas["T_K", 0].Value), Convert.ToDouble(dGridTempMeas["e_im", 0].Value));
+            //                                        break;
+            //                                    }
+            //                                case "e(E)":
+            //                                    {
+            //                                        chartMeasTemp1.Series[u].Points.AddXY(Convert.ToDouble(dGridTempMeas["Ubias_V", 0].Value), Convert.ToDouble(dGridTempMeas["e_re", 0].Value));
+            //                                        chartMeasTemp2.Series[u].Points.AddXY(Convert.ToDouble(dGridTempMeas["Ubias_V", 0].Value), Convert.ToDouble(dGridTempMeas["e_im", 0].Value));
+            //                                        break;
+            //                                    }
+            //                                case "e(f)":
+            //                                    {
+            //                                        chartMeasTemp1.Series[u].Points.AddXY(Convert.ToDouble(dGridTempMeas["f_Hz", 0].Value), Convert.ToDouble(dGridTempMeas["e_re", 0].Value));
+            //                                        chartMeasTemp2.Series[u].Points.AddXY(Convert.ToDouble(dGridTempMeas["f_Hz", 0].Value), Convert.ToDouble(dGridTempMeas["e_im", 0].Value));
+
+            //                                        break;
+            //                                    }
+            //                                default:
+            //                                    {
+            //                                        break;
+            //                                    }
+
+            //                            }
+            //                        }
+
+            //                    }
+            //                }
+            //                break;
+            //            }
+            //    }
+            //    DBConn dBConn = new DBConn();
+            //    string sql = dBConn.DBExportDataString(this.dGridTempMeas, PP.DBTableName, 0);
+            //    FileJob FJ = new FileJob();
+            //    FJ.WriteF(sql, PP.FileNameSaveTempMeasDB);
+            //}
+            //this.Refresh();
+        }
+
 
 
         private void MeasReversive(string freq)
@@ -3467,7 +4714,7 @@ namespace Kalipso
 
                 PP.BiasUCurrent = GetUFromVoltmeter();
 
-                PP.BiasUCurrent = 0.0825 * (PP.BiasUCurrent) + 0.1728;
+                //PP.BiasUCurrent = 0.0825 * (PP.BiasUCurrent) + 0.1728;
 
 
                 if (chPolarity.Checked == true)
@@ -3484,7 +4731,7 @@ namespace Kalipso
                 {
                     if (PP.BiasUCurrent != 0)
                     {
-                        dGridTempMeas["Ubias_V", 0].Value = 21.13 * PP.BiasUCurrent - 3.9299;
+                        dGridTempMeas["Ubias_V", 0].Value = Convert.ToDouble(frmMOpt.txtApproxA) * PP.BiasUCurrent + Convert.ToDouble(frmMOpt.txtApproxB);
                     }
                     else { dGridTempMeas["Ubias_V", 0].Value = 0; }
                 }
@@ -3581,8 +4828,6 @@ namespace Kalipso
             }
             this.Refresh();
         }
-
-
         /// <summary>
         /// Gets the data from voltage meter hy a V51 t.
         /// </summary>
@@ -3591,7 +4836,6 @@ namespace Kalipso
         {
             short[] values = new short[40];
             values = Com.GetDataFromVoltageMeter_HY_AV51_T1();
-
             //short[] valueArray = new short[2];
             int[] valueConv = new int[2];
 
@@ -3625,14 +4869,14 @@ namespace Kalipso
                 default:
                     break;
             }
-            if (val_out == 0)
-            {
-                PP.BiasUCurrent = 0;
-            }
-            if (val_out != 0)
-            {
-                PP.BiasUCurrent = 23.81 * val_out - 16.464;
-            }
+            //if (val_out == 0)
+            //{
+            //    PP.BiasUCurrent = 0;
+            //}
+            //if (val_out != 0)
+            //{
+            //    PP.BiasUCurrent = 23.81 * val_out - 16.464;
+            //}
             return val_out;
         }
         /// <summary>
@@ -3642,18 +4886,21 @@ namespace Kalipso
         {
             ParseStringTab PS = new ParseStringTab();
             string s = "";
-
-
             //Regex reg = new Regex(@"^[-+][0-9][.][0-9]{5}[E][-+][0-9]{2}[,][-+][0-9][.][0-9]{5}[E][-+][0-9]{2}[,][-+][0-9]{1}");
+
+            #region  Get_data_from_micron
             do
             {
                 Com.SendDataToComPort("ArduinoUno", "m");
                 s = Com.ComReadString();
             } while (s.Length < 7);
-
-            GetDataFromVoltageMeter_HY_AV51_T();
-
             PS.AddUMicron(s);
+            #endregion
+
+            #region Get_data_from_voltage_meter_E=U/t
+            GetDataFromVoltageMeter_HY_AV51_T();
+            #endregion
+
 
             MeasD33Rev(Convert.ToDouble(PS.ElementAt(0)), 0);
 
@@ -3697,31 +4944,39 @@ namespace Kalipso
         public void WorkModeD33rev()
         {
             ParseStringTab PS = new ParseStringTab();
+            #region Get_data_from_micron
+            /*
             string s = "";
             do
             {
                 Com.SendDataToComPort("ArduinoUno", "m");
                 s = Com.ComReadString();
             } while (s.Length < 7);
-
-            bool Ubias = false;
-            for (int i = 0; i < Com.allComPort.Count(); i++)
-            {
-                if (Com.allComPort[i].DeviceName == "VoltageMeter HY-AV51-T")
-                {
-                    GetDataFromVoltageMeter_HY_AV51_T();
-                    Ubias = true;
-                }
-            }
-
-            if (Ubias == false)
-            {
-                PP.BiasUCurrent = Convert.ToDouble(txtUbias.Text);
-            }
-
             PS.AddUMicron(s);
+            */
+            frmGPIB.WriteCommandDev("init;fetch?");
+            frmGPIB.ReadDeviceAnswer();
+            #endregion
 
-            MeasD33Rev(Convert.ToDouble(PS.ElementAt(0)), 0);
+            //bool Ubias = false;
+            //for (int i = 0; i < Com.allComPort.Count(); i++)
+            //{
+            //    if (Com.allComPort[i].DeviceName == "VoltageMeter HY-AV51-T")
+            //    {
+            //        GetDataFromVoltageMeter_HY_AV51_T();
+            //        Ubias = true;
+            //    }
+            //}
+
+            //if (Ubias == false)
+            //{
+            //    PP.BiasUCurrent = Convert.ToDouble(txtUbias.Text);
+            //}
+
+            GetUFromVoltmeter();
+
+            //MeasD33Rev(Convert.ToDouble(PS.ElementAt(0)), 0);
+            MeasD33Rev(Convert.ToDouble(PP.BiasUCurrent), 0);
 
             //if (PP.CurrentTime >= PP.TimeMeas && PP.CurrentTimeStep >= PP.ListTimer.Length - 1)
             //{
@@ -4031,8 +5286,9 @@ namespace Kalipso
                     }
                 case "Agilent4285A":
                     {
-                        frmGPIB.WriteCommandeSync(PP.FreqAgilent4285 + PP.ListFreq[i]);
-                        frmGPIB.WriteCommandeSync(PP.TrigAgilent4285);
+                        //System.Threading.Thread.Sleep(100);
+                        frmGPIB.WriteCommandDev(PP.FreqAgilent4285 + PP.ListFreq[i]+";");
+                        //frmGPIB.WriteCommandeSync(PP.TrigAgilent4285);
                         break;
                     }
                 case "Agilent4263B":
@@ -4062,10 +5318,6 @@ namespace Kalipso
                     {
                         byte[] data = new byte[2];
                         PiezoMathCalculation pm = new PiezoMathCalculation();
-
-
-
-
                         do
                         {
                             PP.bufE7_20 = Com.GetDataFromCOMDevice("E7-20", 0, 22);
@@ -4099,6 +5351,7 @@ namespace Kalipso
                 default:
                     break;
             }
+            txtCurFreq.Text = PP.ListFreq[i];
         }
         /// <summary>
         /// Initialiezes the trig.
@@ -4115,14 +5368,14 @@ namespace Kalipso
                     }
                 case "Agilent4285A":
                     {
-
-                        frmGPIB.WriteCommandeSync(PP.TrigAgilent4285);
+                        frmGPIB.WriteCommandDev(PP.TrigAgilent4285+PP.FetchAgilent4285);
+                        frmGPIB.ReadDeviceAnswer();
                         break;
                     }
                 case "Agilent4263B":
                     {
-                        //frmGPIB.WriteCommandDev(PP.TrigFetchAgilent4263);
-                        //frmGPIB.ReadGPIBAnswer();
+                        frmGPIB.WriteCommandDev(PP.TrigFetchAgilent4263);
+                        frmGPIB.ReadGPIBAnswer();
                         break;
                     }
                 case "Agilent34401A":
@@ -4168,7 +5421,8 @@ namespace Kalipso
         {
             Stopwatch myStopwatch = new Stopwatch();
             myStopwatch.Start();
-            GetTempFromVarta();
+            getTempFromTermocontroller();
+            //GetTempFromVarta();
             WriteTempToFile();
             PiezoMathCalculation PM = new PiezoMathCalculation();
             //измерение и получение данных с прибора
@@ -4217,6 +5471,12 @@ namespace Kalipso
                                 frmGPIB.WriteCommandDev(PM.ReplaceCommonEscapeSequences(PP.FetchAgilent4980));
                                 frmGPIB.ReadDeviceAnswer();
                                 break;
+                            case "USB":
+                                {
+                                    frmGPIB.ReadDeviceAnswer(PP.FetchAgilent4980);
+                                    break;
+                                }
+
                             default:
                                 break;
                         }
@@ -4367,10 +5627,12 @@ namespace Kalipso
         /// </summary>
         public void AddParametersVal()
         {
-            string dateformat = "hh:mm:ss.fff";
-            DateTime dateT = new DateTime();
-            dateT = DateTime.Now;
-            dateT.AddMilliseconds(1);
+            //string dateformat = "hh:mm:ss.fff";
+            DateTime dateT = DateTime.Now;
+            //new DateTime();
+            //dateT = DateTime.Now;
+            //DateTime dateT = new DateTime();
+            //dateT = DateTime.Now;
 
             dGridTempMeas["id", 0].Value = PP.CelSel.ToString();
             dGridTempMeas["id_section", 0].Value = frmMOpt.txtComposition.Text;
@@ -4379,13 +5641,12 @@ namespace Kalipso
             dGridTempMeas["t_cm", 0].Value = frmMOpt.txtHeight.Text;
             dGridTempMeas["d_cm", 0].Value = frmMOpt.txtDiameter.Text;
             dGridTempMeas["T_K", 0].Value = PP.Temperature1;
-            //dGridTempMeas["Direct", 0].Value = lbDirect.Text;
             dGridTempMeas["Direction", 0].Value = lbDirect.Text;
             dGridTempMeas["Ubias_V", 0].Value = PP.BiasUCurrent;
             dGridTempMeas["Hbias_T", 0].Value = txtHBias.Text;
             dGridTempMeas["Cycle", 0].Value = PP.cycleCurrentNum.ToString();
             dGridTempMeas["Date", 0].Value = DateTime.Now.ToShortDateString();
-            dGridTempMeas["Time", 0].Value = dateT.ToString(dateformat);
+            dGridTempMeas["Time", 0].Value = dateT.ToString("hh:mm:ss.fff");
             dGridTempMeas["operator", 0].Value = frmMOpt.cmbOperator.Text;
             dGridTempMeas["Timer", 0].Value = (PP.TimeMeas).ToString();
             dGridTempMeas["Meas_type", 0].Value = frmMOpt.cWorkMode.Text;
@@ -4404,28 +5665,67 @@ namespace Kalipso
             myStopwatch.Start();
             GetTempFromVarta();
             double timeCoef = 0.001;
-            string s = frmGPIB.answer;
-            //double t;
-            //double d;
-            //double val1 = 0;
-            //double val2 = 0;
+            
+            string Uin_Xi = frmGPIB.answer;
             PiezoMathCalculation PM = new PiezoMathCalculation();
             ParseStringTab PS = new ParseStringTab();
-
+            txtUbias.Text = PP.BiasUCurrent.ToString();
+            
             switch (frmMOpt.cbExportDBMeasTemp.Text)
             {
                 case "Export to DB(only)":
                     {
 
                         AddParametersVal();
-
-
                         myStopwatch.Stop();
                         PP.TimeMeas = PP.TimeMeas + (Convert.ToDouble(myStopwatch.ElapsedMilliseconds.ToString()) * timeCoef) + 0.14;
+                        
 
-                        if (PP.BiasUCurrent == 0)
+                        if (chPolarity.Checked == true)
                         {
-                            dGridTempMeas["Xi", 0].Value = PM.XiVal(PM.FindUmicron(Uin)); ;
+                            dGridTempMeas["Uout_V", 0].Value = Uin.ToString();
+                            dGridTempMeas["Ubias_V_conv", 0].Value = (Uin *Convert.ToDouble(frmMOpt.txtApproxU_d33_A.Text) + Convert.ToDouble(frmMOpt.txtApproxU_d33_B.Text)).ToString();
+                        } 
+                        if (chPolarity.Checked == false)
+                        {
+                            dGridTempMeas["Uout_V", 0].Value = (Uin* (-1)).ToString();
+                            dGridTempMeas["Ubias_V_conv", 0].Value = ((Uin * Convert.ToDouble(frmMOpt.txtApproxU_d33_A.Text) + Convert.ToDouble(frmMOpt.txtApproxU_d33_B.Text)) *(-1)).ToString();
+                        }
+                        txtUbias.Text = dGridTempMeas["Ubias_V_conv", 0].Value.ToString();
+                        lbField.Text = "U= " + dGridTempMeas["Ubias_V_conv", 0].Value.ToString();
+
+                        switch (cbCTE_Limit.Text)
+                        {
+                            case "20":
+                                {
+                                    dGridTempMeas["Xi", 0].Value = PM.XiVal_Law_linear(Convert.ToDouble(Uin_Xi), Convert.ToDouble(frmMOpt.txtApproxD33_A_20.Text), Convert.ToDouble(frmMOpt.txtApproxD33_B_20.Text)).ToString();
+                                    dGridTempMeas["conv_coef", 0].Value = "20";
+                                    break;
+                                }
+                            case "200":
+                                {
+                                    dGridTempMeas["Xi", 0].Value = PM.XiVal_Law_linear(Uin, Convert.ToDouble(frmMOpt.txtApproxD33_A_200.Text), Convert.ToDouble(frmMOpt.txtApproxD33_B_200.Text)).ToString();
+                                    dGridTempMeas["conv_coef", 0].Value = "200";
+                                    break;
+                                }
+                            case "2000":
+                                {
+                                    dGridTempMeas["Xi", 0].Value = PM.XiVal_Law_linear(Uin, Convert.ToDouble(frmMOpt.txtApproxD33_A_2000.Text), Convert.ToDouble(frmMOpt.txtApproxD33_B_2000.Text)).ToString();
+                                    dGridTempMeas["conv_coef", 0].Value = "2000";
+                                    break;
+                                }
+                            default:
+                                break;
+                        }
+
+
+
+
+                        /*if (PP.BiasUCurrent == 0)
+                        {
+                            //dGridTempMeas["Xi", 0].Value = PM.XiVal_1(Uin).ToString();
+                            dGridTempMeas["Xi", 0].Value = PM.XiVal_Law_linear(Uin, Convert.ToDouble(frmMOpt.txtApproxA.Text), Convert.ToDouble(frmMOpt.txtApproxB.Text)).ToString();//PM.XiVal(PM.FindUmicron(Uin));
+                            // PM.XiVal(PM.FindUmicron(Uin));
                             dGridTempMeas["Uout_V", 0].Value = Uin.ToString();
                             dGridTempMeas["E_kV_Div_cm", 0].Value = (Convert.ToDouble(dGridTempMeas["Xi", 0].Value) / Convert.ToDouble(frmMOpt.txtHeight.Text)).ToString(); ;
 
@@ -4446,34 +5746,53 @@ namespace Kalipso
                         {
                             PM.SetXiMas();
                             PM.SetUMicronOutMas();
-                            dGridTempMeas["Xi", 0].Value = PM.XiVal(PM.FindUmicron(Uin));
+                            
+                            //dGridTempMeas["Xi", 0].Value = PM.XiVal_1(Uin).ToString();//PM.XiVal(PM.FindUmicron(Uin));
+                            dGridTempMeas["Xi", 0].Value = PM.XiVal_Law_linear(Uin, Convert.ToDouble(frmMOpt.txtApproxA.Text), Convert.ToDouble(frmMOpt.txtApproxB.Text)).ToString();//PM.XiVal(PM.FindUmicron(Uin));
                             double ave = 0;
                             for (int j = 0; j < PP.Xi0.Count(); j++)
                             {
                                 ave += PP.Xi0[j];
                             }
-                            dGridTempMeas["Ubias_V_conv", 0].Value = 23.81 * Convert.ToDouble(dGridTempMeas["Ubias_V", 0].Value) - 16.464;
+                            if (PP.Polarity == PP.PolarityPositive)
+                            {
+                                dGridTempMeas["Ubias_V_conv", 0].Value = 49.516 * Convert.ToDouble(dGridTempMeas["Ubias_V", 0].Value) - 50.798;
+                            }
+                            if (PP.Polarity == PP.PolarityNegative)
+                            {
+                                dGridTempMeas["Ubias_V_conv", 0].Value = (49.516 * Convert.ToDouble(dGridTempMeas["Ubias_V", 0].Value) - 50.798) *(-1);
+                            }
+                            lbField.Text = "U= " + dGridTempMeas["Ubias_V_conv", 0].Value;
+
                             dGridTempMeas["Xi0", 0].Value = ave / PP.Xi0.Count();
                             dGridTempMeas["Xi-Xi0", 0].Value = Convert.ToDouble(dGridTempMeas["Xi", 0].Value) - Convert.ToDouble(dGridTempMeas["Xi0", 0].Value);
-                            dGridTempMeas["E_kV_Div_cm", 0].Value = (Convert.ToDouble(PP.BiasUCurrent) / Convert.ToDouble(frmMOpt.txtHeight.Text) / 1000).ToString();
+                            dGridTempMeas["E_kV_Div_cm", 0].Value = (Convert.ToDouble(dGridTempMeas["Ubias_V_conv", 0].Value) / Convert.ToDouble(frmMOpt.txtHeight.Text) / 1000).ToString();
                             dGridTempMeas["k_10_E_4", 0].Value = (Convert.ToDouble(dGridTempMeas["Xi", 0].Value) / Convert.ToDouble(frmMOpt.txtHeight.Text)).ToString();
-                            dGridTempMeas["d33rev", 0].Value = (Convert.ToDouble(dGridTempMeas["k_10_E_4", 0].Value) * 1000 / Convert.ToDouble(dGridTempMeas["E_kV_Div_cm", 0].Value)).ToString();
+                            dGridTempMeas["d33rev", 0].Value = ((Convert.ToDouble(dGridTempMeas["k_10_E_4", 0].Value) / Convert.ToDouble(dGridTempMeas["E_kV_Div_cm", 0].Value)*1000)).ToString();
                         }
+                        */
+
                         ++PP.CelSel;
 
                         switch (frmMOpt.cWorkMode.Text)
                         {
                             case "d33Rev":
                                 {
-                                    if (dGridTempMeas["k_10_E_4", 0].Value != "")
-                                    {
-                                        chartMeasTemp1.Series[0].Points.AddXY(Convert.ToDouble(dGridTempMeas["Ubias_V_conv", 0].Value), Convert.ToDouble(dGridTempMeas["Xi", 0].Value));
-                                        chartMeasTemp2.Series[0].Points.AddXY(Convert.ToDouble(dGridTempMeas["Ubias_V_conv", 0].Value), Convert.ToDouble(dGridTempMeas["d33rev", 0].Value));
-                                    }
-                                    if (dGridTempMeas["k_10_E_4", 0].Value == "")
-                                    {
-                                        chartMeasTemp1.Series[0].Points.AddXY(Convert.ToDouble(dGridTempMeas["Timer", 0].Value), Convert.ToDouble(dGridTempMeas["Xi", 0].Value));
-                                    }
+                                    chartMeasTemp1.Series[0].Points.AddXY(Convert.ToDouble(dGridTempMeas["Ubias_V_conv", 0].Value), Convert.ToDouble(dGridTempMeas["Xi", 0].Value));
+                                    //chartMeasTemp2.Series[0].Points.AddXY(Convert.ToDouble(dGridTempMeas["Ubias_V_conv", 0].Value), Convert.ToDouble(dGridTempMeas["d33rev", 0].Value));
+
+                                    //if (PP.BiasUCurrent != 0)
+                                    //{
+                                    //    if (dGridTempMeas["k_10_E_4", 0].Value.ToString() != "")
+                                    //    {
+                                    //        chartMeasTemp1.Series[0].Points.AddXY(Convert.ToDouble(dGridTempMeas["Ubias_V_conv", 0].Value), Convert.ToDouble(dGridTempMeas["Xi", 0].Value));
+                                    //        chartMeasTemp2.Series[0].Points.AddXY(Convert.ToDouble(dGridTempMeas["Ubias_V_conv", 0].Value), Convert.ToDouble(dGridTempMeas["d33rev", 0].Value));
+                                    //    }
+                                    //    if (dGridTempMeas["k_10_E_4", 0].Value.ToString() == "")
+                                    //    {
+                                    //        chartMeasTemp1.Series[0].Points.AddXY(Convert.ToDouble(dGridTempMeas["Timer", 0].Value), Convert.ToDouble(dGridTempMeas["Xi", 0].Value));
+                                    //    }
+                                    //}
                                     break;
                                 }
                             default:
@@ -4502,11 +5821,41 @@ namespace Kalipso
         {
             System.Diagnostics.Stopwatch myStopwatch = new System.Diagnostics.Stopwatch();
             myStopwatch.Start();
-            GetTempFromVarta();
+            getTempFromTermocontroller();
+            //GetTempFromVarta();
             WriteTempToFile();
+            
+                if (frmMOpt.cWorkMode.Text == "Magnit_hand")
+                {
+                    PP.BiasUCurrent = GetUFromVoltmeter();
+                    txtHBias.Text = PP.BiasUCurrent.ToString();
 
+
+                    if (PP.Polarity == PP.PolarityPositive)
+                    {
+                        if (PP.BiasUCurrent != 0)
+                        {
+                            PP.BiasHCurrent = 6e-8 * Math.Pow(PP.BiasUCurrent, 3) - 4e-5 * Math.Pow(PP.BiasUCurrent, 2) + 0.0098 * PP.BiasUCurrent - 0.0312;
+                            dGridTempMeas["Hbias_T", 0].Value = PP.BiasHCurrent;
+                            txtHBias.Text = PP.BiasHCurrent.ToString();
+                        }
+                        else { dGridTempMeas["Hbias_T", 0].Value = 0; }
+                    }
+                    if (PP.Polarity == PP.PolarityNegative)
+                    {
+                        if (PP.BiasUCurrent != 0)
+                        {
+                            PP.BiasHCurrent = (6e-8 * Math.Pow(PP.BiasUCurrent, 3) - 4e-5 * Math.Pow(PP.BiasUCurrent, 2) + 0.0098 * PP.BiasUCurrent - 0.0312) * (-1);
+                            dGridTempMeas["Hbias_T", 0].Value = PP.BiasHCurrent;
+                            txtHBias.Text = PP.BiasHCurrent.ToString();
+                        }
+                        else { dGridTempMeas["Hbias_T", 0].Value = 0; }
+                    }
+                    
+                }
+            
             double timeCoef = 0.001;
-            string s = frmGPIB.answer;
+            //string s = frmGPIB.answer;
             double e_e0;
             double tgper, Y;
             double e_e2;
@@ -4518,11 +5867,13 @@ namespace Kalipso
 
             PiezoMathCalculation PM = new PiezoMathCalculation();
             ParseStringTab PS = new ParseStringTab();
+
+            PP.BiasHCurrent = Convert.ToDouble(txtHBias.Text);
             switch (frmMOpt.cbGPIBDevModel.Text)
             {
                 case "Agilent4980A":
                     {
-                        PS.AddMeasStringAgilent4980(s);
+                        PS.AddMeasStringAgilent4980(frmGPIB.answer);
                         switch (frmGPIB.cbInterfaceType.Text)
                         {
                             case "GPIB":
@@ -4534,24 +5885,38 @@ namespace Kalipso
                                 val2 = Convert.ToDouble(PS.ElementAt(2));
                                 break;
                             default:
+                                val1 = Convert.ToDouble(PS.ElementAt(0));
+                                val2 = Convert.ToDouble(PS.ElementAt(1));
                                 break;
                         }
                         break;
                     }
-                case "Agilent4285A": PS.AddMeasStringAgilent4980(s); break;
+                case "Agilent4285A": 
+                    try
+                    {
+                        PS.AddMeasStringAgilent4285A(frmGPIB.answer);
+                        val1 = Convert.ToDouble(PS.ElementAt(0));
+                        val2 = Convert.ToDouble(PS.ElementAt(1));
+                    }
+                    catch (Exception ex)
+                    {
+                        ex.ToString();
+                    }
+                    break;
+
                 case "Agilent4263B":
                     {
-                        PS.AddMeasStringAgilent4263(s);
+                        PS.AddMeasStringAgilent4263(frmGPIB.answer);
                         val1 = Convert.ToDouble(PS.ElementAt(1));
                         val2 = Convert.ToDouble(PS.DeleteZero(PS.ElementAt(2)));
                         break;
                     }
-                case "Agilent34401A": PS.AddMeasStringAgilent4980(s); break;
-                case "WayneKerr6500B": PS.AddMeasStringWayneKerr6500B(s); break;
+                case "Agilent34401A": PS.AddMeasStringAgilent4980(frmGPIB.answer); break;
+                case "WayneKerr6500B": PS.AddMeasStringWayneKerr6500B(frmGPIB.answer); break;
                 case "WayneKerr4300":
                     {
                         //+8.2556835e-13,-1.6205449e+00
-                        PS.AddMeasStringWayneKerr4300(s);
+                        PS.AddMeasStringWayneKerr4300(frmGPIB.answer);
                         val1 = Convert.ToDouble(PS.ElementAt(0));
                         val2 = Convert.ToDouble(PS.ElementAt(1));
                         break;
@@ -4563,17 +5928,19 @@ namespace Kalipso
                         break;
                     }
                 default:
-                    PS.AddMeasStringAgilent4980(s);
+                    PS.AddMeasStringAgilent4980(frmGPIB.answer);
                     break;
             }
-
-            if (txtHBias.Text == "")
+            if (frmMOpt.cWorkMode.Text != "Magnit_hand")
             {
-                txtHBias.Text = "0";
-            }
-            if (txtUbias.Text == "")
-            {
-                txtUbias.Text = "0";
+                if (txtHBias.Text == "")
+                {
+                    txtHBias.Text = "0";
+                }
+                if (txtUbias.Text == "")
+                {
+                    txtUbias.Text = "0";
+                }
             }
             if (frmMOpt.cbExportDBMeasTemp.Text == "None")
             {
@@ -4611,10 +5978,8 @@ namespace Kalipso
                     dGridTempMeas["Date", i].Value = DateTime.Now.ToShortDateString();
                     dGridTempMeas["Time", i].Value = dateT.ToString(dateformat);
                     dGridTempMeas["operator", i].Value = frmMOpt.cmbOperator.Text;
-
                     myStopwatch.Stop();
                     PP.TimeMeas = PP.TimeMeas + (Convert.ToDouble(myStopwatch.ElapsedMilliseconds.ToString()) * timeCoef) + 0.14;
-
                     dGridTempMeas["Timer", i].Value = (PP.TimeMeas).ToString();
                     dGridTempMeas["Polarity", i].Value = PP.Polarity;
                     dGridTempMeas["Direction", i].Value = PP.Direction;
@@ -4629,34 +5994,9 @@ namespace Kalipso
                         if (chartMeasTemp1.Series[u].Name == freq)
                         {
                             chartMeasTemp1.Series[u].Points.AddXY(lbTemp, e_e0);
-                            chartMeasTemp2.Series[u].Points.AddXY(lbTemp, tgper);
                         }
                     }
-                }
-                catch (Exception ex)
-                {
-                    ex.ToString();
-                }
-            }
-
-            if (frmMOpt.chExportToDB.Checked == true && frmDBConnection.DataBaseConnected == true)
-            {
-                try
-                {
-                    NpgsqlConnection pgcon = new NpgsqlConnection(frmDBConnection.ConnectionStringToDB);
-                    pgcon.Open();
-                    string sql = "";
-                    NpgsqlCommand CSend = new NpgsqlCommand(sql, pgcon);
-                    string sql_data = "";
-                    for (int j = 1; j < dGridTempMeas.ColumnCount + 1; j++)
-                    {
-                        sql_data = sql_data + dGridTempMeas.Rows[i].Cells[j].Value.ToString() + ", ";
-                    }
-                    sql_data = sql_data.Substring(0, sql_data.Length - 2);
-                    sql = "Insert into " + frmMOpt.txtComposition + " values (" + sql_data + ");";
-                    CSend.ExecuteNonQuery();
-                    FileJob FJ = new FileJob();
-                    FJ.WriteF(sql, PP.FileNameSaveTempMeas + ".log");
+                    chartMeasTemp2.Series[0].Points.AddXY(PP.TimeMeas, lbTemp);
                 }
                 catch (Exception ex)
                 {
@@ -4716,17 +6056,18 @@ namespace Kalipso
                 Y = e_e2 * Convert.ToInt32(freq) * 2 * 3.14;
                 dGridTempMeas["Y", 0].Value = Y.ToString();
                 dGridTempMeas["Ubias_V", 0].Value = PP.BiasUCurrent;
-                dGridTempMeas["Hbias_T", 0].Value = txtHBias.Text;
+                dGridTempMeas["Hbias_T", 0].Value = PP.BiasHCurrent;
                 dGridTempMeas["Cycle", 0].Value = PP.cycleCurrentNum.ToString();
                 dGridTempMeas["Date", 0].Value = DateTime.Now.ToShortDateString();
                 dGridTempMeas["Time", 0].Value = dateT.ToString(dateformat);
                 dGridTempMeas["Step", 0].Value = PP.CurrentStep;
+                DirectionChoice();
+
                 dGridTempMeas["Direction", 0].Value = PP.Direction;
                 dGridTempMeas["Polarity", 0].Value = PP.Polarity;
                 dGridTempMeas["operator", 0].Value = frmMOpt.cmbOperator.Text;
                 myStopwatch.Stop();
                 PP.TimeMeas = PP.TimeMeas + (Convert.ToDouble(myStopwatch.ElapsedMilliseconds.ToString()) * timeCoef) + 0.14;
-
                 dGridTempMeas["Timer", 0].Value = (PP.TimeMeas).ToString();
                 dGridTempMeas["Meas_type", 0].Value = frmMOpt.cWorkMode.Text;
 
@@ -4759,10 +6100,10 @@ namespace Kalipso
                             {
                                 if (chartMeasTemp1.Series[u].Name == freq + "\r")
                                 {
-                                    if (frmMOpt.cbGraphOptions.Text == "e(T)" && e_e0 > 0 && e_e0<1e25)
+                                    if (frmMOpt.cbGraphOptions.Text == "e(T)" && e_e0 > 0 && e_e0 < 1e25)
                                     {
                                         chartMeasTemp1.Series[u].Points.AddXY(Convert.ToDouble(PP.Temperature1), e_e0);
-                                        chartMeasTemp2.Series[u].Points.AddXY(Convert.ToDouble(PP.Temperature1), tgper);
+                                        chartMeasTemp2.Series[u].Points.AddXY(PP.TimeMeas, Convert.ToDouble(PP.Temperature1));
                                         chartMeasTemp1.Update();
                                         chartMeasTemp2.Update();
                                     }
@@ -4793,6 +6134,34 @@ namespace Kalipso
             }
             this.Refresh();
         }
+
+        void DirectionChoice()
+        {
+
+            //if direction is heating
+            if (PP.Temperature1 <= Convert.ToDouble(frmMOpt.txtTempEnd.Text) && PP.Direction == "Heating")
+            {
+
+                dGridTempMeas["Direction", 0].Value = "Heating";
+                lbDirect.Text = "Heating";
+            }
+            // if heating and max temperature
+            if (PP.Temperature1 >= Convert.ToDouble(frmMOpt.txtTempEnd.Text) && PP.Direction == "Heating")
+            {
+                dGridTempMeas["Direction", 0].Value = PP.Direction;
+                lbDirect.Text = "Cooling";
+                PP.Direction = "Cooling";
+            }
+            //if direction is cooling
+            if (PP.Direction == "Cooling")
+            {
+                PP.Direction = "Cooling";
+                dGridTempMeas["Direction", 0].Value = PP.Direction;
+                lbDirect.Text = PP.Direction;
+
+            }
+        }
+
         /// <summary>
         /// Handles the Click event of the btnSetUNegative control.
         /// </summary>
@@ -4810,11 +6179,14 @@ namespace Kalipso
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void btnHandMeas_Click(object sender, EventArgs e)
         {
-            PP.CelSel = dGridTempMeas.CurrentRow.Index;
-            if (hand == false)
+            //PP.CelSel = dGridTempMeas.CurrentRow.Index;
+            if (PP.hand == true)
             {
                 InitializationOfParametersForMeas();
+                PP.hand = false;
             }
+
+
             MainMeas();
         }
         /// <summary>
@@ -4824,6 +6196,9 @@ namespace Kalipso
         /// <param name="e">The <see cref="FormClosingEventArgs"/> instance containing the event data.</param>
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
+            //Properties.Settings.Default.SaveHeight = frmMOpt.txtHeight.Text;
+
+
             if (PP.FileNameSaveTempMeas != "")
             {
                 FileJob FJ = new FileJob();
@@ -4831,7 +6206,7 @@ namespace Kalipso
                 FJ.CopyFileToTempDir(PP.FileNameSaveTempMeas, "c:\\temp\\" + s[s.Count() - 1]);
                 MessageBox.Show("Backup");
             }
-            else MessageBox.Show("No backup");
+            //else MessageBox.Show("No backup");
             //Close of all class
             frmDBConnection.Close();
             frmGPIB.Close();
@@ -5715,8 +7090,13 @@ namespace Kalipso
 
         private void timerRev_Tick(object sender, EventArgs e)
         {
-            ++PP.TimerReversive;
-            PP.TimerReversive = PP.TimerReversive / 1000;
+            //++PP.TimerReversive;
+            //PP.TimerReversive = PP.TimerReversive / 1000;
+
+
+            PP.BiasUCurrent=GetUFromVoltmeter();
+            lbField.Text = "U= " + PP.BiasUCurrent.ToString();
+
         }
 
         private void mainStatus_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -5885,7 +7265,118 @@ namespace Kalipso
             {
                 if (Com.allComPort[i].DeviceName == "VoltageMeter HY-AV51-T")
                 {
-                    volt = GetDataFromVoltageMeter_HY_AV51_T();
+                    switch (frmMOpt.cWorkMode.Text)
+                    {
+                        case "C(dU)_auto_reversive":
+                            {
+                                volt = GetDataFromVoltageMeter_HY_AV51_T();
+                                if (volt == 0)
+                                {
+                                    PP.BiasUCurrent = 0;
+                                }
+                                if (volt != 0)
+                                {
+                                    PP.BiasUCurrent = 23.81 * volt - 16.464;
+                                }
+                                break;
+                            }
+                        case "C(dU)_hand_reversive":
+                            {
+                                volt = GetDataFromVoltageMeter_HY_AV51_T();
+                                if (volt == 0)
+                                {
+                                    PP.BiasUCurrent = 0;
+                                }
+                                if (volt != 0)
+                                {
+                                    PP.BiasUCurrent = 23.81 * volt - 16.464;
+                                }
+                                break;
+                            }
+                        case "C(dU_dt)_auto_reversive":
+                            {
+                                volt = GetDataFromVoltageMeter_HY_AV51_T();
+                                if (volt == 0)
+                                {
+                                    PP.BiasUCurrent = 0;
+                                }
+                                if (volt != 0)
+                                {
+                                    PP.BiasUCurrent = 23.81 * volt - 16.464;
+                                }
+                                break;
+                            }
+                        case "C(dU_dT)_auto_reversive":
+                            {
+                                volt = GetDataFromVoltageMeter_HY_AV51_T();
+                                if (volt == 0)
+                                {
+                                    PP.BiasUCurrent = 0;
+                                }
+                                if (volt != 0)
+                                {
+                                    PP.BiasUCurrent = 23.81 * volt - 16.464;
+                                }
+                                break;
+                            }
+                        case "d33Rev_Auto":
+                            {
+                                volt = GetDataFromVoltageMeter_HY_AV51_T();
+                                if (volt == 0)
+                                {
+                                    PP.BiasUCurrent = 0;
+                                }
+                                if (volt != 0)
+                                {
+                                    PP.BiasUCurrent = 0.0825 * volt - 0.1728;
+                                }
+                                break;
+                            }
+                        case "d33Rev":
+                            {
+                                volt = GetDataFromVoltageMeter_HY_AV51_T();
+                                if (volt == 0)
+                                {
+                                    PP.BiasUCurrent = 0;
+
+                                }
+                                if (volt != 0)
+                                {
+                                    PP.BiasUCurrent = volt;
+                                }
+                                break;
+                            }
+                        case "Magnit_hand":
+                            {
+                                volt = GetDataFromVoltageMeter_HY_AV51_T();
+                                if (volt == 0)
+                                {
+                                    PP.BiasUCurrent = 0;
+
+                                }
+                                if (volt != 0)
+                                {
+                                    PP.BiasUCurrent = volt;
+                                }
+                                break;
+                            }
+                        default:
+                            {
+                                volt = GetDataFromVoltageMeter_HY_AV51_T();
+                                if (volt == 0)
+                                {
+                                    PP.BiasUCurrent = 0;
+
+                                }
+                                if (volt != 0)
+                                {
+                                    PP.BiasUCurrent = volt;
+                                }
+                                break;
+                            }
+                    
+                    
+                    }
                     return volt;
                 }
             }
@@ -5896,21 +7387,19 @@ namespace Kalipso
         private void button2_Click_5(object sender, EventArgs e)
         {
             //Vers();
-            for (int i = 0; i < Com.allComPort.Count(); i++)
-            {
-                if (Com.allComPort[i].DeviceName == "VoltageMeter HY-AV51-T")
-                {
-                    GetDataFromVoltageMeter_HY_AV51_T();
+            //for (int i = 0; i < Com.allComPort.Count(); i++)
+            //{
+            //    if (Com.allComPort[i].DeviceName == "VoltageMeter HY-AV51-T")
+            //    {
+            //        GetDataFromVoltageMeter_HY_AV51_T();
 
-                    txtLog.AppendText(Environment.NewLine + "1 " + GetDataFromVoltageMeter_HY_AV51_T().ToString());
+            //        txtLog.AppendText(Environment.NewLine + "1 " + GetDataFromVoltageMeter_HY_AV51_T().ToString());
+            //        txtLog.AppendText(Environment.NewLine + "2 " + (GetUFromVoltmeter() / 10).ToString());
+            //        txtLog.AppendText(Environment.NewLine + "3 " + (0.0825 * (GetUFromVoltmeter()) + 0.1728).ToString());
+            //    }
+            //}
 
-                    //PP.BiasUCurrent = GetUFromVoltmeter() / 10;
-
-                    //PP.BiasUCurrent = 11.467 * PP.BiasUCurrent + 5.3684;
-                    txtLog.AppendText(Environment.NewLine + "2 " + (GetUFromVoltmeter() / 10).ToString());
-                    txtLog.AppendText(Environment.NewLine + "3 " + (0.0825 * (GetUFromVoltmeter()) + 0.1728).ToString());
-                }
-            }
+            timerRev.Enabled = true;
         }
         /// <summary>
         /// Verses this instance.
@@ -5977,7 +7466,17 @@ namespace Kalipso
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-
+            switch (chPolarity.Checked)
+            {
+                case true:
+                    PP.Polarity = PP.PolarityPositive;
+                    break;
+                case false:
+                    PP.Polarity = PP.PolarityNegative;
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void frmMain_Load(object sender, EventArgs e)
@@ -5997,7 +7496,7 @@ namespace Kalipso
 
         private void btnSetAxis1_Click(object sender, EventArgs e)
         {
-            
+
             chartMeasTemp1.ChartAreas[0].AxisX.Minimum = Convert.ToDouble(txtXmin1.Text);
             chartMeasTemp1.ChartAreas[0].AxisX.Maximum = Convert.ToDouble(txtXmax1.Text);
         }

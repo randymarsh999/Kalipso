@@ -37,6 +37,7 @@
             this.txtIpPort = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
+            this.btnSendRead = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.ControllerAddressUD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DeviceAddressUD)).BeginInit();
             this.SuspendLayout();
@@ -115,7 +116,7 @@
             this.txtAnswer.Location = new System.Drawing.Point(3, 323);
             this.txtAnswer.Multiline = true;
             this.txtAnswer.Name = "txtAnswer";
-            this.txtAnswer.Size = new System.Drawing.Size(282, 176);
+            this.txtAnswer.Size = new System.Drawing.Size(346, 176);
             this.txtAnswer.TabIndex = 22;
             this.txtAnswer.TextChanged += new System.EventHandler(this.txtAnswer_TextChanged);
             // 
@@ -166,6 +167,7 @@
             this.DeviceAddressUD.Name = "DeviceAddressUD";
             this.DeviceAddressUD.Size = new System.Drawing.Size(120, 20);
             this.DeviceAddressUD.TabIndex = 28;
+            this.DeviceAddressUD.ValueChanged += new System.EventHandler(this.DeviceAddressUD_ValueChanged);
             // 
             // txtLastIOStatus
             // 
@@ -248,11 +250,22 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click_1);
             // 
+            // btnSendRead
+            // 
+            this.btnSendRead.Location = new System.Drawing.Point(239, 208);
+            this.btnSendRead.Name = "btnSendRead";
+            this.btnSendRead.Size = new System.Drawing.Size(108, 62);
+            this.btnSendRead.TabIndex = 39;
+            this.btnSendRead.Text = "Send command && read";
+            this.btnSendRead.UseVisualStyleBackColor = true;
+            this.btnSendRead.Click += new System.EventHandler(this.Button1_Click_1);
+            // 
             // frmGPIBConfig
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(287, 511);
+            this.ClientSize = new System.Drawing.Size(351, 511);
+            this.Controls.Add(this.btnSendRead);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.txtIpPort);
@@ -282,6 +295,7 @@
             this.Text = "GPIB Configuration";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmGPIBConfig_FormClosing);
             this.Load += new System.EventHandler(this.frmGPIBConfig_Load);
+            this.VisibleChanged += new System.EventHandler(this.frmGPIBConfig_VisibleChanged);
             ((System.ComponentModel.ISupportInitialize)(this.ControllerAddressUD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DeviceAddressUD)).EndInit();
             this.ResumeLayout(false);
@@ -319,5 +333,6 @@
 #pragma warning restore CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmGPIBConfig.txtIpPort"
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btnSendRead;
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
-    class PiezoMathCalculation
+    public class PiezoMathCalculation
     {
         /// <summary>
         /// The sigma array
@@ -4187,7 +4187,7 @@ using System.Windows.Forms;
             double min;
             int c = 0;
             SetUMicronOutMas();
-            for (int i = 0; i < this.UMicronOut.Length; i++)
+            for (int i = 0; i < UMicronOut.Length; i++)
             {
                 min = UMicronOut[i] / Uin;
                 if (min > 0.99 && min < 1.01)
@@ -4198,7 +4198,25 @@ using System.Windows.Forms;
             return c;
         }
 
-        public double XiVal(int i)
+    public double XiVal_1(double Uin)
+    {
+        //return 19.5047 * Uin +2.8923;
+        return 19.411155 * Uin + 2.98926;
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="Uin"></param>
+    /// <param name="A"></param>
+    /// <param name="B"></param>
+    /// <returns></returns>
+    public double XiVal_Law_linear(double Uin,double A, double B)
+    {
+        //return 19.5047 * Uin +2.8923;
+        return A * Uin + B;
+    }
+
+    public double XiVal(int i)
         {
             SetXiMas();
             return Xi[i];
@@ -5639,7 +5657,7 @@ using System.Windows.Forms;
         /// <returns>temperature</returns>
         public double ConvertCelciusToKelvin(int temperature)
         {
-            return Convert.ToDouble(temperature) + 273.16;
+            return Convert.ToDouble(temperature) + 273;
         }
         /// <summary>
         /// Converts the celcius to kelvin.
@@ -5648,7 +5666,7 @@ using System.Windows.Forms;
         /// <returns>temperature</returns>
         public double ConvertCelciusToKelvin(double temperature)
         {
-            return temperature + 273.16;
+            return temperature + 273;
         }
         /// <summary>
         /// Converts the celcius to kelvin.
@@ -5659,7 +5677,7 @@ using System.Windows.Forms;
         /// </returns>
         public double ConvertCelciusToKelvin(string temperature)
         {
-            return Convert.ToDouble(temperature) + 273.16;
+            return Convert.ToDouble(temperature) + 273;
         }
 
         public string ReplaceCommonEscapeSequences(string command)
@@ -5785,7 +5803,11 @@ using System.Windows.Forms;
             return res;
         }
 
-
+    public byte convert16to10(double val)
+    {
+        byte x = Convert.ToByte(55);
+        return x;
+    }
 
     }
     

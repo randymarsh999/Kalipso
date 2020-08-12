@@ -5,5 +5,134 @@
     <Setting Name="Polarity" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="defHeight" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0.100</Value>
+    </Setting>
+    <Setting Name="defWidth" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1.000</Value>
+    </Setting>
+    <Setting Name="defOperator" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Andryushin K.P.</Value>
+    </Setting>
+    <Setting Name="defDevice" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Agilent4980A</Value>
+    </Setting>
+    <Setting Name="defTemp" Type="System.String" Scope="User">
+      <Value Profile="(Default)">300</Value>
+    </Setting>
+    <Setting Name="defFreq" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1000</Value>
+    </Setting>
+    <Setting Name="defTempSint" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1513</Value>
+    </Setting>
+    <Setting Name="defExportMod" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Export to DB(only)</Value>
+    </Setting>
+    <Setting Name="defTempEnd" Type="System.String" Scope="User">
+      <Value Profile="(Default)">753</Value>
+    </Setting>
+    <Setting Name="defComposition" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="deftempStep" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="defNewCycleTemp" Type="System.String" Scope="User">
+      <Value Profile="(Default)">348</Value>
+    </Setting>
+    <Setting Name="defGraphMode" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="defWorkMode" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="defTempList" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="defFreqStart" Type="System.String" Scope="User">
+      <Value Profile="(Default)">20</Value>
+    </Setting>
+    <Setting Name="defFreqEnd" Type="System.String" Scope="User">
+      <Value Profile="(Default)">2000000</Value>
+    </Setting>
+    <Setting Name="defParamAMagnit" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1.0</Value>
+    </Setting>
+    <Setting Name="defParamBMagnit" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1.0</Value>
+    </Setting>
+    <Setting Name="defParamCMagnit" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1.0</Value>
+    </Setting>
+    <Setting Name="defParamAReversive" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1.0</Value>
+    </Setting>
+    <Setting Name="defParamBReversive" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1.0</Value>
+    </Setting>
+    <Setting Name="defParamCReversive" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1.0</Value>
+    </Setting>
+    <Setting Name="defParamAd33" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0.0509</Value>
+    </Setting>
+    <Setting Name="defParamBd33" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-0.1418</Value>
+    </Setting>
+    <Setting Name="defParamCd33" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1.0</Value>
+    </Setting>
+    <Setting Name="defParamACTE" Type="System.String" Scope="User">
+      <Value Profile="(Default)">20.425</Value>
+    </Setting>
+    <Setting Name="defParamBCTE" Type="System.String" Scope="User">
+      <Value Profile="(Default)">3.8974</Value>
+    </Setting>
+    <Setting Name="defGPIBAddress" Type="System.String" Scope="User">
+      <Value Profile="(Default)">17</Value>
+    </Setting>
+    <Setting Name="defParamA_d33_20" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">21.40117</Value>
+    </Setting>
+    <Setting Name="defParamB_d33_20" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">-13.52108</Value>
+    </Setting>
+    <Setting Name="defParamA_d33_200" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">213.0142</Value>
+    </Setting>
+    <Setting Name="defParamB_d33_200" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">-133.99419</Value>
+    </Setting>
+    <Setting Name="defParamA_d33_2000" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1700.40509</Value>
+    </Setting>
+    <Setting Name="defParamB_d33_2000" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">-1049.12549</Value>
+    </Setting>
+    <Setting Name="defParamA_CTE_20" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">21.249</Value>
+    </Setting>
+    <Setting Name="defParamB_CTE_20" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1.2904</Value>
+    </Setting>
+    <Setting Name="defParamA_CTE_200" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">207.72</Value>
+    </Setting>
+    <Setting Name="defParamB_CTE_200" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">13.621</Value>
+    </Setting>
+    <Setting Name="defParamA_CTE_2000" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">2069.5</Value>
+    </Setting>
+    <Setting Name="defParamB_CTE_2000" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">133.15</Value>
+    </Setting>
+    <Setting Name="defParamA_U_d33" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">51.752</Value>
+    </Setting>
+    <Setting Name="defParamB_U_d33" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">-44.561</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
