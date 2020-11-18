@@ -59,6 +59,8 @@ namespace Kalipso
     /// </summary>
     public partial class frmComPort : Form
     {
+
+
         /// <summary>
         /// Array of struct AllComPorts
         /// </summary>
@@ -1339,16 +1341,22 @@ namespace Kalipso
         public short[] GetDataFromXMFT(byte[] nn)
         {
             int offset = 0;
-            int max = 7;
-            byte[] byteBuffer = new byte[max];
+            int max = 8;
+            //byte[] byteBuffer = new byte[max];
+            byte[] byteBuffer;
             short[] values = new short[10];
             for (int j = 0; j < allComPort.Count() - 1; j++)
             {
-                if (allComPort[j].DeviceName == "XMFT")
+                if (allComPort[j].DeviceName == "XMTF")
                 {
                     allComPort[j].ActivePort.Write(nn, offset, 8);
                     System.Threading.Thread.Sleep(300);
                     int byteRecieved = allComPort[j].ActivePort.BytesToRead;
+                    if (byteRecieved < 10)
+                    {
+                        byteBuffer = new byte[max];
+                    }
+                    else byteBuffer = new byte[15];
                     allComPort[j].ActivePort.Read(byteBuffer, 0, byteRecieved);
                     for (int i = 0; i < (byteBuffer.Length - 5) / 2; i++)
                     {
@@ -1356,7 +1364,10 @@ namespace Kalipso
                         values[i] <<= 8;
                         values[i] += byteBuffer[2 * i + 4];
                     }
+                    allComPort[j].ActivePort.DiscardInBuffer();
+                    
                 }
+                
             }
             return values;
         }
@@ -1411,7 +1422,8 @@ namespace Kalipso
         {
             byte[] nn = new byte[6];
             byte[] tt = new byte[2];
-            short[] get = new short[8];
+           //
+            short[] get = new short[100];
             int i = 0;
             do
             {
@@ -1427,12 +1439,12 @@ namespace Kalipso
                 get = GetDataFromXMFT(buf_out);
                 i++;
             }
-            while (get[0] == 0);
+            while (get[0] == 1);
             for (int j = 0; j < allComPort.Count() - 1; j++)
             {
-                if (allComPort[j].DeviceName == "XMFT")
+                if (allComPort[j].DeviceName == "XMTF")
                 {
-                    allComPort[j].deviceAddressRS458 = --i;
+                    allComPort[j].deviceAddressRS458 = i;
                     txtComLog.AppendText(allComPort[j].deviceAddressRS458.ToString());
                 }
             }
@@ -1503,28 +1515,40 @@ namespace Kalipso
 
         private void btnSendDataToXMFT_Click(object sender, EventArgs e)
         {
-            WriteDataToXMFT(1,1);
+
+            XMTF xmt = new XMTF();
+
+            for (int j = 0; j < allComPort.Count() - 1; j++)
+            {
+                if (allComPort[j].DeviceName == XMTF.xmt_model)
+                {
+                    for (int i = 0; i < 27; i++)
+                    {
+                        if ((bool)dGridXMFT["isWriteValue", i].EditedFormattedValue == true)
+                        {
+                            WriteDataToXMFT(i, Convert.ToInt32(dGridXMFT["SetValue", i].Value));
+                            System.Threading.Thread.Sleep(300);
+                        }
+                    }
+                }
+            }
         }
 
-        private void btnCheckXMFT_Click_1(object sender, EventArgs e)
-        {
-            CheckXMTF();
-        }
-
-        private void btnSendDataToXMFT_Click_1(object sender, EventArgs e)
-        {
+        //private void btnCheckXMFT_Click_1(object sender, EventArgs e)
+        //{
+        //    CheckXMTF();
+        //}
 
 
-        }
         /// <summary>
         /// Handles the Click event of the btnGetAllDataFromXMFT control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void btnGetAllDataFromXMFT_Click(object sender, EventArgs e)
-        {
-            GetAllDataFromXMFT();
-        }
+        //private void btnGetAllDataFromXMFT_Click(object sender, EventArgs e)
+        //{
+        //    GetAllDataFromXMFT();
+        //}
         /// <summary>
         /// Fills the of XMFT data grid view.
         /// </summary>
@@ -1540,7 +1564,6 @@ namespace Kalipso
                 }
 
             }
-
         }
         /// <summary>
         /// Get Temperature From XMFT
@@ -1565,8 +1588,8 @@ namespace Kalipso
                     tt = CRC.ModbusCRC16Calc(nn);
                     byte[] buf_out = new byte[] { nn[0], nn[1], nn[2], nn[3], nn[4], nn[5], tt[0], tt[1] };
                     get = GetDataFromXMFT(buf_out);
-                    Temperature = (Convert.ToInt32(get[0])/10).ToString();
-                    varta = true;
+                    Temperature = (Convert.ToInt32(get[0]) / 10).ToString();
+                    //varta = true;
                     if (Temperature != "")
                     {
                         TemperatureReserv = Temperature;
@@ -1575,15 +1598,15 @@ namespace Kalipso
 
                 }
             }
-            if (varta == false)
-            {
-                Temperature = 27.ToString();
-            }
         }
+
+
+
+
         /// <summary>
         /// Gets all data from XMFT.
         /// </summary>
-        public void GetAllDataFromXMFT()
+        public void GetAllDataFromXMTF()
         {
             XMTF xmt = new XMTF();
             byte[] nn = new byte[6];
@@ -1602,6 +1625,7 @@ namespace Kalipso
                     {
                         if ((bool)dGridXMFT["isReadValue", i].EditedFormattedValue == true)
                         {
+                            System.Threading.Thread.Sleep(400);
                             nn[0] = Convert.ToByte(allComPort[j].deviceAddressRS458);
                             nn[1] = 3;
                             nn[2] = 0;
@@ -1611,8 +1635,44 @@ namespace Kalipso
                             tt = CRC.ModbusCRC16Calc(nn);
                             byte[] buf_out = new byte[] { nn[0], nn[1], nn[2], nn[3], nn[4], nn[5], tt[0], tt[1] };
                             get = GetDataFromXMFT(buf_out);
-                            dGridXMFT["ReadValue", i].Value = get[0];
+                            double temp = get[0];
+
+                            switch (i)
+                            {
+                                case 0:
+                                    {
+                                        temp = temp / 10;
+                                        break;
+                                    }
+                                default:
+                                    break;
+                            };
+                            dGridXMFT["ReadValue", i].Value = temp;
                             dGridXMFT["Command", i].Value = xmt.XMFT_commands[i];
+                            System.Threading.Thread.Sleep(300);
+                        }
+                        
+                    }
+                    for (int i = 0; i < 28; i++)
+                    {
+                        if ((bool)dGridXMFT["isReadValue", i].EditedFormattedValue == true)
+                        {
+                            if (dGridXMFT["Command", i].Value == xmt.XMFT_commands[26])
+                            {
+                                nn[0] = Convert.ToByte(allComPort[j].deviceAddressRS458);
+                                nn[1] = 4;
+                                nn[2] = 0;
+                                nn[3] = 0;
+                                nn[4] = 0;
+                                nn[5] = 1;
+                                tt = CRC.ModbusCRC16Calc(nn);
+                                byte[] buf_out = new byte[] { nn[0], nn[1], nn[2], nn[3], nn[4], nn[5], tt[0], tt[1] };
+                                get = GetDataFromXMFT(buf_out);
+                                double temp = get[0];
+                                dGridXMFT["ReadValue", i].Value = (temp / 10).ToString();
+                                dGridXMFT["Command", i].Value = xmt.XMFT_commands[i];
+                                System.Threading.Thread.Sleep(300);
+                            }
                         }
                     }
                 }
@@ -1644,6 +1704,8 @@ namespace Kalipso
                         nn[5] = val_byte[0];
                         tt = CRC.ModbusCRC16Calc(nn);
                         allComPort[j].ActivePort.Write(new byte[] { nn[0], nn[1], nn[2], nn[3], nn[4], nn[5], tt[0], tt[1] }, offset, 8);
+                        allComPort[j].ActivePort.DiscardInBuffer();
+                        allComPort[j].ActivePort.DiscardOutBuffer();
                     }
                 }
             }
@@ -1655,7 +1717,7 @@ namespace Kalipso
         /// <param name="val">The value.</param>
         void UpdateDataXMFT(int command, int val)
         {
-            GetAllDataFromXMFT();
+            GetAllDataFromXMTF();
 
             byte[] nn = new byte[6];
             byte[] tt = new byte[2];
@@ -1683,7 +1745,110 @@ namespace Kalipso
             }
         }
 
+        private void btnGetAllDataFromXMFT_Click(object sender, EventArgs e)
+        {
+            GetAllDataFromXMTF();
+        }
+
+        private void button5_Click_1(object sender, EventArgs e)
+        {
+            for (int j = 0; j < allComPort.Count() - 1; j++)
+            {
+                if (allComPort[j].DeviceName == XMTF.xmt_model)
+                {
+                    for (int i = 20; i < 30; i++)
+                    {
+                        byte[] nn = new byte[6];
+                        byte[] tt = new byte[2];
+                        short[] get = new short[8];
+                        nn[0] = Convert.ToByte(allComPort[j].deviceAddressRS458);
+                        nn[1] = 3;
+                        nn[2] = 0;
+                        nn[3] = Convert.ToByte(i); 
+                        nn[4] = 0;
+                        nn[5] = 0;
+                        tt = CRC.ModbusCRC16Calc(nn);
+                        byte[] buf_out = new byte[] { nn[0], nn[1], nn[2], nn[3], nn[4], nn[5], tt[0], tt[1] };
+                        get = GetDataFromXMFT(buf_out);
+                        txtComLog.AppendText(i.ToString()+" "+ get[0].ToString()+" \r\n" );
+                        System.Threading.Thread.Sleep(300);
+                    }
+                }
+            }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            int val = 5000;
+            int time = 800;
+            byte[] nn = new byte[6];
+            byte[] tt = new byte[2];
+            byte[] val_byte = new byte[4];
+            byte[] val_byte1 = new byte[4];
+            int offset = 0;
+            val_byte = BitConverter.GetBytes(val);
+            val_byte1 = BitConverter.GetBytes(27);
+            for (int j = 0; j < allComPort.Count() - 1; j++)
+            {
+                if (allComPort[j].DeviceName == XMTF.xmt_model)
+                {
+                        nn[0] = Convert.ToByte(allComPort[j].deviceAddressRS458);
+                        nn[1] = 6;
+                        nn[2] = 0;
+                        nn[3] = 0x1A;
+                        nn[4] = 0;
+                        nn[5] = 8;
+                        tt = CRC.ModbusCRC16Calc(nn);
+                        allComPort[j].ActivePort.Write(new byte[] { nn[0], nn[1], nn[2], nn[3], nn[4], nn[5], tt[0], tt[1] }, offset, 8);
+                        allComPort[j].ActivePort.DiscardInBuffer();
+                        allComPort[j].ActivePort.DiscardOutBuffer();
+                    
+                }
+            }
+            val_byte = BitConverter.GetBytes(time);
+            for (int j = 0; j < allComPort.Count() - 1; j++)
+            {
+                if (allComPort[j].DeviceName == XMTF.xmt_model)
+                {
+                    nn[0] = Convert.ToByte(allComPort[j].deviceAddressRS458);
+                    nn[1] = 6;
+                    nn[2] = 0;
+                    nn[3] = 0x1B;
+                    //nn[4] = val_byte[1];
+                    //nn[5] = val_byte[0];
+                    nn[4] = 0;
+                    nn[5] = 8;
+
+                    tt = CRC.ModbusCRC16Calc(nn);
+                    allComPort[j].ActivePort.Write(new byte[] { nn[0], nn[1], nn[2], nn[3], nn[4], nn[5], tt[0], tt[1] }, offset, 8);
+                    allComPort[j].ActivePort.DiscardInBuffer();
+                    allComPort[j].ActivePort.DiscardOutBuffer();
+
+                }
+            }
+        }
+
+        int oooo = 0;
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            
+            GetTemperatureFromXMFT();
+            chart1.Series[0].Color = Color.Red;
+            chart1.Series[0].Points.AddXY(oooo, Temperature);
+            ++oooo;
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            timer2.Enabled = true;
+
+        }
     }
+
 }
+        
+    
+
+
 
 

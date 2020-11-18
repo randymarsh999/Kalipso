@@ -12,7 +12,7 @@ namespace Kalipso.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.6.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.7.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -545,6 +545,42 @@ namespace Kalipso.Properties {
             }
             set {
                 this["defParamB_U_d33"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("polycrystal")]
+        public string defParamSolidState {
+            get {
+                return ((string)(this["defParamSolidState"]));
+            }
+            set {
+                this["defParamSolidState"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("4.45")]
+        public double defParam_r_exp {
+            get {
+                return ((double)(this["defParam_r_exp"]));
+            }
+            set {
+                this["defParam_r_exp"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public string defParamSampleNum {
+            get {
+                return ((string)(this["defParamSampleNum"]));
+            }
+            set {
+                this["defParamSampleNum"] = value;
             }
         }
     }

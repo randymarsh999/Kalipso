@@ -88,7 +88,7 @@ class DBConn
                 DG.Columns[i].HeaderText == "Meas_type" ||
                 DG.Columns[i].HeaderText == "operator")
             {
-                s = s + DG.Columns[i].HeaderText + " char(255), ";
+                s = s + DG.Columns[i].HeaderText + " text, ";
             }
             if (DG.Columns[i].HeaderText == "id_sample")
             {
@@ -202,12 +202,13 @@ class DBConn
             {
                 case "id": s = s + DG.Columns[i].HeaderText + " SERIAL PRIMARY KEY, "; break;
 
-                case "id_section": s = s + DG.Columns[i].HeaderText + " char(255), "; break;
-                case "Direction": s = s + DG.Columns[i].HeaderText + " char(255), "; break;
-                case "Meas_type": s = s + DG.Columns[i].HeaderText + " char(255), "; break;
-                case "Direct": s = s + DG.Columns[i].HeaderText + " char(255), "; break;
-                case "Polarity": s = s + DG.Columns[i].HeaderText + " char(255), "; break;
-                case "operator": s = s + DG.Columns[i].HeaderText + " char(255), "; break;
+                case "composition": s = s + DG.Columns[i].HeaderText + " text, "; break;
+                case "solid_state": s = s + DG.Columns[i].HeaderText + " text, "; break;
+                case "Direction": s = s + DG.Columns[i].HeaderText + " text, "; break;
+                case "Meas_type": s = s + DG.Columns[i].HeaderText + " text, "; break;
+                case "Direct": s = s + DG.Columns[i].HeaderText + " text, "; break;
+                case "Polarity": s = s + DG.Columns[i].HeaderText + " text, "; break;
+                case "operator": s = s + DG.Columns[i].HeaderText + " text, "; break;
 
                 case "id_sample": s = s + DG.Columns[i].HeaderText + " INT, "; break;
                 case "Step": s = s + DG.Columns[i].HeaderText + " INT, "; break;
@@ -257,7 +258,7 @@ class DBConn
             //    DG.Columns[i].HeaderText == "Polarity" ||
             //    DG.Columns[i].HeaderText == "operator")
             //{
-            //    s = s + DG.Columns[i].HeaderText + " char(255), ";
+            //    s = s + DG.Columns[i].HeaderText + " text, ";
             //}
             //if (DG.Columns[i].HeaderText == "id_sample" ||
             //    DG.Columns[i].HeaderText == "Step")

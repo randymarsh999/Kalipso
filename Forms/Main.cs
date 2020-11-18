@@ -122,19 +122,19 @@ namespace Kalipso
                     PiezoMathCalculation pm = new PiezoMathCalculation();
                     //расчет диэлектрической проницаемости до поляризации
                     if (dGridPiezo["C_pF", i].Value.ToString() != "" &&
-                                    dGridPiezo["t_cm", i].Value.ToString() != "" &&
+                                    dGridPiezo["composition", i].Value.ToString() != "" &&
                                     dGridPiezo["d_cm", i].Value.ToString() != "")
                     {
-                        dGridPiezo["e_re", i].Value = pm.e_re(Convert.ToDouble(dGridPiezo["t_cm", i].Value.ToString()),
+                        dGridPiezo["e_re", i].Value = pm.e_re(Convert.ToDouble(dGridPiezo["composition", i].Value.ToString()),
                         Convert.ToDouble(dGridPiezo["d_cm", i].Value.ToString().ToString()),
                         Convert.ToDouble(dGridPiezo["C_pF", i].Value.ToString().ToString())).ToString();
                     }
                     //расчет диэлектрической проницаемости после поляризации
                     if (dGridPiezo["C_pF_ap", i].Value.ToString() != "" &&
-                        dGridPiezo["t_cm", i].Value.ToString() != "" &&
+                        dGridPiezo["composition", i].Value.ToString() != "" &&
                         dGridPiezo["d_cm", i].Value.ToString() != "")
                     {
-                        dGridPiezo["e33t_e0", i].Value = pm.e_re(Convert.ToDouble(dGridPiezo["t_cm", i].Value.ToString()),
+                        dGridPiezo["e33t_e0", i].Value = pm.e_re(Convert.ToDouble(dGridPiezo["composition", i].Value.ToString()),
                                                                Convert.ToDouble(dGridPiezo["d_cm", i].Value.ToString()),
                                                                Convert.ToDouble(dGridPiezo["C_pF_ap", i].Value.ToString())).ToString();
                     }
@@ -1790,12 +1790,18 @@ namespace Kalipso
             timerMeas.Enabled = true;
         }
 
-
+        void Input_validation()
+        { 
+        
+        }
         /// <summary>
         /// Initializes the grid for temperatures measurments.
         /// </summary>
         public void InitializationOfParametersForMeas()
         {
+            Input_validation();
+
+
             FileJob FJ = new FileJob();
             FJ.ClearDataGridView(dGridTempMeas);
 
@@ -1809,12 +1815,15 @@ namespace Kalipso
                 return;
             }
 
+
+
+
             DataGridJob DGJ = new DataGridJob();
-            DGJ.AddColumn(dGridTempMeas, "id", "char(255)");
-            DGJ.AddColumn(dGridTempMeas, "id_section", "char(255)");
+            DGJ.AddColumn(dGridTempMeas, "id", "serial");
+            DGJ.AddColumn(dGridTempMeas, "composition", "text");
             DGJ.AddColumn(dGridTempMeas, "Tsint_K", "double precision");
             DGJ.AddColumn(dGridTempMeas, "id_sample", "INT");
-            DGJ.AddColumn(dGridTempMeas, "t_cm", "double precision");
+            DGJ.AddColumn(dGridTempMeas, "h_cm", "double precision");
             DGJ.AddColumn(dGridTempMeas, "d_cm", "double precision");
             DGJ.AddColumn(dGridTempMeas, "T_K", "double precision");
             DGJ.AddColumn(dGridTempMeas, "f_Hz", "INT");
@@ -1828,13 +1837,15 @@ namespace Kalipso
             DGJ.AddColumn(dGridTempMeas, "Hbias_T", "double precision");
             DGJ.AddColumn(dGridTempMeas, "Cycle", "INT");
             DGJ.AddColumn(dGridTempMeas, "Step", "INT");
-            DGJ.AddColumn(dGridTempMeas, "Direction", "char(255)");
-            DGJ.AddColumn(dGridTempMeas, "Polarity", "char(255)");
+            DGJ.AddColumn(dGridTempMeas, "Direction", "text");
+            DGJ.AddColumn(dGridTempMeas, "Polarity", "text");
             DGJ.AddColumn(dGridTempMeas, "Time", "time");
             DGJ.AddColumn(dGridTempMeas, "Date", "date");
             DGJ.AddColumn(dGridTempMeas, "Timer", "INT");
-            DGJ.AddColumn(dGridTempMeas, "Meas_type", "char(255)");
-            DGJ.AddColumn(dGridTempMeas, "operator", "char(255)");
+            DGJ.AddColumn(dGridTempMeas, "Meas_type", "text");
+            DGJ.AddColumn(dGridTempMeas, "operator", "text");
+            DGJ.AddColumn(dGridTempMeas, "ro_exp", "double precision");
+            DGJ.AddColumn(dGridTempMeas, "solid_state", "text");
             dGridTempMeas.Rows.Add();
             PP.CelSel = 0;
 
@@ -1900,10 +1911,10 @@ namespace Kalipso
                 case "Piezo":
                     {
                         DGJ.AddColumn(dGridTempPiezoMeas, "id", "serial");
-                        DGJ.AddColumn(dGridTempPiezoMeas, "id_section", "char(255)");
+                        DGJ.AddColumn(dGridTempPiezoMeas, "composition", "text");
                         DGJ.AddColumn(dGridTempPiezoMeas, "Tsint_K", "double precision");
                         DGJ.AddColumn(dGridTempPiezoMeas, "id_sample", "INT");
-                        DGJ.AddColumn(dGridTempPiezoMeas, "t_cm", "double precision");
+                        DGJ.AddColumn(dGridTempPiezoMeas, "composition", "double precision");
                         DGJ.AddColumn(dGridTempPiezoMeas, "d_cm", "double precision");
                         DGJ.AddColumn(dGridTempPiezoMeas, "T_K", "double precision");
                         DGJ.AddColumn(dGridTempPiezoMeas, "f_Hz", "INT");
@@ -1913,7 +1924,7 @@ namespace Kalipso
                         DGJ.AddColumn(dGridTempPiezoMeas, "Hbias_T", "double precision");
                         DGJ.AddColumn(dGridTempPiezoMeas, "Time", "time");
                         DGJ.AddColumn(dGridTempPiezoMeas, "Date", "date");
-                        DGJ.AddColumn(dGridTempPiezoMeas, "operator", "char(255)");
+                        DGJ.AddColumn(dGridTempPiezoMeas, "operator", "text");
                         DGJ.AddRow(dGridTempPiezoMeas);
                         break;
                     }
@@ -1991,6 +2002,7 @@ namespace Kalipso
                         {
                             PP.ListTimer[i] = frmMOpt.tTimerList.Lines[i];
                         }
+                        DGJ.AddColumn(dGridTempMeas, "Uin_voltmeter", "double precision"); 
                         DGJ.AddColumn(dGridTempMeas, "Ubias_V_conv", "double precision");
                         DGJ.AddColumn(dGridTempMeas, "Xi", "double precision");
                         DGJ.AddColumn(dGridTempMeas, "Xi0", "double precision");
@@ -2027,6 +2039,7 @@ namespace Kalipso
                         {
                             PP.ListTimer[i] = frmMOpt.tTimerList.Lines[i];
                         }
+                        DGJ.AddColumn(dGridTempMeas, "precision", "INT");
                         DGJ.AddColumn(dGridTempMeas, "Uout_V", "double precision");
                         DGJ.AddColumn(dGridTempMeas, "Xi", "double precision");
                         PP.Xi0.Clear();
@@ -2429,26 +2442,36 @@ namespace Kalipso
         /// </summary>
         void WorkMode_Auto()
         {
-            PP.BiasUCurrent = Convert.ToDouble(PP.ListVoltage[PP.CurrentTimeStep]);
-            if (PP.Temperature1 >= PP.Temperature2 && PP.Direction == PP.heating)
-            {
-                PP.Temperature2 = PP.Temperature1 + PP.TemperatureStep;
-                MainMeas();
-                PP.Direction = PP.heating;
-            }
             if (PP.Temperature1 >= PP.Temperature3 && PP.Direction == PP.heating)
             {
-                frmMOpt.cDirect.SelectedIndex = 1;
-                lbDirect.Text = PP.cooling;
                 PP.Direction = PP.cooling;
-                PP.Temperature2 = PP.Temperature3 - PP.TemperatureStep;
-                MainMeas();
             }
-            if (PP.Temperature2 >= PP.Temperature1 && PP.Direction == PP.cooling)
+            if (PP.Direction == PP.cooling)
             {
-                PP.Temperature2 = PP.Temperature1 - PP.TemperatureStep;
-                MainMeas();
+                PP.Direction = PP.cooling;
             }
+
+            MainMeas();
+            //PP.BiasUCurrent = Convert.ToDouble(PP.ListVoltage[PP.CurrentTimeStep]);
+            //if (PP.Temperature1 >= PP.Temperature2 && PP.Direction == PP.heating)
+            //{
+            //    PP.Temperature2 = PP.Temperature1 + PP.TemperatureStep;
+            //    MainMeas();
+            //    PP.Direction = PP.heating;
+            //}
+            //if (PP.Temperature1 >= PP.Temperature3 && PP.Direction == PP.heating)
+            //{
+            //    frmMOpt.cDirect.SelectedIndex = 1;
+            //    lbDirect.Text = PP.cooling;
+            //    PP.Direction = PP.cooling;
+            //    PP.Temperature2 = PP.Temperature3 - PP.TemperatureStep;
+            //    MainMeas();
+            //}
+            //if (PP.Temperature2 >= PP.Temperature1 && PP.Direction == PP.cooling)
+            //{
+            //    PP.Temperature2 = PP.Temperature1 - PP.TemperatureStep;
+            //    MainMeas();
+            //}
         }
         /// <summary>
         /// Cycle
@@ -2469,8 +2492,6 @@ namespace Kalipso
                 PP.CelSelTemp = PP.CelSelTemp + 1;
                 PP.cycleCurrentNum = Convert.ToInt32(frmMOpt.DGTempData["Cycle", PP.CelSelTemp].Value);
                 Com.WriteDataToXMFT(0, Convert.ToInt32(frmMOpt.DGTempData["Temp", PP.CelSelTemp].Value));
-                //Com.WriteDataToXMFT(0, Convert.ToInt32(frmMOpt.DGTempData["Temp", PP.CelSelTemp].Value));
-                
                 MainMeas();
             }
             if (PP.TimeMeas >= Convert.ToInt32(frmMOpt.DGTempData["TimerS", PP.CelSelTemp].Value)
@@ -3405,7 +3426,8 @@ namespace Kalipso
             ParseStringTab PS = new ParseStringTab();
             //string s = "";
             #region  Get_data_from_Varta703I
-            GetTempFromVarta();
+            getTempFromTermocontroller();
+            //GetTempFromVarta();
             #endregion
 
             #region  Get_data_from_micron
@@ -3441,23 +3463,23 @@ namespace Kalipso
                         dGridTempMeas["Uout_V", 0].Value = Uin.ToString();//PM.XiVal(PM.FindUmicron(Uin));
                                                                           //dGridTempMeas["Xi", 0].Value = PM.XiVal_Law_linear(Uin, Convert.ToDouble(frmMOpt.txtApproxCTE_A.Text), Convert.ToDouble(frmMOpt.txtApproxCTE_B.Text)).ToString();//PM.XiVal(PM.FindUmicron(Uin));
                         //if direction is heating
-                        if (PP.Temperature1 <= Convert.ToDouble(frmMOpt.txtTempEnd.Text) && PP.Direction == "Heating")
+                        if (PP.Temperature1 <= Convert.ToDouble(frmMOpt.txtTempEnd.Text) && PP.Direction == PP.heating)
                         {
                             
-                            dGridTempMeas["Direction", 0].Value = "Heating";
-                            lbDirect.Text = "Heating";
+                            dGridTempMeas["Direction", 0].Value = PP.heating;
+                            lbDirect.Text = PP.heating;
                         }
                         // if heating and max temperature
-                        if (PP.Temperature1 >= Convert.ToDouble(frmMOpt.txtTempEnd.Text) && PP.Direction == "Heating")
+                        if (PP.Temperature1 >= Convert.ToDouble(frmMOpt.txtTempEnd.Text) && PP.Direction == PP.heating)
                         {
                             dGridTempMeas["Direction", 0].Value = PP.Direction;
-                            lbDirect.Text = "Cooling";
-                            PP.Direction = "Cooling";
+                            lbDirect.Text = PP.cooling;
+                            PP.Direction = PP.cooling;
                         }
                         //if direction is cooling
                         if ( PP.Direction == "Cooling")
                         {
-                            PP.Direction = "Cooling";
+                            PP.Direction = PP.cooling;
                             dGridTempMeas["Direction", 0].Value = PP.Direction;
                             lbDirect.Text = PP.Direction;
 
@@ -3470,21 +3492,21 @@ namespace Kalipso
                                 {
                                     //dGridTempMeas["Xi", 0].Value = PM.XiVal_Law_linear(Uin, Convert.ToDouble(frmMOpt.txtApproxCTE_A_20.Text),  1.2904).ToString();
                                     dGridTempMeas["Xi", 0].Value = PM.XiVal_Law_linear(Uin, Convert.ToDouble(frmMOpt.txtApproxCTE_A_20.Text), Convert.ToDouble(frmMOpt.txtApproxCTE_B_20.Text)).ToString();
-                                    dGridTempMeas["Y", 0].Value = "20";
+                                    dGridTempMeas["precision", 0].Value = "20";
                                     break;
                                 }
                             case "200":
                                 {
                                     //dGridTempMeas["Xi", 0].Value = PM.XiVal_Law_linear(Uin, 207.72,  13.621).ToString();
                                     dGridTempMeas["Xi", 0].Value = PM.XiVal_Law_linear(Uin, Convert.ToDouble(frmMOpt.txtApproxCTE_A_200.Text), Convert.ToDouble(frmMOpt.txtApproxCTE_B_200.Text)).ToString();
-                                    dGridTempMeas["Y", 0].Value = "200";
+                                    dGridTempMeas["precision", 0].Value = "200";
                                     break;
                                 }
                             case "2000":
                                 {
                                     //dGridTempMeas["Xi", 0].Value = PM.XiVal_Law_linear(Uin, 2069.5,  133.15).ToString();
                                     dGridTempMeas["Xi", 0].Value = PM.XiVal_Law_linear(Uin, Convert.ToDouble(frmMOpt.txtApproxCTE_A_2000.Text), Convert.ToDouble(frmMOpt.txtApproxCTE_B_2000.Text)).ToString();
-                                    dGridTempMeas["Y", 0].Value = "2000";
+                                    dGridTempMeas["precision", 0].Value = "2000";
                                     break;
                                 }
                             default:
@@ -3501,6 +3523,7 @@ namespace Kalipso
                             case "CTE":
                                 {
                                     chartMeasTemp1.Series[0].Points.AddXY(Convert.ToDouble(dGridTempMeas["T_K", 0].Value), Convert.ToDouble(dGridTempMeas["Xi", 0].Value));
+                                    chartMeasTemp2.Series[0].Points.AddXY(Convert.ToDouble(dGridTempMeas["Timer", 0].Value), Convert.ToDouble(dGridTempMeas["T_K", 0].Value));
                                     break;
                                 }
                             default:
@@ -3873,10 +3896,10 @@ namespace Kalipso
             //    dateT = DateTime.Now;
             //    dateT.AddMilliseconds(1);
             //    dGridTempMeas["id", 0].Value = PP.CelSel.ToString();
-            //    dGridTempMeas["id_section", 0].Value = frmMOpt.txtComposition.Text;
+            //    dGridTempMeas["composition", 0].Value = frmMOpt.txtComposition.Text;
             //    dGridTempMeas["id_sample", 0].Value = frmMOpt.txtSampleNumber.Text;
             //    dGridTempMeas["Tsint_K", 0].Value = frmMOpt.txtTempSint.Text;
-            //    dGridTempMeas["t_cm", 0].Value = frmMOpt.txtHeight.Text;
+            //    dGridTempMeas["composition", 0].Value = frmMOpt.txtHeight.Text;
             //    t = Convert.ToDouble(frmMOpt.txtHeight.Text);
             //    dGridTempMeas["d_cm", 0].Value = frmMOpt.txtDiameter.Text;
             //    d = Convert.ToDouble(frmMOpt.txtDiameter.Text);
@@ -4145,10 +4168,10 @@ namespace Kalipso
                     dateT = DateTime.Now;
                     dateT.AddMilliseconds(1);
                     dGridTempMeas["id", PP.CelSel].Value = PP.CelSel.ToString();
-                    dGridTempMeas["id_section", 0].Value = frmMOpt.txtComposition.Text;
+                    dGridTempMeas["composition", 0].Value = frmMOpt.txtComposition.Text;
                     dGridTempMeas["id_sample", 0].Value = frmMOpt.txtSampleNumber.Text;
                     dGridTempMeas["Tsint_K", 0].Value = frmMOpt.txtTempSint.Text;
-                    dGridTempMeas["t_cm", 0].Value = frmMOpt.txtHeight.Text;
+                    dGridTempMeas["composition", 0].Value = frmMOpt.txtHeight.Text;
                     t = Convert.ToDouble(frmMOpt.txtHeight.Text);
                     dGridTempMeas["d_cm", 0].Value = frmMOpt.txtDiameter.Text;
                     d = Convert.ToDouble(frmMOpt.txtDiameter.Text);
@@ -4233,10 +4256,10 @@ namespace Kalipso
                 dateT = DateTime.Now;
                 dateT.AddMilliseconds(1);
                 dGridTempMeas["id", 0].Value = PP.CelSel.ToString();
-                dGridTempMeas["id_section", 0].Value = frmMOpt.txtComposition.Text;
+                dGridTempMeas["composition", 0].Value = frmMOpt.txtComposition.Text;
                 dGridTempMeas["id_sample", 0].Value = frmMOpt.txtSampleNumber.Text;
                 dGridTempMeas["Tsint_K", 0].Value = frmMOpt.txtTempSint.Text;
-                dGridTempMeas["t_cm", 0].Value = frmMOpt.txtHeight.Text;
+                dGridTempMeas["composition", 0].Value = frmMOpt.txtHeight.Text;
                 t = Convert.ToDouble(frmMOpt.txtHeight.Text);
                 dGridTempMeas["d_cm", 0].Value = frmMOpt.txtDiameter.Text;
                 d = Convert.ToDouble(frmMOpt.txtDiameter.Text);
@@ -4466,10 +4489,10 @@ namespace Kalipso
             //    dateT = DateTime.Now;
             //    dateT.AddMilliseconds(1);
             //    dGridTempMeas["id", 0].Value = PP.CelSel.ToString();
-            //    dGridTempMeas["id_section", 0].Value = frmMOpt.txtComposition.Text;
+            //    dGridTempMeas["composition", 0].Value = frmMOpt.txtComposition.Text;
             //    dGridTempMeas["id_sample", 0].Value = frmMOpt.txtSampleNumber.Text;
             //    dGridTempMeas["Tsint_K", 0].Value = frmMOpt.txtTempSint.Text;
-            //    dGridTempMeas["t_cm", 0].Value = frmMOpt.txtHeight.Text;
+            //    dGridTempMeas["composition", 0].Value = frmMOpt.txtHeight.Text;
             //    t = Convert.ToDouble(frmMOpt.txtHeight.Text);
             //    dGridTempMeas["d_cm", 0].Value = frmMOpt.txtDiameter.Text;
             //    d = Convert.ToDouble(frmMOpt.txtDiameter.Text);
@@ -4691,10 +4714,10 @@ namespace Kalipso
                 dateT = DateTime.Now;
                 dateT.AddMilliseconds(1);
                 dGridTempMeas["id", 0].Value = PP.CelSel.ToString();
-                dGridTempMeas["id_section", 0].Value = frmMOpt.txtComposition.Text;
+                dGridTempMeas["composition", 0].Value = frmMOpt.txtComposition.Text;
                 dGridTempMeas["id_sample", 0].Value = frmMOpt.txtSampleNumber.Text;
                 dGridTempMeas["Tsint_K", 0].Value = frmMOpt.txtTempSint.Text;
-                dGridTempMeas["t_cm", 0].Value = frmMOpt.txtHeight.Text;
+                dGridTempMeas["composition", 0].Value = frmMOpt.txtHeight.Text;
                 t = Convert.ToDouble(frmMOpt.txtHeight.Text);
                 dGridTempMeas["d_cm", 0].Value = frmMOpt.txtDiameter.Text;
                 d = Convert.ToDouble(frmMOpt.txtDiameter.Text);
@@ -5557,10 +5580,10 @@ namespace Kalipso
                 dateT.AddMilliseconds(1);
 
                 dGridTempMeas["id", 0].Value = PP.CelSel.ToString();
-                dGridTempMeas["id_section", 0].Value = frmMOpt.txtComposition.Text;
+                dGridTempMeas["composition", 0].Value = frmMOpt.txtComposition.Text;
                 dGridTempMeas["id_sample", 0].Value = frmMOpt.txtSampleNumber.Text;
                 dGridTempMeas["Tsint_K", 0].Value = frmMOpt.txtTempSint.Text;
-                dGridTempMeas["t_cm", 0].Value = frmMOpt.txtHeight.Text;
+                dGridTempMeas["composition", 0].Value = frmMOpt.txtHeight.Text;
                 t = Convert.ToDouble(frmMOpt.txtHeight.Text);
                 dGridTempMeas["d_cm", 0].Value = frmMOpt.txtDiameter.Text;
                 d = Convert.ToDouble(frmMOpt.txtDiameter.Text);
@@ -5635,13 +5658,13 @@ namespace Kalipso
             //dateT = DateTime.Now;
 
             dGridTempMeas["id", 0].Value = PP.CelSel.ToString();
-            dGridTempMeas["id_section", 0].Value = frmMOpt.txtComposition.Text;
+            dGridTempMeas["composition", 0].Value = frmMOpt.txtComposition.Text;
             dGridTempMeas["id_sample", 0].Value = frmMOpt.txtSampleNumber.Text;
             dGridTempMeas["Tsint_K", 0].Value = frmMOpt.txtTempSint.Text;
-            dGridTempMeas["t_cm", 0].Value = frmMOpt.txtHeight.Text;
             dGridTempMeas["d_cm", 0].Value = frmMOpt.txtDiameter.Text;
+            dGridTempMeas["h_cm", 0].Value = frmMOpt.txtHeight.Text;
             dGridTempMeas["T_K", 0].Value = PP.Temperature1;
-            dGridTempMeas["Direction", 0].Value = lbDirect.Text;
+            dGridTempMeas["Direction", 0].Value = PP.Direction;
             dGridTempMeas["Ubias_V", 0].Value = PP.BiasUCurrent;
             dGridTempMeas["Hbias_T", 0].Value = txtHBias.Text;
             dGridTempMeas["Cycle", 0].Value = PP.cycleCurrentNum.ToString();
@@ -5652,6 +5675,8 @@ namespace Kalipso
             dGridTempMeas["Meas_type", 0].Value = frmMOpt.cWorkMode.Text;
             dGridTempMeas["Step", 0].Value = PP.CurrentStep;
             dGridTempMeas["Polarity", 0].Value = PP.Polarity;
+            dGridTempMeas["ro_exp", 0].Value = frmMOpt.txtRoExp.Text;
+            dGridTempMeas["solid_state", 0].Value = frmMOpt.cmbSolidState.Text;
         }
 
         /// <summary>
@@ -5679,7 +5704,6 @@ namespace Kalipso
                         AddParametersVal();
                         myStopwatch.Stop();
                         PP.TimeMeas = PP.TimeMeas + (Convert.ToDouble(myStopwatch.ElapsedMilliseconds.ToString()) * timeCoef) + 0.14;
-                        
 
                         if (chPolarity.Checked == true)
                         {
@@ -5693,6 +5717,8 @@ namespace Kalipso
                         }
                         txtUbias.Text = dGridTempMeas["Ubias_V_conv", 0].Value.ToString();
                         lbField.Text = "U= " + dGridTempMeas["Ubias_V_conv", 0].Value.ToString();
+                        dGridTempMeas["Uin_voltmeter", 0].Value = Uin_Xi;
+
 
                         switch (cbCTE_Limit.Text)
                         {
@@ -5951,10 +5977,10 @@ namespace Kalipso
                     dateT = DateTime.Now;
                     dateT.AddMilliseconds(1);
                     dGridTempMeas["id", PP.CelSel].Value = PP.CelSel.ToString();
-                    dGridTempMeas["id_section", i].Value = frmMOpt.txtComposition.Text;
+                    dGridTempMeas["composition", i].Value = frmMOpt.txtComposition.Text;
                     dGridTempMeas["id_sample", i].Value = frmMOpt.txtSampleNumber.Text;
                     dGridTempMeas["Tsint_K", i].Value = frmMOpt.txtTempSint.Text;
-                    dGridTempMeas["t_cm", i].Value = frmMOpt.txtHeight.Text;
+                    dGridTempMeas["composition", i].Value = frmMOpt.txtHeight.Text;
                     t = Convert.ToDouble(frmMOpt.txtHeight.Text);
                     dGridTempMeas["d_cm", i].Value = frmMOpt.txtDiameter.Text;
                     d = Convert.ToDouble(frmMOpt.txtDiameter.Text);
@@ -6036,10 +6062,10 @@ namespace Kalipso
                 dateT = DateTime.Now;
                 dateT.AddMilliseconds(1);
                 dGridTempMeas["id", 0].Value = PP.CelSel.ToString();
-                dGridTempMeas["id_section", 0].Value = frmMOpt.txtComposition.Text;
+                dGridTempMeas["composition", 0].Value = frmMOpt.txtComposition.Text;
                 dGridTempMeas["id_sample", 0].Value = frmMOpt.txtSampleNumber.Text;
                 dGridTempMeas["Tsint_K", 0].Value = frmMOpt.txtTempSint.Text;
-                dGridTempMeas["t_cm", 0].Value = frmMOpt.txtHeight.Text;
+                dGridTempMeas["composition", 0].Value = frmMOpt.txtHeight.Text;
                 t = Convert.ToDouble(frmMOpt.txtHeight.Text);
                 dGridTempMeas["d_cm", 0].Value = frmMOpt.txtDiameter.Text;
                 d = Convert.ToDouble(frmMOpt.txtDiameter.Text);
@@ -6057,12 +6083,17 @@ namespace Kalipso
                 dGridTempMeas["Y", 0].Value = Y.ToString();
                 dGridTempMeas["Ubias_V", 0].Value = PP.BiasUCurrent;
                 dGridTempMeas["Hbias_T", 0].Value = PP.BiasHCurrent;
+
+                //Update cyclenum
+                UpdateCycleNum();
                 dGridTempMeas["Cycle", 0].Value = PP.cycleCurrentNum.ToString();
                 dGridTempMeas["Date", 0].Value = DateTime.Now.ToShortDateString();
                 dGridTempMeas["Time", 0].Value = dateT.ToString(dateformat);
                 dGridTempMeas["Step", 0].Value = PP.CurrentStep;
+                
+                //Update direction
                 DirectionChoice();
-
+                
                 dGridTempMeas["Direction", 0].Value = PP.Direction;
                 dGridTempMeas["Polarity", 0].Value = PP.Polarity;
                 dGridTempMeas["operator", 0].Value = frmMOpt.cmbOperator.Text;
@@ -6070,6 +6101,11 @@ namespace Kalipso
                 PP.TimeMeas = PP.TimeMeas + (Convert.ToDouble(myStopwatch.ElapsedMilliseconds.ToString()) * timeCoef) + 0.14;
                 dGridTempMeas["Timer", 0].Value = (PP.TimeMeas).ToString();
                 dGridTempMeas["Meas_type", 0].Value = frmMOpt.cWorkMode.Text;
+                AddParametersVal();
+
+                //additional data
+                dGridTempMeas["ro_exp", 0].Value = frmMOpt.txtRoExp.ToString();
+                dGridTempMeas["solid_state", 0].Value = frmMOpt.cmbSolidState.ToString();
 
                 if (frmMOpt.cWorkMode.Text == "C(dU)_auto_reversive")
                 {
@@ -6135,31 +6171,67 @@ namespace Kalipso
             this.Refresh();
         }
 
+
+        void UpdateCycleNum()
+        {
+            if (PP.Direction == PP.cooling && PP.Temperature1 <= PP.NewCycleTemperature)
+            {
+                ++PP.cycleCurrentNum;
+                PP.Direction = PP.heating;
+
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
         void DirectionChoice()
         {
-
-            //if direction is heating
-            if (PP.Temperature1 <= Convert.ToDouble(frmMOpt.txtTempEnd.Text) && PP.Direction == "Heating")
+            if (PP.Temperature1 < PP.Temperature3 && PP.Direction == PP.heating)
             {
-
-                dGridTempMeas["Direction", 0].Value = "Heating";
-                lbDirect.Text = "Heating";
+                lbDirect.Text = PP.heating;
+                dGridTempMeas["Direction", 0].Value = PP.heating;
             }
-            // if heating and max temperature
-            if (PP.Temperature1 >= Convert.ToDouble(frmMOpt.txtTempEnd.Text) && PP.Direction == "Heating")
+
+            if (PP.Temperature1 >= PP.Temperature3 && PP.Direction == PP.heating)
             {
-                dGridTempMeas["Direction", 0].Value = PP.Direction;
                 lbDirect.Text = "Cooling";
-                PP.Direction = "Cooling";
+                PP.Direction = PP.cooling;
+                dGridTempMeas["Direction", 0].Value = PP.cooling;
             }
-            //if direction is cooling
-            if (PP.Direction == "Cooling")
+            if (PP.Direction==PP.cooling)
             {
-                PP.Direction = "Cooling";
-                dGridTempMeas["Direction", 0].Value = PP.Direction;
-                lbDirect.Text = PP.Direction;
-
+                lbDirect.Text = "Cooling";
+                PP.Direction = PP.cooling;
+                dGridTempMeas["Direction", 0].Value = PP.cooling;
             }
+
+            //{
+            //    dGridTempMeas["Direction", 0].Value = PP.Direction;
+            //    lbDirect.Text = "Cooling";
+            //    PP.Direction = "Cooling";
+            //}
+
+            ////if direction is heating
+            //if (PP.Temperature1 <= Convert.ToDouble(frmMOpt.txtTempEnd.Text) && PP.Direction == "Heating")
+            //{
+
+            //    dGridTempMeas["Direction", 0].Value = "Heating";
+            //    lbDirect.Text = "Heating";
+            //}
+            //// if heating and max temperature
+            //if (PP.Temperature1 >= Convert.ToDouble(frmMOpt.txtTempEnd.Text) && PP.Direction == "Heating")
+            //{
+            //    dGridTempMeas["Direction", 0].Value = PP.Direction;
+            //    lbDirect.Text = "Cooling";
+            //    PP.Direction = "Cooling";
+            //}
+            ////if direction is cooling
+            //if (PP.Direction == "Cooling")
+            //{
+            //    PP.Direction = "Cooling";
+            //    dGridTempMeas["Direction", 0].Value = PP.Direction;
+            //    lbDirect.Text = PP.Direction;
+            //}
         }
 
         /// <summary>
@@ -6331,7 +6403,7 @@ namespace Kalipso
         {
             DataGridJob dg = new DataGridJob();
             dg.AddColumn(dTreatmentIn, "id", "serial");
-            dg.AddColumn(dTreatmentIn, "ss", "char(255)");
+            dg.AddColumn(dTreatmentIn, "ss", "text");
         }
 
         private void button4_Click_1(object sender, EventArgs e)
@@ -6760,19 +6832,19 @@ namespace Kalipso
                 {
                     s = s + DG.Columns[i].HeaderText + " SERIAL, ";
                 }
-                if (DG.Columns[i].HeaderText == "id_section" ||
+                if (DG.Columns[i].HeaderText == "composition" ||
                     DG.Columns[i].HeaderText == "Direction" ||
                     DG.Columns[i].HeaderText == "Meas_type" ||
                     DG.Columns[i].HeaderText == "operator")
                 {
-                    s = s + DG.Columns[i].HeaderText + " char(255), ";
+                    s = s + DG.Columns[i].HeaderText + " text, ";
                 }
                 if (DG.Columns[i].HeaderText == "id_sample")
                 {
                     s = s + DG.Columns[i].HeaderText + " INT, ";
                 }
                 if (DG.Columns[i].HeaderText == "Tsint_K" ||
-                    DG.Columns[i].HeaderText == "t_cm" ||
+                    DG.Columns[i].HeaderText == "composition" ||
                     DG.Columns[i].HeaderText == "d_cm" ||
                     DG.Columns[i].HeaderText == "T_K" ||
                     DG.Columns[i].HeaderText == "T_K" ||
@@ -6841,7 +6913,7 @@ namespace Kalipso
                 {
                     switch (DG.Columns[j].Name)
                     {
-                        case "id_section": sql_data = sql_data + "'" + DG.Rows[i].Cells[j].Value.ToString() + "', "; break;
+                        case "composition": sql_data = sql_data + "'" + DG.Rows[i].Cells[j].Value.ToString() + "', "; break;
                         case "Direction": sql_data = sql_data + "'" + DG.Rows[i].Cells[j].Value.ToString() + "', "; break;
                         case "Meas_type": sql_data = sql_data + "'" + DG.Rows[i].Cells[j].Value.ToString() + "', "; break;
                         case "operator": sql_data = sql_data + "'" + DG.Rows[i].Cells[j].Value.ToString() + "', "; break;

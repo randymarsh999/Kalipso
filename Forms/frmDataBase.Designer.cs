@@ -47,6 +47,13 @@
             this.label6 = new System.Windows.Forms.Label();
             this.txtRequsetDB = new System.Windows.Forms.TextBox();
             this.btnSentDBRequest = new System.Windows.Forms.Button();
+            this.dataSet1 = new System.Data.DataSet();
+            this.npgsqlDataAdapter1 = new Npgsql.NpgsqlDataAdapter();
+            this.npgsqlConnection1 = new Npgsql.NpgsqlConnection();
+            this.dbView = new System.Windows.Forms.DataGridView();
+            this.button1 = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.dataSet1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dbView)).BeginInit();
             this.SuspendLayout();
             // 
             // btnSetSever
@@ -86,7 +93,7 @@
             this.eServer.Name = "eServer";
             this.eServer.Size = new System.Drawing.Size(100, 20);
             this.eServer.TabIndex = 4;
-            this.eServer.Text = "10.11.0.36";
+            this.eServer.Text = "192.168.3.200";
             this.eServer.TextChanged += new System.EventHandler(this.eServer_TextChanged);
             // 
             // eLogin
@@ -227,11 +234,47 @@
             this.btnSentDBRequest.UseVisualStyleBackColor = true;
             this.btnSentDBRequest.Click += new System.EventHandler(this.button2_Click);
             // 
+            // dataSet1
+            // 
+            this.dataSet1.DataSetName = "NewDataSet";
+            // 
+            // npgsqlDataAdapter1
+            // 
+            this.npgsqlDataAdapter1.DeleteCommand = null;
+            this.npgsqlDataAdapter1.InsertCommand = null;
+            this.npgsqlDataAdapter1.SelectCommand = null;
+            this.npgsqlDataAdapter1.UpdateCommand = null;
+            // 
+            // npgsqlConnection1
+            // 
+            this.npgsqlConnection1.ProvideClientCertificatesCallback = null;
+            this.npgsqlConnection1.UserCertificateValidationCallback = null;
+            // 
+            // dbView
+            // 
+            this.dbView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dbView.Location = new System.Drawing.Point(270, 21);
+            this.dbView.Name = "dbView";
+            this.dbView.Size = new System.Drawing.Size(367, 139);
+            this.dbView.TabIndex = 21;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(128, 285);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 22;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
             // frmDataBase
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(243, 379);
+            this.ClientSize = new System.Drawing.Size(695, 379);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.dbView);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.txtRequsetDB);
             this.Controls.Add(this.btnSentDBRequest);
@@ -259,6 +302,8 @@
             this.Text = "Data base connection";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.frmDataBase_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dataSet1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dbView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -285,5 +330,10 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox txtRequsetDB;
         private System.Windows.Forms.Button btnSentDBRequest;
+        private System.Data.DataSet dataSet1;
+        private Npgsql.NpgsqlDataAdapter npgsqlDataAdapter1;
+        private Npgsql.NpgsqlConnection npgsqlConnection1;
+        private System.Windows.Forms.DataGridView dbView;
+        private System.Windows.Forms.Button button1;
     }
 }

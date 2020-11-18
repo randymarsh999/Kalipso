@@ -134,5 +134,14 @@
     <Setting Name="defParamB_U_d33" Type="System.Double" Scope="User">
       <Value Profile="(Default)">-44.561</Value>
     </Setting>
+    <Setting Name="defParamSolidState" Type="System.String" Scope="User">
+      <Value Profile="(Default)">polycrystal</Value>
+    </Setting>
+    <Setting Name="defParam_r_exp" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">4.45</Value>
+    </Setting>
+    <Setting Name="defParamSampleNum" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

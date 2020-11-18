@@ -84,7 +84,7 @@ namespace Kalipso.Сalculations
         /// <summary>
         /// The XMT out
         /// </summary>
-        public const int xmt_out = 17;
+        public const int xmt_outL = 17;
         /// <summary>
         /// The XMT out h
         /// </summary>
@@ -133,7 +133,7 @@ namespace Kalipso.Сalculations
         /// </summary>
         public XMTF()
         {
-            XMFT_commands = new string[26];
+            XMFT_commands = new string[27];
             XMFT_commands[0] = "xmt_curr_temp_set";
             XMFT_commands[1] = "xmt_AL1";
             XMFT_commands[2] = "xmt_AL2";
@@ -151,7 +151,7 @@ namespace Kalipso.Сalculations
             XMFT_commands[14] = "xmt_P_SH";
             XMFT_commands[15] = "xmt_Pb";
             XMFT_commands[16] = "xmt_OP_A";
-            XMFT_commands[17] = "xmt_out";
+            XMFT_commands[17] = "xmt_outL";
             XMFT_commands[18] = "xmt_outH";
             XMFT_commands[19] = "xmt_AL_P";
             XMFT_commands[20] = "xmt_Cool";
@@ -160,6 +160,7 @@ namespace Kalipso.Сalculations
             XMFT_commands[23] = "xmt_FILt";
             XMFT_commands[24] = "xmt_A_M";
             XMFT_commands[25] = "xmt_Lock";
+            XMFT_commands[26] = "xmt_curr_temp";
         }
     }
 

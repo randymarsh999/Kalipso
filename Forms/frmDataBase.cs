@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Common;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -70,6 +71,7 @@ namespace Kalipso
 		/// <param name="e"></param>				
 		private void btnSetSever_Click(object sender, EventArgs e)
 		{
+            Server += "Server=" + eServer.Text + ";"; 
             ConnString();
         }
         /// <summary>
@@ -79,7 +81,7 @@ namespace Kalipso
         {
            //ConnString();
             ConnectionStringToDB = Server + Port + UserId + Password + DB;
-            
+            int i = 0;
         }
 		/// <summary>
 		/// Устанавливает базу данных для соединения
@@ -88,6 +90,7 @@ namespace Kalipso
 		/// <param name="e"></param>
 		public void btnSetDB_Click(object sender, EventArgs e)
 		{
+            DB += "Database=" + eDB.Text + ";";
             ConnString();
         }
 		/// <summary>
@@ -97,6 +100,7 @@ namespace Kalipso
 		/// <param name="e"></param>
 		private void btnSetLogin_Click(object sender, EventArgs e)
 		{
+            UserId += "User Id=" + eLogin.Text + ";";
             ConnString();
         }
 		/// <summary>
@@ -106,6 +110,7 @@ namespace Kalipso
 		/// <param name="e"></param>
 		private void btnSetPort_Click(object sender, EventArgs e)
 		{
+            Port += "Port = " + ePort.Text + ";";
             ConnString();
         }
 		/// <summary>
@@ -115,6 +120,7 @@ namespace Kalipso
 		/// <param name="e"></param>
 		private void btnSetPass_Click(object sender, EventArgs e)
 		{
+            Password += "Password=" + ePass.Text + ";";
             ConnString();
         }
 		/// <summary>
@@ -187,6 +193,97 @@ namespace Kalipso
             try
             {
                 CSend.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                return;
+            }
+            pgcon.Close();
+        }
+        /// <summary>
+        /// Handles the 1 event of the button1_Click control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            DBDataReader_records();
+        }
+        /// <summary>
+        /// Databases the data comporison.
+        /// </summary>
+        /// <returns>boolen true if find compare string</returns>
+        public bool DBData_Comporison(string InitVal, string compareVal, string DBColumn)
+        {
+            
+            try
+            {
+                NpgsqlConnection pgcon = new NpgsqlConnection(ConnectionStringToDB);
+                pgcon.Open();
+                string sql = txtRequsetDB.Text;
+                NpgsqlCommand CSend = new NpgsqlCommand(sql, pgcon);
+                CSend.ExecuteNonQuery();
+                NpgsqlDataReader reader = CSend.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    foreach (DbDataRecord dbDataRecord in reader)
+                    {
+                        for (int i = 0; i < reader.FieldCount; i++)
+                        {
+                            if (compareVal == dbDataRecord[DBColumn].ToString())
+                            {
+                                pgcon.Close();
+                                return true;
+                            }
+                        }
+                    }
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                return false;
+            }
+           
+            
+        }
+
+
+        /// <summary>
+        /// Databases the data reader records.
+        /// </summary>
+        public void DBDataReader_records()
+        {
+            NpgsqlConnection pgcon = new NpgsqlConnection(ConnectionStringToDB);
+            pgcon.Open();
+            string sql = txtRequsetDB.Text;
+            NpgsqlCommand CSend = new NpgsqlCommand(sql, pgcon);
+            try
+            {
+                CSend.ExecuteNonQuery();
+                NpgsqlDataReader reader = CSend.ExecuteReader();
+                if (reader.HasRows)
+                {
+
+                    dbView.Columns.Clear();
+                    for (int i = 0; i < reader.FieldCount; i++)
+                    {
+                        dbView.Columns.Add(reader.GetName(i), reader.GetName(i));
+
+                    }
+                    int celsel = 0;
+                    foreach (DbDataRecord dbDataReader in reader)
+                    {
+                        dbView.Rows.Add(1);
+                        for (int i = 0; i < reader.FieldCount; i++)
+                        {
+                            dbView[dbDataReader.GetName(i), celsel].Value = dbDataReader[dbDataReader.GetName(i)];
+                        }
+                        ++celsel;
+                    }
+                }
             }
             catch (Exception ex)
             {

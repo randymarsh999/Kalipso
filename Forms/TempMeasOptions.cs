@@ -93,6 +93,10 @@ namespace Kalipso
 
             txtApproxU_d33_A.Text = Properties.Settings.Default.defParamA_U_d33.ToString();
             txtApproxU_d33_B.Text = Properties.Settings.Default.defParamB_U_d33.ToString();
+            cmbSolidState.Text = Properties.Settings.Default.defParamSolidState;
+            txtRoExp.Text= Properties.Settings.Default.defParam_r_exp.ToString();
+            txtSampleNumber.Text = Properties.Settings.Default.defParamSampleNum.ToString();
+
 
             switch (cWorkMode.Text)
             {
@@ -793,6 +797,10 @@ namespace Kalipso
             Properties.Settings.Default.defParamACTE = txtApproxCTE_A_20.Text;
             Properties.Settings.Default.defParamBCTE = txtApproxCTE_B_20.Text;
 
+            Properties.Settings.Default.defParamSolidState = cmbSolidState.Text;
+            Properties.Settings.Default.defParam_r_exp = Convert.ToDouble(txtRoExp.Text);
+            Properties.Settings.Default.defParamSampleNum = txtSampleNumber.Text;
+
 
 
             #region d33 approximation 
@@ -957,7 +965,7 @@ namespace Kalipso
 
         private void txtApproxCTE_B_TextChanged(object sender, EventArgs e)
         {
-            Properties.Settings.Default.defParamB_CTE_20 = Convert.ToDouble(txtApproxCTE_A_20.Text);
+            Properties.Settings.Default.defParamB_CTE_20 = Convert.ToDouble(txtApproxCTE_B_20.Text);
         }
 
         private void label38_Click(object sender, EventArgs e)
@@ -1085,6 +1093,21 @@ namespace Kalipso
         private void btnAddTemp_Click_1(object sender, EventArgs e)
         {
 
+        }
+
+        private void cmbSolidState_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.defParamSolidState = cmbSolidState.Text;
+        }
+
+        private void txtRoExp_TextChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.defParam_r_exp = Convert.ToDouble(txtRoExp.Text);
+        }
+
+        private void txtSampleNumber_TextChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.defParamSampleNum = txtSampleNumber.Text;
         }
     }
 }

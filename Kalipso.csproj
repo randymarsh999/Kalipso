@@ -23,7 +23,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>http://192.168.3.200/kalipso.update.iis_server.ru/</InstallUrl>
+    <InstallUrl>http://192.168.3.200/kalipso/</InstallUrl>
     <UpdateUrl>http://192.168.3.200/kalipso.update.iis_server.ru/</UpdateUrl>
     <TargetCulture>en-US</TargetCulture>
     <ProductName>Kalipso</ProductName>
@@ -32,7 +32,7 @@
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <TrustUrlParameters>true</TrustUrlParameters>
-    <ApplicationRevision>19</ApplicationRevision>
+    <ApplicationRevision>21</ApplicationRevision>
     <ApplicationVersion>10.0.10.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -204,7 +204,6 @@
     <None Include="Forms\App.config" />
     <None Include="Kalipso_TemporaryKey.pfx" />
     <None Include="packages.config" />
-    <None Include="Properties\DataSources\Kalipso.Сalculations.XMFT.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -304,6 +303,8 @@
       <FileType>File</FileType>
     </PublishFile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Properties\DataSources\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

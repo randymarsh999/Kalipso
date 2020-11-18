@@ -34,6 +34,9 @@ namespace Kalipso
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.panel1 = new System.Windows.Forms.Panel();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -60,17 +63,24 @@ namespace Kalipso
             this.panel3 = new System.Windows.Forms.Panel();
             this.btnGetAllDataFromXMFT = new System.Windows.Forms.Button();
             this.dGridXMFT = new System.Windows.Forms.DataGridView();
+            this.btnSendDataToXMFT = new System.Windows.Forms.Button();
+            this.btnCheckXMFT = new System.Windows.Forms.Button();
             this.Command = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SetValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ReadValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.isReadValue = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.btnSendDataToXMFT = new System.Windows.Forms.Button();
-            this.btnCheckXMFT = new System.Windows.Forms.Button();
+            this.isWriteValue = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
+            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.button7 = new System.Windows.Forms.Button();
             this.officeDataSourceObjectBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dGridXMFT)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.officeDataSourceObjectBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -303,7 +313,7 @@ namespace Kalipso
             | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.Location = new System.Drawing.Point(231, 391);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(146, 32);
+            this.button1.Size = new System.Drawing.Size(305, 32);
             this.button1.TabIndex = 8;
             this.button1.Text = "Read Data from TERMO";
             this.button1.UseVisualStyleBackColor = true;
@@ -315,7 +325,7 @@ namespace Kalipso
             | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.Location = new System.Drawing.Point(231, 429);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(146, 32);
+            this.button2.Size = new System.Drawing.Size(305, 32);
             this.button2.TabIndex = 9;
             this.button2.Text = "Read Data from TERMO";
             this.button2.UseVisualStyleBackColor = true;
@@ -328,6 +338,9 @@ namespace Kalipso
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.button7);
+            this.panel3.Controls.Add(this.button6);
+            this.panel3.Controls.Add(this.button5);
             this.panel3.Controls.Add(this.btnGetAllDataFromXMFT);
             this.panel3.Controls.Add(this.dGridXMFT);
             this.panel3.Controls.Add(this.btnSendDataToXMFT);
@@ -366,7 +379,8 @@ namespace Kalipso
             this.Command,
             this.SetValue,
             this.ReadValue,
-            this.isReadValue});
+            this.isReadValue,
+            this.isWriteValue});
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -375,7 +389,7 @@ namespace Kalipso
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dGridXMFT.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dGridXMFT.Location = new System.Drawing.Point(3, 6);
+            this.dGridXMFT.Location = new System.Drawing.Point(6, 3);
             this.dGridXMFT.Name = "dGridXMFT";
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
@@ -387,29 +401,6 @@ namespace Kalipso
             this.dGridXMFT.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dGridXMFT.Size = new System.Drawing.Size(398, 367);
             this.dGridXMFT.TabIndex = 20;
-            // 
-            // Command
-            // 
-            this.Command.HeaderText = "Command";
-            this.Command.Name = "Command";
-            this.Command.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // SetValue
-            // 
-            this.SetValue.HeaderText = "SetValue";
-            this.SetValue.Name = "SetValue";
-            // 
-            // ReadValue
-            // 
-            this.ReadValue.HeaderText = "ReadValue";
-            this.ReadValue.Name = "ReadValue";
-            // 
-            // isReadValue
-            // 
-            this.isReadValue.HeaderText = "isReadValue";
-            this.isReadValue.Name = "isReadValue";
-            this.isReadValue.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.isReadValue.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // btnSendDataToXMFT
             // 
@@ -433,7 +424,89 @@ namespace Kalipso
             this.btnCheckXMFT.TabIndex = 18;
             this.btnCheckXMFT.Text = "checkXMFT";
             this.btnCheckXMFT.UseVisualStyleBackColor = true;
-            this.btnCheckXMFT.Click += new System.EventHandler(this.btnCheckXMFT_Click_1);
+            // 
+            // Command
+            // 
+            this.Command.HeaderText = "Command";
+            this.Command.Name = "Command";
+            this.Command.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // SetValue
+            // 
+            this.SetValue.HeaderText = "SetValue";
+            this.SetValue.Name = "SetValue";
+            // 
+            // ReadValue
+            // 
+            this.ReadValue.HeaderText = "ReadValue";
+            this.ReadValue.Name = "ReadValue";
+            this.ReadValue.Width = 50;
+            // 
+            // isReadValue
+            // 
+            this.isReadValue.HeaderText = "isReadValue";
+            this.isReadValue.Name = "isReadValue";
+            this.isReadValue.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.isReadValue.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.isReadValue.Width = 70;
+            // 
+            // isWriteValue
+            // 
+            this.isWriteValue.HeaderText = "isWriteValue";
+            this.isWriteValue.Name = "isWriteValue";
+            this.isWriteValue.Width = 70;
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(140, 407);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(75, 23);
+            this.button5.TabIndex = 23;
+            this.button5.Text = "button5";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click_1);
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(221, 407);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(75, 23);
+            this.button6.TabIndex = 24;
+            this.button6.Text = "button6";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // chart1
+            // 
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chart1.Legends.Add(legend1);
+            this.chart1.Location = new System.Drawing.Point(952, 118);
+            this.chart1.Name = "chart1";
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chart1.Series.Add(series1);
+            this.chart1.Size = new System.Drawing.Size(368, 264);
+            this.chart1.TabIndex = 19;
+            this.chart1.Text = "chart1";
+            // 
+            // timer2
+            // 
+            this.timer2.Interval = 1000;
+            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(307, 391);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(90, 38);
+            this.button7.TabIndex = 25;
+            this.button7.Text = "button7";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // officeDataSourceObjectBindingSource
             // 
@@ -443,7 +516,8 @@ namespace Kalipso
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(958, 483);
+            this.ClientSize = new System.Drawing.Size(1324, 490);
+            this.Controls.Add(this.chart1);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
@@ -465,6 +539,7 @@ namespace Kalipso
             this.panel2.PerformLayout();
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dGridXMFT)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.officeDataSourceObjectBindingSource)).EndInit();
             this.ResumeLayout(false);
 
@@ -508,5 +583,11 @@ namespace Kalipso
         private System.Windows.Forms.DataGridViewTextBoxColumn SetValue;
         private System.Windows.Forms.DataGridViewTextBoxColumn ReadValue;
         private System.Windows.Forms.DataGridViewCheckBoxColumn isReadValue;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn isWriteValue;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+        private System.Windows.Forms.Timer timer2;
+        private System.Windows.Forms.Button button7;
     }
 }

@@ -36,6 +36,10 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabControl4 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label58 = new System.Windows.Forms.Label();
+            this.txtRoExp = new System.Windows.Forms.TextBox();
+            this.label57 = new System.Windows.Forms.Label();
+            this.cmbSolidState = new System.Windows.Forms.ComboBox();
             this.chTest = new System.Windows.Forms.CheckBox();
             this.label22 = new System.Windows.Forms.Label();
             this.txtTempSint = new System.Windows.Forms.TextBox();
@@ -173,6 +177,29 @@
             this.txtApproxD33_B_20 = new System.Windows.Forms.TextBox();
             this.label48 = new System.Windows.Forms.Label();
             this.txtApproxD33_A_20 = new System.Windows.Forms.TextBox();
+            this.tabPage14 = new System.Windows.Forms.TabPage();
+            this.tabControl6 = new System.Windows.Forms.TabControl();
+            this.tabPage15 = new System.Windows.Forms.TabPage();
+            this.label9 = new System.Windows.Forms.Label();
+            this.txtRequsetDB = new System.Windows.Forms.TextBox();
+            this.btnSentDBRequest = new System.Windows.Forms.Button();
+            this.btnSetPass = new System.Windows.Forms.Button();
+            this.btnConnectDB = new System.Windows.Forms.Button();
+            this.label52 = new System.Windows.Forms.Label();
+            this.ePort = new System.Windows.Forms.TextBox();
+            this.btnSetPort = new System.Windows.Forms.Button();
+            this.label53 = new System.Windows.Forms.Label();
+            this.label54 = new System.Windows.Forms.Label();
+            this.label55 = new System.Windows.Forms.Label();
+            this.label56 = new System.Windows.Forms.Label();
+            this.eDB = new System.Windows.Forms.TextBox();
+            this.ePass = new System.Windows.Forms.TextBox();
+            this.eLogin = new System.Windows.Forms.TextBox();
+            this.eServer = new System.Windows.Forms.TextBox();
+            this.btnSetDB = new System.Windows.Forms.Button();
+            this.btnSetLogin = new System.Windows.Forms.Button();
+            this.btnSetSever = new System.Windows.Forms.Button();
+            this.tabPage16 = new System.Windows.Forms.TabPage();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFilevoltageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -204,6 +231,9 @@
             this.tabPage6.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.tabPage14.SuspendLayout();
+            this.tabControl6.SuspendLayout();
+            this.tabPage15.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -213,6 +243,7 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage14);
             this.tabControl1.Location = new System.Drawing.Point(12, 27);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -238,11 +269,15 @@
             this.tabControl4.Location = new System.Drawing.Point(6, 6);
             this.tabControl4.Name = "tabControl4";
             this.tabControl4.SelectedIndex = 0;
-            this.tabControl4.Size = new System.Drawing.Size(267, 277);
+            this.tabControl4.Size = new System.Drawing.Size(262, 314);
             this.tabControl4.TabIndex = 38;
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.label58);
+            this.tabPage3.Controls.Add(this.txtRoExp);
+            this.tabPage3.Controls.Add(this.label57);
+            this.tabPage3.Controls.Add(this.cmbSolidState);
             this.tabPage3.Controls.Add(this.chTest);
             this.tabPage3.Controls.Add(this.label22);
             this.tabPage3.Controls.Add(this.txtTempSint);
@@ -259,15 +294,59 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(259, 251);
+            this.tabPage3.Size = new System.Drawing.Size(254, 288);
             this.tabPage3.TabIndex = 0;
             this.tabPage3.Text = "Sample Opt.";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // label58
+            // 
+            this.label58.AutoSize = true;
+            this.label58.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label58.Location = new System.Drawing.Point(6, 190);
+            this.label58.Name = "label58";
+            this.label58.Size = new System.Drawing.Size(68, 23);
+            this.label58.TabIndex = 44;
+            this.label58.Text = "Ro_exp";
+            // 
+            // txtRoExp
+            // 
+            this.txtRoExp.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtRoExp.Location = new System.Drawing.Point(6, 216);
+            this.txtRoExp.Name = "txtRoExp";
+            this.txtRoExp.Size = new System.Drawing.Size(100, 29);
+            this.txtRoExp.TabIndex = 43;
+            this.txtRoExp.Text = "4.45";
+            this.txtRoExp.TextChanged += new System.EventHandler(this.txtRoExp_TextChanged);
+            // 
+            // label57
+            // 
+            this.label57.AutoSize = true;
+            this.label57.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label57.Location = new System.Drawing.Point(112, 175);
+            this.label57.Name = "label57";
+            this.label57.Size = new System.Drawing.Size(89, 23);
+            this.label57.TabIndex = 42;
+            this.label57.Text = "Solid state";
+            // 
+            // cmbSolidState
+            // 
+            this.cmbSolidState.FormattingEnabled = true;
+            this.cmbSolidState.Items.AddRange(new object[] {
+            "polycrystal",
+            "single crystal",
+            "thin film"});
+            this.cmbSolidState.Location = new System.Drawing.Point(112, 204);
+            this.cmbSolidState.Name = "cmbSolidState";
+            this.cmbSolidState.Size = new System.Drawing.Size(100, 21);
+            this.cmbSolidState.TabIndex = 41;
+            this.cmbSolidState.Text = "polycrystal";
+            this.cmbSolidState.SelectedIndexChanged += new System.EventHandler(this.cmbSolidState_SelectedIndexChanged);
+            // 
             // chTest
             // 
             this.chTest.AutoSize = true;
-            this.chTest.Location = new System.Drawing.Point(31, 208);
+            this.chTest.Location = new System.Drawing.Point(112, 231);
             this.chTest.Name = "chTest";
             this.chTest.Size = new System.Drawing.Size(43, 17);
             this.chTest.TabIndex = 40;
@@ -329,6 +408,7 @@
             this.txtSampleNumber.Size = new System.Drawing.Size(100, 29);
             this.txtSampleNumber.TabIndex = 34;
             this.txtSampleNumber.Text = "1";
+            this.txtSampleNumber.TextChanged += new System.EventHandler(this.txtSampleNumber_TextChanged);
             // 
             // label15
             // 
@@ -412,7 +492,7 @@
             this.tabPage9.Location = new System.Drawing.Point(4, 22);
             this.tabPage9.Name = "tabPage9";
             this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage9.Size = new System.Drawing.Size(259, 251);
+            this.tabPage9.Size = new System.Drawing.Size(254, 288);
             this.tabPage9.TabIndex = 1;
             this.tabPage9.Text = "Temp.";
             this.tabPage9.UseVisualStyleBackColor = true;
@@ -568,7 +648,7 @@
             this.tabPage10.Location = new System.Drawing.Point(4, 22);
             this.tabPage10.Name = "tabPage10";
             this.tabPage10.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage10.Size = new System.Drawing.Size(259, 251);
+            this.tabPage10.Size = new System.Drawing.Size(254, 288);
             this.tabPage10.TabIndex = 2;
             this.tabPage10.Text = "Meters";
             this.tabPage10.UseVisualStyleBackColor = true;
@@ -620,7 +700,6 @@
             // 
             this.cbTermocontrollerDevModel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbTermocontrollerDevModel.DisplayMember = "Length";
             this.cbTermocontrollerDevModel.FormattingEnabled = true;
             this.cbTermocontrollerDevModel.Items.AddRange(new object[] {
             "Varta",
@@ -629,7 +708,7 @@
             this.cbTermocontrollerDevModel.Name = "cbTermocontrollerDevModel";
             this.cbTermocontrollerDevModel.Size = new System.Drawing.Size(174, 21);
             this.cbTermocontrollerDevModel.TabIndex = 22;
-            this.cbTermocontrollerDevModel.ValueMember = "Length";
+            this.cbTermocontrollerDevModel.Text = "Varta";
             // 
             // label14
             // 
@@ -1831,6 +1910,251 @@
             this.txtApproxD33_A_20.TabIndex = 84;
             this.txtApproxD33_A_20.Text = "21.13";
             // 
+            // tabPage14
+            // 
+            this.tabPage14.Controls.Add(this.tabControl6);
+            this.tabPage14.Location = new System.Drawing.Point(4, 22);
+            this.tabPage14.Name = "tabPage14";
+            this.tabPage14.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage14.Size = new System.Drawing.Size(1164, 582);
+            this.tabPage14.TabIndex = 2;
+            this.tabPage14.Text = "DataBase";
+            this.tabPage14.UseVisualStyleBackColor = true;
+            // 
+            // tabControl6
+            // 
+            this.tabControl6.Controls.Add(this.tabPage15);
+            this.tabControl6.Controls.Add(this.tabPage16);
+            this.tabControl6.Location = new System.Drawing.Point(6, 6);
+            this.tabControl6.Name = "tabControl6";
+            this.tabControl6.SelectedIndex = 0;
+            this.tabControl6.Size = new System.Drawing.Size(715, 441);
+            this.tabControl6.TabIndex = 0;
+            // 
+            // tabPage15
+            // 
+            this.tabPage15.Controls.Add(this.label9);
+            this.tabPage15.Controls.Add(this.txtRequsetDB);
+            this.tabPage15.Controls.Add(this.btnSentDBRequest);
+            this.tabPage15.Controls.Add(this.btnSetPass);
+            this.tabPage15.Controls.Add(this.btnConnectDB);
+            this.tabPage15.Controls.Add(this.label52);
+            this.tabPage15.Controls.Add(this.ePort);
+            this.tabPage15.Controls.Add(this.btnSetPort);
+            this.tabPage15.Controls.Add(this.label53);
+            this.tabPage15.Controls.Add(this.label54);
+            this.tabPage15.Controls.Add(this.label55);
+            this.tabPage15.Controls.Add(this.label56);
+            this.tabPage15.Controls.Add(this.eDB);
+            this.tabPage15.Controls.Add(this.ePass);
+            this.tabPage15.Controls.Add(this.eLogin);
+            this.tabPage15.Controls.Add(this.eServer);
+            this.tabPage15.Controls.Add(this.btnSetDB);
+            this.tabPage15.Controls.Add(this.btnSetLogin);
+            this.tabPage15.Controls.Add(this.btnSetSever);
+            this.tabPage15.Location = new System.Drawing.Point(4, 22);
+            this.tabPage15.Name = "tabPage15";
+            this.tabPage15.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage15.Size = new System.Drawing.Size(707, 415);
+            this.tabPage15.TabIndex = 0;
+            this.tabPage15.Text = "Connect";
+            this.tabPage15.UseVisualStyleBackColor = true;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label9.Location = new System.Drawing.Point(14, 298);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(70, 20);
+            this.label9.TabIndex = 39;
+            this.label9.Text = "Request";
+            // 
+            // txtRequsetDB
+            // 
+            this.txtRequsetDB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtRequsetDB.Location = new System.Drawing.Point(10, 323);
+            this.txtRequsetDB.Name = "txtRequsetDB";
+            this.txtRequsetDB.Size = new System.Drawing.Size(100, 26);
+            this.txtRequsetDB.TabIndex = 38;
+            // 
+            // btnSentDBRequest
+            // 
+            this.btnSentDBRequest.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnSentDBRequest.Location = new System.Drawing.Point(116, 323);
+            this.btnSentDBRequest.Name = "btnSentDBRequest";
+            this.btnSentDBRequest.Size = new System.Drawing.Size(103, 26);
+            this.btnSentDBRequest.TabIndex = 37;
+            this.btnSentDBRequest.Text = "Send Request";
+            this.btnSentDBRequest.UseVisualStyleBackColor = true;
+            // 
+            // btnSetPass
+            // 
+            this.btnSetPass.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnSetPass.Location = new System.Drawing.Point(112, 197);
+            this.btnSetPass.Name = "btnSetPass";
+            this.btnSetPass.Size = new System.Drawing.Size(103, 26);
+            this.btnSetPass.TabIndex = 36;
+            this.btnSetPass.Text = "Password";
+            this.btnSetPass.UseVisualStyleBackColor = true;
+            // 
+            // btnConnectDB
+            // 
+            this.btnConnectDB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnConnectDB.Location = new System.Drawing.Point(221, 41);
+            this.btnConnectDB.Name = "btnConnectDB";
+            this.btnConnectDB.Size = new System.Drawing.Size(87, 26);
+            this.btnConnectDB.TabIndex = 35;
+            this.btnConnectDB.Text = "Connect";
+            this.btnConnectDB.UseVisualStyleBackColor = true;
+            // 
+            // label52
+            // 
+            this.label52.AutoSize = true;
+            this.label52.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label52.Location = new System.Drawing.Point(6, 226);
+            this.label52.Name = "label52";
+            this.label52.Size = new System.Drawing.Size(38, 20);
+            this.label52.TabIndex = 34;
+            this.label52.Text = "Port";
+            // 
+            // ePort
+            // 
+            this.ePort.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ePort.Location = new System.Drawing.Point(6, 249);
+            this.ePort.Name = "ePort";
+            this.ePort.Size = new System.Drawing.Size(100, 26);
+            this.ePort.TabIndex = 33;
+            this.ePort.Text = "5432";
+            // 
+            // btnSetPort
+            // 
+            this.btnSetPort.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnSetPort.Location = new System.Drawing.Point(112, 249);
+            this.btnSetPort.Name = "btnSetPort";
+            this.btnSetPort.Size = new System.Drawing.Size(103, 26);
+            this.btnSetPort.TabIndex = 32;
+            this.btnSetPort.Text = "Set port";
+            this.btnSetPort.UseVisualStyleBackColor = true;
+            // 
+            // label53
+            // 
+            this.label53.AutoSize = true;
+            this.label53.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label53.Location = new System.Drawing.Point(6, 176);
+            this.label53.Name = "label53";
+            this.label53.Size = new System.Drawing.Size(78, 20);
+            this.label53.TabIndex = 31;
+            this.label53.Text = "Password";
+            // 
+            // label54
+            // 
+            this.label54.AutoSize = true;
+            this.label54.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label54.Location = new System.Drawing.Point(6, 124);
+            this.label54.Name = "label54";
+            this.label54.Size = new System.Drawing.Size(48, 20);
+            this.label54.TabIndex = 30;
+            this.label54.Text = "Login";
+            // 
+            // label55
+            // 
+            this.label55.AutoSize = true;
+            this.label55.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label55.Location = new System.Drawing.Point(6, 72);
+            this.label55.Name = "label55";
+            this.label55.Size = new System.Drawing.Size(83, 20);
+            this.label55.TabIndex = 29;
+            this.label55.Text = "Data base";
+            // 
+            // label56
+            // 
+            this.label56.AutoSize = true;
+            this.label56.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label56.Location = new System.Drawing.Point(6, 18);
+            this.label56.Name = "label56";
+            this.label56.Size = new System.Drawing.Size(55, 20);
+            this.label56.TabIndex = 28;
+            this.label56.Text = "Server";
+            // 
+            // eDB
+            // 
+            this.eDB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.eDB.Location = new System.Drawing.Point(6, 95);
+            this.eDB.Name = "eDB";
+            this.eDB.Size = new System.Drawing.Size(100, 26);
+            this.eDB.TabIndex = 27;
+            this.eDB.Text = "nii_db";
+            // 
+            // ePass
+            // 
+            this.ePass.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ePass.Location = new System.Drawing.Point(6, 197);
+            this.ePass.Name = "ePass";
+            this.ePass.PasswordChar = '*';
+            this.ePass.Size = new System.Drawing.Size(100, 26);
+            this.ePass.TabIndex = 26;
+            this.ePass.Text = "nii011235813";
+            // 
+            // eLogin
+            // 
+            this.eLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.eLogin.Location = new System.Drawing.Point(6, 147);
+            this.eLogin.Name = "eLogin";
+            this.eLogin.Size = new System.Drawing.Size(100, 26);
+            this.eLogin.TabIndex = 25;
+            this.eLogin.Text = "postgres";
+            // 
+            // eServer
+            // 
+            this.eServer.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.eServer.Location = new System.Drawing.Point(6, 41);
+            this.eServer.Name = "eServer";
+            this.eServer.Size = new System.Drawing.Size(100, 26);
+            this.eServer.TabIndex = 24;
+            this.eServer.Text = "10.11.0.36";
+            // 
+            // btnSetDB
+            // 
+            this.btnSetDB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnSetDB.Location = new System.Drawing.Point(112, 95);
+            this.btnSetDB.Name = "btnSetDB";
+            this.btnSetDB.Size = new System.Drawing.Size(103, 26);
+            this.btnSetDB.TabIndex = 23;
+            this.btnSetDB.Text = "Set DB";
+            this.btnSetDB.UseVisualStyleBackColor = true;
+            // 
+            // btnSetLogin
+            // 
+            this.btnSetLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnSetLogin.Location = new System.Drawing.Point(112, 147);
+            this.btnSetLogin.Name = "btnSetLogin";
+            this.btnSetLogin.Size = new System.Drawing.Size(103, 26);
+            this.btnSetLogin.TabIndex = 22;
+            this.btnSetLogin.Text = "Set login";
+            this.btnSetLogin.UseVisualStyleBackColor = true;
+            // 
+            // btnSetSever
+            // 
+            this.btnSetSever.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnSetSever.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnSetSever.Location = new System.Drawing.Point(112, 40);
+            this.btnSetSever.Name = "btnSetSever";
+            this.btnSetSever.Size = new System.Drawing.Size(103, 27);
+            this.btnSetSever.TabIndex = 21;
+            this.btnSetSever.Text = "Set server";
+            this.btnSetSever.UseVisualStyleBackColor = true;
+            // 
+            // tabPage16
+            // 
+            this.tabPage16.Location = new System.Drawing.Point(4, 22);
+            this.tabPage16.Name = "tabPage16";
+            this.tabPage16.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage16.Size = new System.Drawing.Size(707, 415);
+            this.tabPage16.TabIndex = 1;
+            this.tabPage16.Text = "tabPage16";
+            this.tabPage16.UseVisualStyleBackColor = true;
+            // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1940,6 +2264,10 @@
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.tabPage14.ResumeLayout(false);
+            this.tabControl6.ResumeLayout(false);
+            this.tabPage15.ResumeLayout(false);
+            this.tabPage15.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -2165,6 +2493,33 @@
         private System.Windows.Forms.Label label10;
         public System.Windows.Forms.TextBox tFreqList;
         public System.Windows.Forms.DataGridView DGTempData;
+        private System.Windows.Forms.TabPage tabPage14;
+        private System.Windows.Forms.TabControl tabControl6;
+        private System.Windows.Forms.TabPage tabPage15;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox txtRequsetDB;
+        private System.Windows.Forms.Button btnSentDBRequest;
+        private System.Windows.Forms.Button btnSetPass;
+        private System.Windows.Forms.Button btnConnectDB;
+        private System.Windows.Forms.Label label52;
+        private System.Windows.Forms.TextBox ePort;
+        private System.Windows.Forms.Button btnSetPort;
+        private System.Windows.Forms.Label label53;
+        private System.Windows.Forms.Label label54;
+        private System.Windows.Forms.Label label55;
+        private System.Windows.Forms.Label label56;
+        private System.Windows.Forms.TextBox eDB;
+        private System.Windows.Forms.TextBox ePass;
+        private System.Windows.Forms.TextBox eLogin;
+        private System.Windows.Forms.TextBox eServer;
+        private System.Windows.Forms.Button btnSetDB;
+        private System.Windows.Forms.Button btnSetLogin;
+        private System.Windows.Forms.Button btnSetSever;
+        private System.Windows.Forms.TabPage tabPage16;
+        private System.Windows.Forms.Label label57;
+        public System.Windows.Forms.ComboBox cmbSolidState;
+        private System.Windows.Forms.Label label58;
+        public System.Windows.Forms.TextBox txtRoExp;
 #pragma warning restore CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmMeasTempOpt.txtTimerReversive"
     }
 }
