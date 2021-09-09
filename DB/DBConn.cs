@@ -209,6 +209,7 @@ class DBConn
                 case "Direct": s = s + DG.Columns[i].HeaderText + " text, "; break;
                 case "Polarity": s = s + DG.Columns[i].HeaderText + " text, "; break;
                 case "operator": s = s + DG.Columns[i].HeaderText + " text, "; break;
+                case "comments": s = s + DG.Columns[i].HeaderText + " text, "; break;
 
                 case "id_sample": s = s + DG.Columns[i].HeaderText + " INT, "; break;
                 case "Step": s = s + DG.Columns[i].HeaderText + " INT, "; break;

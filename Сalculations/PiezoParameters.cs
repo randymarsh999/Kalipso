@@ -928,7 +928,6 @@ public class PiezoParameters
         TrigWayneKerr4300 = ":MEAS:TRIG";
         FreqWayneKerr4300 = ":MEAS:FREQ ";
 
-
         //Agilent4980
         FreqAgilent4980 = "FREQ ";
         TrigAgilent4980 = "*TRIG";

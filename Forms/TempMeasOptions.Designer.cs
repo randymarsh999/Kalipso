@@ -36,6 +36,8 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabControl4 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.txtComments = new System.Windows.Forms.TextBox();
+            this.label59 = new System.Windows.Forms.Label();
             this.label58 = new System.Windows.Forms.Label();
             this.txtRoExp = new System.Windows.Forms.TextBox();
             this.label57 = new System.Windows.Forms.Label();
@@ -87,10 +89,11 @@
             this.TimeS = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Cycle = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage12 = new System.Windows.Forms.TabPage();
-            this.label12 = new System.Windows.Forms.Label();
-            this.tTimerList = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.tVoltageList = new System.Windows.Forms.TextBox();
+            this.dGridVolt = new System.Windows.Forms.DataGridView();
+            this.colTemp = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColVolt = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColFreq = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage13 = new System.Windows.Forms.TabPage();
             this.label10 = new System.Windows.Forms.Label();
             this.tFreqList = new System.Windows.Forms.TextBox();
@@ -222,6 +225,7 @@
             this.tabPage11.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGTempData)).BeginInit();
             this.tabPage12.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dGridVolt)).BeginInit();
             this.tabPage13.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tabPage8.SuspendLayout();
@@ -269,11 +273,13 @@
             this.tabControl4.Location = new System.Drawing.Point(6, 6);
             this.tabControl4.Name = "tabControl4";
             this.tabControl4.SelectedIndex = 0;
-            this.tabControl4.Size = new System.Drawing.Size(262, 314);
+            this.tabControl4.Size = new System.Drawing.Size(613, 314);
             this.tabControl4.TabIndex = 38;
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.txtComments);
+            this.tabPage3.Controls.Add(this.label59);
             this.tabPage3.Controls.Add(this.label58);
             this.tabPage3.Controls.Add(this.txtRoExp);
             this.tabPage3.Controls.Add(this.label57);
@@ -294,10 +300,32 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(254, 288);
+            this.tabPage3.Size = new System.Drawing.Size(605, 288);
             this.tabPage3.TabIndex = 0;
             this.tabPage3.Text = "Sample Opt.";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // txtComments
+            // 
+            this.txtComments.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtComments.Location = new System.Drawing.Point(239, 34);
+            this.txtComments.Multiline = true;
+            this.txtComments.Name = "txtComments";
+            this.txtComments.Size = new System.Drawing.Size(346, 214);
+            this.txtComments.TabIndex = 47;
+            this.txtComments.TextChanged += new System.EventHandler(this.txtComments_TextChanged);
+            // 
+            // label59
+            // 
+            this.label59.AutoSize = true;
+            this.label59.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label59.Location = new System.Drawing.Point(235, 8);
+            this.label59.Name = "label59";
+            this.label59.Size = new System.Drawing.Size(92, 23);
+            this.label59.TabIndex = 46;
+            this.label59.Text = "Comments";
+            this.label59.Click += new System.EventHandler(this.label59_Click);
             // 
             // label58
             // 
@@ -492,7 +520,7 @@
             this.tabPage9.Location = new System.Drawing.Point(4, 22);
             this.tabPage9.Name = "tabPage9";
             this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage9.Size = new System.Drawing.Size(254, 288);
+            this.tabPage9.Size = new System.Drawing.Size(605, 288);
             this.tabPage9.TabIndex = 1;
             this.tabPage9.Text = "Temp.";
             this.tabPage9.UseVisualStyleBackColor = true;
@@ -648,7 +676,7 @@
             this.tabPage10.Location = new System.Drawing.Point(4, 22);
             this.tabPage10.Name = "tabPage10";
             this.tabPage10.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage10.Size = new System.Drawing.Size(254, 288);
+            this.tabPage10.Size = new System.Drawing.Size(605, 288);
             this.tabPage10.TabIndex = 2;
             this.tabPage10.Text = "Meters";
             this.tabPage10.UseVisualStyleBackColor = true;
@@ -834,10 +862,7 @@
             // 
             // tabPage12
             // 
-            this.tabPage12.Controls.Add(this.label12);
-            this.tabPage12.Controls.Add(this.tTimerList);
-            this.tabPage12.Controls.Add(this.label11);
-            this.tabPage12.Controls.Add(this.tVoltageList);
+            this.tabPage12.Controls.Add(this.dGridVolt);
             this.tabPage12.Location = new System.Drawing.Point(4, 22);
             this.tabPage12.Name = "tabPage12";
             this.tabPage12.Padding = new System.Windows.Forms.Padding(3);
@@ -846,47 +871,42 @@
             this.tabPage12.Text = "Voltage";
             this.tabPage12.UseVisualStyleBackColor = true;
             // 
-            // label12
+            // dGridVolt
             // 
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label12.Location = new System.Drawing.Point(190, 14);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(49, 23);
-            this.label12.TabIndex = 130;
-            this.label12.Text = "Timer";
-            // 
-            // tTimerList
-            // 
-            this.tTimerList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.dGridVolt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.tTimerList.Location = new System.Drawing.Point(190, 40);
-            this.tTimerList.Multiline = true;
-            this.tTimerList.Name = "tTimerList";
-            this.tTimerList.Size = new System.Drawing.Size(150, 400);
-            this.tTimerList.TabIndex = 129;
-            this.tTimerList.Text = "0\r\n10\r\n20\r\n30\r\n40";
+            this.dGridVolt.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dGridVolt.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colTemp,
+            this.ColTime,
+            this.ColVolt,
+            this.ColFreq});
+            this.dGridVolt.Location = new System.Drawing.Point(3, 3);
+            this.dGridVolt.Name = "dGridVolt";
+            this.dGridVolt.Size = new System.Drawing.Size(449, 482);
+            this.dGridVolt.TabIndex = 131;
             // 
-            // label11
+            // colTemp
             // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label11.Location = new System.Drawing.Point(20, 14);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(63, 23);
-            this.label11.TabIndex = 128;
-            this.label11.Text = "Voltage";
+            this.colTemp.HeaderText = "Temperature, K";
+            this.colTemp.Name = "colTemp";
+            this.colTemp.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             // 
-            // tVoltageList
+            // ColTime
             // 
-            this.tVoltageList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.tVoltageList.Location = new System.Drawing.Point(20, 40);
-            this.tVoltageList.Multiline = true;
-            this.tVoltageList.Name = "tVoltageList";
-            this.tVoltageList.Size = new System.Drawing.Size(150, 400);
-            this.tVoltageList.TabIndex = 127;
-            this.tVoltageList.Text = "0\r\n0\r\n20\r\n30\r\n40";
+            this.ColTime.HeaderText = "Time, sec";
+            this.ColTime.Name = "ColTime";
+            this.ColTime.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // ColVolt
+            // 
+            this.ColVolt.HeaderText = "Voltage, V";
+            this.ColVolt.Name = "ColVolt";
+            // 
+            // ColFreq
+            // 
+            this.ColFreq.HeaderText = "Freq., Hz";
+            this.ColFreq.Name = "ColFreq";
             // 
             // tabPage13
             // 
@@ -1006,7 +1026,7 @@
             "Points hulf cycle",
             "Full cycle",
             "Half cycle"});
-            this.cCUCycle.Location = new System.Drawing.Point(102, 303);
+            this.cCUCycle.Location = new System.Drawing.Point(102, 310);
             this.cCUCycle.Name = "cCUCycle";
             this.cCUCycle.Size = new System.Drawing.Size(103, 21);
             this.cCUCycle.TabIndex = 141;
@@ -1111,7 +1131,7 @@
             // 
             this.label31.AutoSize = true;
             this.label31.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label31.Location = new System.Drawing.Point(207, 293);
+            this.label31.Location = new System.Drawing.Point(207, 296);
             this.label31.Name = "label31";
             this.label31.Size = new System.Drawing.Size(103, 23);
             this.label31.TabIndex = 130;
@@ -1195,7 +1215,7 @@
             // txtPointCountU
             // 
             this.txtPointCountU.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtPointCountU.Location = new System.Drawing.Point(210, 147);
+            this.txtPointCountU.Location = new System.Drawing.Point(211, 147);
             this.txtPointCountU.Name = "txtPointCountU";
             this.txtPointCountU.Size = new System.Drawing.Size(96, 29);
             this.txtPointCountU.TabIndex = 121;
@@ -1468,6 +1488,7 @@
             this.cWorkMode.Name = "cWorkMode";
             this.cWorkMode.Size = new System.Drawing.Size(203, 21);
             this.cWorkMode.TabIndex = 75;
+            this.cWorkMode.SelectedIndexChanged += new System.EventHandler(this.cWorkMode_SelectedIndexChanged_1);
             // 
             // tabPage8
             // 
@@ -2164,6 +2185,7 @@
             this.menuStrip1.Size = new System.Drawing.Size(1184, 24);
             this.menuStrip1.TabIndex = 9;
             this.menuStrip1.Text = "menuStrip1";
+            this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
             // 
             // fileToolStripMenuItem
             // 
@@ -2227,7 +2249,6 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMeasTempOpt_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMeasTempOpt_FormClosed);
             this.Load += new System.EventHandler(this.frmMeasTempOpt_Load);
-            this.Shown += new System.EventHandler(this.openFileexcelToolStripMenuItem_Click);
             this.VisibleChanged += new System.EventHandler(this.FrmMeasTempOpt_VisibleChanged);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
@@ -2248,7 +2269,7 @@
             this.tabPage11.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGTempData)).EndInit();
             this.tabPage12.ResumeLayout(false);
-            this.tabPage12.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dGridVolt)).EndInit();
             this.tabPage13.ResumeLayout(false);
             this.tabPage13.PerformLayout();
             this.panel1.ResumeLayout(false);
@@ -2485,10 +2506,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn TimeS;
         private System.Windows.Forms.DataGridViewTextBoxColumn Cycle;
         private System.Windows.Forms.TabPage tabPage12;
-        private System.Windows.Forms.Label label12;
-        public System.Windows.Forms.TextBox tTimerList;
-        private System.Windows.Forms.Label label11;
-        public System.Windows.Forms.TextBox tVoltageList;
         private System.Windows.Forms.TabPage tabPage13;
         private System.Windows.Forms.Label label10;
         public System.Windows.Forms.TextBox tFreqList;
@@ -2520,6 +2537,13 @@
         public System.Windows.Forms.ComboBox cmbSolidState;
         private System.Windows.Forms.Label label58;
         public System.Windows.Forms.TextBox txtRoExp;
+        public System.Windows.Forms.DataGridView dGridVolt;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colTemp;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColTime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColVolt;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColFreq;
+        private System.Windows.Forms.Label label59;
+        public System.Windows.Forms.TextBox txtComments;
 #pragma warning restore CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmMeasTempOpt.txtTimerReversive"
     }
 }

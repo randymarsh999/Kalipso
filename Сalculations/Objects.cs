@@ -19,7 +19,7 @@ namespace Kalipso
             int cCnt;
             try
             {
-                OpenFileDialog opf = new OpenFileDialog();
+            OpenFileDialog opf = new OpenFileDialog();
             opf.Title = "Open excel file";
             opf.Filter = "Файл Excel|*.XLSX;*.XLS";
             opf.ShowDialog();
@@ -29,15 +29,13 @@ namespace Kalipso
             Microsoft.Office.Interop.Excel._Workbook ExcelWorkBook;
             Microsoft.Office.Interop.Excel.Worksheet ExcelWorkSheet;
             Microsoft.Office.Interop.Excel.Range ExcelRange;
-            
-                ExcelWorkBook = ExcelApp.Workbooks.Open(filename, 0, true, 5, "", "", true, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "\t", false,
-                false, 0, true, 1, 0);
+                ExcelWorkBook = ExcelApp.Workbooks.Open(filename, 0, true, 5, "", "", true, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "\t", false, false, 0, true, 1, 0);
                 ExcelWorkSheet = (Microsoft.Office.Interop.Excel.Worksheet)ExcelWorkBook.Worksheets.get_Item(1);
                 ExcelRange = ExcelWorkSheet.UsedRange;
                 for (rCnt = 2; rCnt <= ExcelRange.Rows.Count; rCnt++)
                 {
                     DGW.Rows.Add(1);
-                    for (cCnt = 1; cCnt <= 2; cCnt++)
+                    for (cCnt = 1; cCnt <= ExcelRange.Columns.Count; cCnt++)
                     {
                         DGW.Rows[rCnt - 2].Cells[cCnt - 1].Value = ExcelApp.Cells[rCnt, cCnt].Value;
                     }
@@ -48,14 +46,8 @@ namespace Kalipso
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
-                throw;
+                return;
             }
-
         }
-
-
-
-        
-
     }
 }

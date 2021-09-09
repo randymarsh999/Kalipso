@@ -476,75 +476,75 @@ namespace Kalipso
 
         }
 
-        private void btnAddUList_Click(object sender, EventArgs e)
-        {
-            //int a;
-            double n = 0;
-            //int t=0;
-            //double tt = 0;
-            //int r;
-            //double ee;
+        //private void btnAddUList_Click(object sender, EventArgs e)
+        //{
+        //    //int a;
+        //    double n = 0;
+        //    //int t=0;
+        //    //double tt = 0;
+        //    //int r;
+        //    //double ee;
 
 
-            double step = 0;
-            double increment = 0;
-            if (cWorkMode.Text == "C(dU)_man" || cWorkMode.Text == "C(dU)_auto")
-            {
-                if (cCUCycle.Text == "Full cycle")
-                {
-                    step = (Double)((Convert.ToDouble(txtPointCountU.Text) / (4 * Convert.ToDouble(txtPeriodU.Text))));
-                }
-                else if (cCUCycle.Text == "Half cycle")
-                {
-                    step = (Double)Convert.ToDouble(txtPointCountU.Text) / (2 * Convert.ToDouble(txtPeriodU.Text));
-                }
+        //    double step = 0;
+        //    double increment = 0;
+        //    if (cWorkMode.Text == "C(dU)_man" || cWorkMode.Text == "C(dU)_auto")
+        //    {
+        //        if (cCUCycle.Text == "Full cycle")
+        //        {
+        //            step = (Double)((Convert.ToDouble(txtPointCountU.Text) / (4 * Convert.ToDouble(txtPeriodU.Text))));
+        //        }
+        //        else if (cCUCycle.Text == "Half cycle")
+        //        {
+        //            step = (Double)Convert.ToDouble(txtPointCountU.Text) / (2 * Convert.ToDouble(txtPeriodU.Text));
+        //        }
 
-                else if (cCUCycle.Text == "Points full cycle")
-                {
-                    step = (Double)Convert.ToDouble(txtUmax.Text) / Convert.ToDouble(txtPointCountU.Text);
-                }
-                else if (cCUCycle.Text == "Points hulf cycle")
-                {
-                    step = (Double)Convert.ToDouble(txtUmax.Text) / Convert.ToDouble(txtPointCountU.Text);
-                }
+        //        else if (cCUCycle.Text == "Points full cycle")
+        //        {
+        //            step = (Double)Convert.ToDouble(txtUmax.Text) / Convert.ToDouble(txtPointCountU.Text);
+        //        }
+        //        else if (cCUCycle.Text == "Points hulf cycle")
+        //        {
+        //            step = (Double)Convert.ToDouble(txtUmax.Text) / Convert.ToDouble(txtPointCountU.Text);
+        //        }
 
-                n = (double)Convert.ToDouble(txtUmax.Text) / step;
+        //        n = (double)Convert.ToDouble(txtUmax.Text) / step;
 
 
-                if (cCUCycle.Text == "Points full cycle")
-                {
-                    //tVoltageList.AppendText("0" + Environment.NewLine);
-                    increment = halfplus(increment, step);
-                    increment = halfplus_1(increment, step);
-                    increment = halfminus(increment, step);
-                    increment = halfminus_1(increment, step);
-                }
+        //        if (cCUCycle.Text == "Points full cycle")
+        //        {
+        //            //tVoltageList.AppendText("0" + Environment.NewLine);
+        //            increment = halfplus(increment, step);
+        //            increment = halfplus_1(increment, step);
+        //            increment = halfminus(increment, step);
+        //            increment = halfminus_1(increment, step);
+        //        }
 
-                if (cCUCycle.Text == "Points hulf cycle")
-                {
-                    increment = 0;
-                    //tVoltageList.AppendText("0" + Environment.NewLine);
-                    increment = halfplus(increment, step);
-                    increment = halfplus_1(increment, step);
-                }
-            }
-        }
+        //        if (cCUCycle.Text == "Points hulf cycle")
+        //        {
+        //            increment = 0;
+        //            //tVoltageList.AppendText("0" + Environment.NewLine);
+        //            increment = halfplus(increment, step);
+        //            increment = halfplus_1(increment, step);
+        //        }
+        //    }
+        //}
         /// <summary>
         /// Halfpluses the specified increment.
         /// </summary>
         /// <param name="increment">The increment.</param>
         /// <param name="step">The step.</param>
         /// <returns></returns>
-        private double halfplus(double increment, double step)
-        {
-            increment = 0;
-            do
-            {
-                increment = increment + step;
-                tVoltageList.AppendText(increment.ToString() + Environment.NewLine);
-            } while (increment < Convert.ToInt32(txtUmax.Text));
-            return increment;
-        }
+        //private double halfplus(double increment, double step)
+        //{
+        //    //increment = 0;
+        //    //do
+        //    //{
+        //    //    increment = increment + step;
+        //    //    tVoltageList.AppendText(increment.ToString() + Environment.NewLine);
+        //    //} while (increment < Convert.ToInt32(txtUmax.Text));
+        //    //return increment;
+        //}
         /// <summary>
         /// Halfpluses the 1.
         /// </summary>
@@ -553,11 +553,11 @@ namespace Kalipso
         /// <returns></returns>
         private double halfplus_1(double increment, double step)
         {
-            do
-            {
-                increment = increment - step;
-                tVoltageList.AppendText(increment.ToString() + Environment.NewLine);
-            } while (increment > 1);
+            //do
+            //{
+            //    increment = increment - step;
+            //    tVoltageList.AppendText(increment.ToString() + Environment.NewLine);
+            //} while (increment > 1);
             return increment;
         }
         /// <summary>
@@ -566,31 +566,31 @@ namespace Kalipso
         /// <param name="increment">The increment.</param>
         /// <param name="step">The step.</param>
         /// <returns></returns>
-        private double halfminus(double increment, double step)
-        {
-            do
-            {
-                increment = increment - step;
-                tVoltageList.AppendText(increment.ToString() + Environment.NewLine);
-            }
-            while (increment > Convert.ToInt32(txtUmax.Text) * (-1));
-            return increment;
-        }
+        //private double halfminus(double increment, double step)
+        //{
+        //    //do
+        //    //{
+        //    //    increment = increment - step;
+        //    //    tVoltageList.AppendText(increment.ToString() + Environment.NewLine);
+        //    //}
+        //    //while (increment > Convert.ToInt32(txtUmax.Text) * (-1));
+        //    //return increment;
+        //}
         /// <summary>
         /// Halfminuses the 1.
         /// </summary>
         /// <param name="increment">The increment.</param>
         /// <param name="step">The step.</param>
         /// <returns></returns>
-        private double halfminus_1(double increment, double step)
-        {
-            do
-            {
-                increment = increment + step;
-                tVoltageList.AppendText(increment.ToString() + Environment.NewLine);
-            } while (increment < 0);
-            return increment;
-        }
+        //private double halfminus_1(double increment, double step)
+        //{
+        //    do
+        //    {
+        //        increment = increment + step;
+        //        tVoltageList.AppendText(increment.ToString() + Environment.NewLine);
+        //    } while (increment < 0);
+        //    return increment;
+        //}
 
 
         private void txtUmax_TextChanged(object sender, EventArgs e)
@@ -636,23 +636,23 @@ namespace Kalipso
 
         private void btnTimer_Click(object sender, EventArgs e)
         {
-            FileJob fj = new FileJob();
-            string[] str = new string[fj.ReadF("F:\\temp\\time.txt").Length];
-            str = fj.ReadF("F:\\temp\\time.txt");
-            tTimerList.Clear();
-            for (int i = 0; i < str.Length; i++)
-            {
-                tTimerList.AppendText(str[i] + Environment.NewLine);
-            }
+            //FileJob fj = new FileJob();
+            //string[] str = new string[fj.ReadF("F:\\temp\\time.txt").Length];
+            //str = fj.ReadF("F:\\temp\\time.txt");
+            //tTimerList.Clear();
+            //for (int i = 0; i < str.Length; i++)
+            //{
+            //    tTimerList.AppendText(str[i] + Environment.NewLine);
+            //}
 
 
-            str = new string[fj.ReadF("F:\\temp\\volt.txt").Length];
-            str = fj.ReadF("F:\\temp\\volt.txt");
-            tVoltageList.Clear();
-            for (int i = 0; i < str.Length; i++)
-            {
-                tVoltageList.AppendText(str[i] + Environment.NewLine);
-            }
+            //str = new string[fj.ReadF("F:\\temp\\volt.txt").Length];
+            //str = fj.ReadF("F:\\temp\\volt.txt");
+            //tVoltageList.Clear();
+            //for (int i = 0; i < str.Length; i++)
+            //{
+            //    tVoltageList.AppendText(str[i] + Environment.NewLine);
+            //}
 
         }
 
@@ -703,7 +703,9 @@ namespace Kalipso
 
         private void openFilevoltageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            opnFileVoltage.ShowDialog();
+            Objects ob = new Objects();
+            ob.ExcelToDataGridView(dGridVolt);
+            //opnFileVoltage.ShowDialog();
         }
 
         private void openFiletimerToolStripMenuItem_Click(object sender, EventArgs e)
@@ -713,37 +715,50 @@ namespace Kalipso
 
         private void opnFileVoltage_FileOk(object sender, CancelEventArgs e)
         {
-            FileJob fj = new FileJob();
-            string[] str = new string[fj.ReadF(opnFileVoltage.FileName).Length];
-            str = fj.ReadF(opnFileVoltage.FileName);
-            tVoltageList.Clear();
-            for (int i = 0; i < str.Length; i++)
-            {
-                tVoltageList.AppendText(str[i] + Environment.NewLine);
-            }
+         
+            
+            
+            //FileJob fj = new FileJob();
+            //string[] str = new string[fj.ReadF(opnFileVoltage.FileName).Length];
+            //str = fj.ReadF(opnFileVoltage.FileName);
+            //tVoltageList.Clear();
+            //for (int i = 0; i < str.Length; i++)
+            //{
+            //    tVoltageList.AppendText(str[i] + Environment.NewLine);
+            //}
         }
 
         private void opnFileTimer_FileOk(object sender, CancelEventArgs e)
         {
-            FileJob fj = new FileJob();
-            string[] str = new string[fj.ReadF(opnFileTimer.FileName).Length];
-            str = fj.ReadF(opnFileTimer.FileName);
-            tTimerList.Clear();
-            for (int i = 0; i < str.Length; i++)
-            {
-                tTimerList.AppendText(str[i] + Environment.NewLine);
-            }
+            //FileJob fj = new FileJob();
+            //string[] str = new string[fj.ReadF(opnFileTimer.FileName).Length];
+            //str = fj.ReadF(opnFileTimer.FileName);
+            //tTimerList.Clear();
+            //for (int i = 0; i < str.Length; i++)
+            //{
+            //    tTimerList.AppendText(str[i] + Environment.NewLine);
+            //}
         }
-
+        /// <summary>
+        /// Handles the Click event of the openFileexcelToolStripMenuItem control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void openFileexcelToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //opnFileExcel.ShowDialog();
+            Objects objects = new Objects();
+            objects.ExcelToDataGridView(dGridVolt);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void opnFileExcel_FileOk(object sender, CancelEventArgs e)
         {
-            FileJob fj = new FileJob();
-            fj.LoadExcelFileToTxt(tVoltageList, tTimerList, opnFileExcel.FileName);
+            //FileJob fj = new FileJob();
+            //fj.LoadExcelFileToTxt(tVoltageList, tTimerList, opnFileExcel.FileName);
         }
 
         private void cbGPIBDevModel_SelectedIndexChanged(object sender, EventArgs e)
@@ -1108,6 +1123,26 @@ namespace Kalipso
         private void txtSampleNumber_TextChanged(object sender, EventArgs e)
         {
             Properties.Settings.Default.defParamSampleNum = txtSampleNumber.Text;
+        }
+
+        private void label59_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtComments_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cWorkMode_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
         }
     }
 }
