@@ -248,6 +248,13 @@ public class PiezoParameters
     /// The bias u avarege.
     /// </value>
     public double BiasUAvarege { get; set; }
+    /// <summary>
+    /// Gets or sets the cel sel bias u.
+    /// </summary>
+    /// <value>
+    /// The cel sel bias u.
+    /// </value>
+    public int CelSelBiasU { get; set; }
     #endregion
 
     #region Temperature
@@ -363,6 +370,10 @@ public class PiezoParameters
     /// Start time
     /// </summary>
     public int TimeStart { get; set; }
+    /// <summary>
+    /// The time coef
+    /// </summary>
+    public double timeCoef { get; set; }
     #endregion
 
     #region Agilent4980
@@ -978,6 +989,7 @@ public class PiezoParameters
         CurrentTimeStep = 0;
         CurrentTime = 0;
         AvarageIncTime = 0.13244;
+        timeCoef = 0.001;
         Xi0 = new List<double>(1000);
         hand = true;
     }

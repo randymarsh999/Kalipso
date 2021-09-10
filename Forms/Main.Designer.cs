@@ -590,7 +590,7 @@
             // 
             // txtPointCount
             // 
-            this.txtPointCount.Location = new System.Drawing.Point(575, 23);
+            this.txtPointCount.Location = new System.Drawing.Point(575, 24);
             this.txtPointCount.Name = "txtPointCount";
             this.txtPointCount.Size = new System.Drawing.Size(56, 20);
             this.txtPointCount.TabIndex = 34;
@@ -626,7 +626,7 @@
             // 
             // txtStartFreq
             // 
-            this.txtStartFreq.Location = new System.Drawing.Point(509, 23);
+            this.txtStartFreq.Location = new System.Drawing.Point(509, 24);
             this.txtStartFreq.Name = "txtStartFreq";
             this.txtStartFreq.Size = new System.Drawing.Size(60, 20);
             this.txtStartFreq.TabIndex = 30;

@@ -1816,8 +1816,6 @@ namespace Kalipso
             }
 
 
-
-
             DataGridJob DGJ = new DataGridJob();
             DGJ.AddColumn(dGridTempMeas, "id", "serial");
             DGJ.AddColumn(dGridTempMeas, "composition", "text");
@@ -2075,6 +2073,18 @@ namespace Kalipso
                         PP.Xi0.Clear();
                         break;
                     }
+                case "C(dU)_relaxation":
+                    {
+                        PP.CelSelBiasU = 0;
+                        PP.CelSel = 0;
+                        PP.TimeCurrentU = 0;
+                        PP.BiasUCurrent = Convert.ToDouble(frmMOpt.dGridVolt["ColVolt", PP.CelSel].Value);
+                        PP.Temperature2= Convert.ToDouble(frmMOpt.dGridVolt["ColTemp", PP.CelSel].Value);
+                        PP.MeasuringFrequency = Convert.ToInt32(frmMOpt.dGridVolt["ColFreq", 0].Value);
+                        frmGPIB.WriteCommandDev(PP.BiasAgilent4980 + PP.BiasUCurrent);
+                        frmGPIB.WriteCommandDev(PP.FreqAgilent4980 + PP.MeasuringFrequency.ToString());
+                        break;
+                    }
                 default:
 
                     break;
@@ -2084,8 +2094,8 @@ namespace Kalipso
                 frmMOpt.cWorkMode.Text == "C(dU)_man" ||
                 frmMOpt.cWorkMode.Text == "C(dU_df_dT)" ||
                 frmMOpt.cWorkMode.Text == "C(dU_dT)" ||
-                frmMOpt.cWorkMode.Text == "C(dU_df)" ||
-                frmMOpt.cWorkMode.Text == "C(dU)_relaxation"
+                frmMOpt.cWorkMode.Text == "C(dU_df)" 
+                
                 )
             {
                 PP.BiasUCurrent = Convert.ToDouble(frmMOpt.txtUcur.Text);
@@ -2589,20 +2599,35 @@ namespace Kalipso
         /// </summary>
         void WorkMode_C_on_dU_relaxation()
         {
-            txtLog.AppendText(PP.TimeCurrentU.ToString() + Environment.NewLine);
-            txtUbias.Text = PP.BiasUCurrent.ToString();
-            MainMeasuringUnderBiasU();
-            PP.TimeCurrentU = PP.TimeCurrentU + 1000;
-            if (PP.TimeCurrentU >= PP.TimeStartU)
-            {
-                PP.BiasUCurrent = Convert.ToDouble(frmMOpt.txtUmax.Text);
-            }
+            //txtLog.AppendText(PP.TimeCurrentU.ToString() + Environment.NewLine);
+            //txtUbias.Text = PP.BiasUCurrent.ToString();
+            //MainMeasuringUnderBiasU();
+            //PP.TimeCurrentU = PP.TimeCurrentU + 1000;
 
-            if (PP.TimeCurrentU >= PP.TimeStartU + PP.TimePeriodU)
+            Stopwatch myStopwatch = new Stopwatch();
+            myStopwatch.Start();
+            getTempFromTermocontroller();
+            WriteTempToFile();
+            //измерение и получение данных с прибора
+            InitialiezeTrig();
+            DeviseConnectType();
+            myStopwatch.Stop();
+            PP.TimeMeas = PP.TimeMeas + (Convert.ToDouble(myStopwatch.ElapsedMilliseconds.ToString()) * 0.001);
+            MeasTemp(frmMOpt.dGridVolt["ColFreq", 0].Value.ToString(), 0);
+            myStopwatch.Start();
+            ++PP.CelSel;
+
+            if (PP.TimeMeas >= Convert.ToInt32(frmMOpt.dGridVolt["ColTime", PP.CelSelBiasU].Value) && PP.CelSelBiasU < frmMOpt.dGridVolt.RowCount-2)
             {
-                PP.BiasUCurrent = PP.BiasUmin;
+                ++PP.CelSelBiasU;
+                PP.MeasuringFrequency = Convert.ToInt32(frmMOpt.dGridVolt["ColFreq", PP.CelSelBiasU].Value.ToString());
+                PP.BiasUCurrent= Convert.ToDouble(frmMOpt.dGridVolt["ColVolt", PP.CelSelBiasU].Value.ToString());
+                frmGPIB.WriteCommandDev(PP.FreqAgilent4980 + PP.MeasuringFrequency.ToString());
+                frmGPIB.WriteCommandDev(PP.BiasAgilent4980 + PP.BiasUCurrent.ToString());
             }
-            this.Refresh();
+            
+            myStopwatch.Stop();
+            PP.TimeMeas = PP.TimeMeas + (Convert.ToDouble(myStopwatch.ElapsedMilliseconds.ToString()) * 0.001);
         }
         /// <summary>
         /// Works the mode c on d u df d t.
@@ -5246,16 +5271,19 @@ namespace Kalipso
 
                         break;
                     }
-                #region Study of dielectri crelaxation under electric field varing 
+                #region Study of dielectric relaxation under electric field varing 
                 case "C(dU)_relaxation":
                     {
-                        
-                        
-                        
-                        
                         SendCommandMeasAtUbias();
-                        MeasTemp(PP.MeasuringFrequency.ToString(), PP.CelSel);
-                        ++PP.CelSel;
+
+                        frmGPIB.WriteCommandeSync(PP.FreqAgilent4980 + PP.MeasuringFrequency.ToString());
+                        frmGPIB.WriteCommandeSync(PP.BiasAgilent4980 + PP.BiasUCurrent.ToString());
+                        //frmGPIB.WriteCommandeSync(PP.TrigAgilent4980);
+                        //frmGPIB.WriteCommandeSync(PP.FetchGPIBDevices);
+                        //frmGPIB.ReadDeviceAnswer();
+
+                        InitialiezeTrig();
+                        MeasTemp(frmMOpt.dGridVolt["ColFreq", PP.CelSel].ToString(), 0);
                         this.Refresh();
                         break;
                     }
@@ -5976,7 +6004,7 @@ namespace Kalipso
                     
                 }
             
-            double timeCoef = 0.001;
+            
             double e_e0;
             double tgper, Y;
             double e_e2;
@@ -6092,16 +6120,12 @@ namespace Kalipso
                     dGridTempMeas["e_im", i].Value = e_e2.ToString();
                     Y = e_e2 * Convert.ToInt32(freq) * 2 * 3.14;
                     dGridTempMeas["Y", i].Value = Y.ToString();
-                    //dGridTempMeas["Direct", i].Value = lbDirect.Text;
                     dGridTempMeas["Ubias_V", i].Value = txtUbias.Text;
                     dGridTempMeas["Hbias_T", i].Value = txtHBias.Text;
                     dGridTempMeas["Cycle", i].Value = PP.cycleCurrentNum.ToString();
                     dGridTempMeas["Date", i].Value = DateTime.Now.ToShortDateString();
                     dGridTempMeas["Time", i].Value = dateT.ToString(dateformat);
                     dGridTempMeas["operator", i].Value = frmMOpt.cmbOperator.Text;
-                    myStopwatch.Stop();
-                    PP.TimeMeas = PP.TimeMeas + (Convert.ToDouble(myStopwatch.ElapsedMilliseconds.ToString()) * timeCoef) + 0.14;
-                    dGridTempMeas["Timer", i].Value = (PP.TimeMeas).ToString();
                     dGridTempMeas["Polarity", i].Value = PP.Polarity;
                     dGridTempMeas["Direction", i].Value = PP.Direction;
                     dGridTempMeas["Step", i].Value = PP.CurrentStep;
@@ -6117,6 +6141,9 @@ namespace Kalipso
                         }
                     }
                     chartMeasTemp2.Series[0].Points.AddXY(PP.TimeMeas, lbTemp);
+                    myStopwatch.Stop();
+                    PP.TimeMeas = PP.TimeMeas + (Convert.ToDouble(myStopwatch.ElapsedMilliseconds.ToString()) * PP.timeCoef);
+                    dGridTempMeas["Timer", i].Value = (PP.TimeMeas).ToString();
                 }
                 catch (Exception ex)
                 {
@@ -6199,15 +6226,9 @@ namespace Kalipso
                     DirectionChoice();
                 }
                 
-                
-
-
-                
                 dGridTempMeas["Polarity", 0].Value = PP.Polarity;
                 dGridTempMeas["operator", 0].Value = frmMOpt.cmbOperator.Text;
-                myStopwatch.Stop();
-                PP.TimeMeas = PP.TimeMeas + (Convert.ToDouble(myStopwatch.ElapsedMilliseconds.ToString()) * timeCoef) + 0.14;
-                dGridTempMeas["Timer", 0].Value = (PP.TimeMeas).ToString();
+                
                 dGridTempMeas["Meas_type", 0].Value = frmMOpt.cWorkMode.Text;
                 AddParametersVal();
 
@@ -6216,6 +6237,10 @@ namespace Kalipso
                 dGridTempMeas["solid_state", 0].Value = frmMOpt.cmbSolidState.Text.ToString();
                 //dGridTempMeas["description", 0].Value = frmMOpt.txtComments.Text;
                 dGridTempMeas["comments", 0].Value = frmMOpt.txtComments.Text;
+                myStopwatch.Stop();
+                PP.TimeMeas = PP.TimeMeas + (Convert.ToDouble(myStopwatch.ElapsedMilliseconds.ToString()) * PP.timeCoef);
+                dGridTempMeas["Timer", 0].Value = (PP.TimeMeas).ToString();
+                myStopwatch.Start();
                 if (frmMOpt.cWorkMode.Text == "C(dU)_auto_reversive")
                 {
                     dGridTempMeas["Step", 0].Value = PP.CurrentStep.ToString();
@@ -6233,6 +6258,18 @@ namespace Kalipso
                             chartMeasTemp2.Update();
                             break;
                         }
+                    case "C(dU)_relaxation":
+                        {
+                            txtUbias.Text = PP.BiasUCurrent.ToString();
+                            txtCurFreq.Text = PP.MeasuringFrequency.ToString();
+                            
+                            chartMeasTemp1.Series[0].Points.AddXY(PP.TimeMeas, e_e0);
+                            chartMeasTemp2.Series[0].Points.AddXY(PP.TimeMeas, PP.BiasUCurrent);
+                            chartMeasTemp1.Update();
+                            chartMeasTemp2.Update();
+                            break;
+                        }
+
                     default:
                         {
                             for (int u = 0; u < chartMeasTemp1.Series.Count; u++)
@@ -6270,11 +6307,17 @@ namespace Kalipso
                 string sql = dBConn.DBExportDataString(this.dGridTempMeas, PP.DBTableName, 0);
                 FileJob FJ = new FileJob();
                 FJ.WriteF(sql, PP.FileNameSaveTempMeasDB);
+                
+                
             }
             this.Refresh();
+            myStopwatch.Stop();
+            PP.TimeMeas = PP.TimeMeas + (Convert.ToDouble(myStopwatch.ElapsedMilliseconds.ToString()) * PP.timeCoef);
         }
 
-
+        /// <summary>
+        /// Updates the cycle number.
+        /// </summary>
         void UpdateCycleNum()
         {
             if (PP.Direction == PP.cooling && PP.Temperature1 <= PP.NewCycleTemperature)

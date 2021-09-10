@@ -143,5 +143,8 @@
     <Setting Name="defParamSampleNum" Type="System.String" Scope="User">
       <Value Profile="(Default)">1</Value>
     </Setting>
+    <Setting Name="defParamInterfaceType" Type="System.String" Scope="User">
+      <Value Profile="(Default)">GPIB</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -531,13 +531,6 @@ namespace Kalipso
                             string ResourceName = resources[0];
                             mbSession = (MessageBasedSession)ResourceManager.GetLocalManager().Open(ResourceName);
                             txtAnswer.AppendText(Environment.NewLine + ResourceName);
-
-                            //foreach (string s in resources)
-                            //{
-                            //    HardwareInterfaceType intType;
-                            //    short intNum;
-                            //    ResourceManager.GetLocalManager().ParseResource(s, out intType, out intNum);
-                            //}
                         }
                         catch (Exception ex)
                         {
@@ -1091,7 +1084,9 @@ namespace Kalipso
         private void frmGPIBConfig_Load(object sender, EventArgs e)
         {
             DeviceAddressUD.Text = Properties.Settings.Default.defGPIBAddress;
-            
+            cbInterfaceType.Text= Properties.Settings.Default.defParamInterfaceType;
+
+
         }
         /// <summary>
         /// 
@@ -1111,6 +1106,7 @@ namespace Kalipso
         private void frmGPIBConfig_VisibleChanged(object sender, EventArgs e)
         {
             Properties.Settings.Default.defGPIBAddress = DeviceAddressUD.Text;
+            Properties.Settings.Default.defParamInterfaceType = cbInterfaceType.Text;
             Properties.Settings.Default.Save();
         }
     }
