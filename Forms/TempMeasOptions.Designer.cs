@@ -71,6 +71,13 @@
             this.label6 = new System.Windows.Forms.Label();
             this.txtNewCycleTemp = new System.Windows.Forms.TextBox();
             this.tabPage10 = new System.Windows.Forms.TabPage();
+            this.dGridMeters = new System.Windows.Forms.DataGridView();
+            this.dGridMeters_NN = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.dGridMeters_Meters = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.dGridMeterUD = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.dGridMeters_Interface = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.dGridMeters_TermoContr = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.dGridMeter_ContollerInterface = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.label33 = new System.Windows.Forms.Label();
             this.cbExportDBMeasTemp = new System.Windows.Forms.ComboBox();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -90,14 +97,19 @@
             this.Cycle = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage12 = new System.Windows.Forms.TabPage();
             this.dGridVolt = new System.Windows.Forms.DataGridView();
+            this.colNN = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTemp = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColVolt = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColFreq = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage13 = new System.Windows.Forms.TabPage();
+            this.dGridFreqMeas = new System.Windows.Forms.DataGridView();
+            this.DGridFreqMeas_NN = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DGridFreqMeas_Freq = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label10 = new System.Windows.Forms.Label();
             this.tFreqList = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnAddFreqUbias = new System.Windows.Forms.Button();
             this.cbClear = new System.Windows.Forms.CheckBox();
             this.cbDefaultFreq = new System.Windows.Forms.CheckBox();
             this.cbAllFreq = new System.Windows.Forms.CheckBox();
@@ -217,6 +229,7 @@
             this.tabPage3.SuspendLayout();
             this.tabPage9.SuspendLayout();
             this.tabPage10.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dGridMeters)).BeginInit();
             this.panel3.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabControl3.SuspendLayout();
@@ -227,6 +240,7 @@
             this.tabPage12.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dGridVolt)).BeginInit();
             this.tabPage13.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dGridFreqMeas)).BeginInit();
             this.panel1.SuspendLayout();
             this.tabPage8.SuspendLayout();
             this.tabControl2.SuspendLayout();
@@ -670,6 +684,7 @@
             // 
             // tabPage10
             // 
+            this.tabPage10.Controls.Add(this.dGridMeters);
             this.tabPage10.Controls.Add(this.label33);
             this.tabPage10.Controls.Add(this.cbExportDBMeasTemp);
             this.tabPage10.Controls.Add(this.panel3);
@@ -681,11 +696,72 @@
             this.tabPage10.Text = "Meters";
             this.tabPage10.UseVisualStyleBackColor = true;
             // 
+            // dGridMeters
+            // 
+            this.dGridMeters.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.dGridMeters.AllowUserToResizeColumns = false;
+            this.dGridMeters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.dGridMeters.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dGridMeters.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dGridMeters_NN,
+            this.dGridMeters_Meters,
+            this.dGridMeterUD,
+            this.dGridMeters_Interface,
+            this.dGridMeters_TermoContr,
+            this.dGridMeter_ContollerInterface});
+            this.dGridMeters.Location = new System.Drawing.Point(6, 122);
+            this.dGridMeters.Name = "dGridMeters";
+            this.dGridMeters.Size = new System.Drawing.Size(595, 152);
+            this.dGridMeters.TabIndex = 128;
+            // 
+            // dGridMeters_NN
+            // 
+            this.dGridMeters_NN.HeaderText = "NN";
+            this.dGridMeters_NN.Name = "dGridMeters_NN";
+            this.dGridMeters_NN.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dGridMeters_NN.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // dGridMeters_Meters
+            // 
+            this.dGridMeters_Meters.HeaderText = "Meter_model";
+            this.dGridMeters_Meters.Name = "dGridMeters_Meters";
+            this.dGridMeters_Meters.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dGridMeters_Meters.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // dGridMeterUD
+            // 
+            this.dGridMeterUD.HeaderText = "Meter_UD";
+            this.dGridMeterUD.Name = "dGridMeterUD";
+            this.dGridMeterUD.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dGridMeterUD.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // dGridMeters_Interface
+            // 
+            this.dGridMeters_Interface.HeaderText = "Meters_Interface";
+            this.dGridMeters_Interface.Name = "dGridMeters_Interface";
+            this.dGridMeters_Interface.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dGridMeters_Interface.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // dGridMeters_TermoContr
+            // 
+            this.dGridMeters_TermoContr.HeaderText = "Termo_controller";
+            this.dGridMeters_TermoContr.Name = "dGridMeters_TermoContr";
+            this.dGridMeters_TermoContr.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dGridMeters_TermoContr.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // dGridMeter_ContollerInterface
+            // 
+            this.dGridMeter_ContollerInterface.HeaderText = "TermoContoller_Interface";
+            this.dGridMeter_ContollerInterface.Name = "dGridMeter_ContollerInterface";
+            this.dGridMeter_ContollerInterface.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dGridMeter_ContollerInterface.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
             // label33
             // 
             this.label33.AutoSize = true;
             this.label33.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label33.Location = new System.Drawing.Point(6, 138);
+            this.label33.Location = new System.Drawing.Point(224, 16);
             this.label33.Name = "label33";
             this.label33.Size = new System.Drawing.Size(97, 23);
             this.label33.TabIndex = 41;
@@ -698,7 +774,7 @@
             "None",
             "Export to DB parallel",
             "Export to DB(only)"});
-            this.cbExportDBMeasTemp.Location = new System.Drawing.Point(10, 164);
+            this.cbExportDBMeasTemp.Location = new System.Drawing.Point(228, 42);
             this.cbExportDBMeasTemp.Name = "cbExportDBMeasTemp";
             this.cbExportDBMeasTemp.Size = new System.Drawing.Size(121, 21);
             this.cbExportDBMeasTemp.TabIndex = 40;
@@ -711,7 +787,7 @@
             this.panel3.Controls.Add(this.cbGPIBDevModel);
             this.panel3.Location = new System.Drawing.Point(7, 16);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(195, 109);
+            this.panel3.Size = new System.Drawing.Size(197, 108);
             this.panel3.TabIndex = 39;
             // 
             // label51
@@ -734,7 +810,7 @@
             "XMFT"});
             this.cbTermocontrollerDevModel.Location = new System.Drawing.Point(13, 79);
             this.cbTermocontrollerDevModel.Name = "cbTermocontrollerDevModel";
-            this.cbTermocontrollerDevModel.Size = new System.Drawing.Size(174, 21);
+            this.cbTermocontrollerDevModel.Size = new System.Drawing.Size(176, 21);
             this.cbTermocontrollerDevModel.TabIndex = 22;
             this.cbTermocontrollerDevModel.Text = "Varta";
             // 
@@ -763,7 +839,7 @@
             "E7-20"});
             this.cbGPIBDevModel.Location = new System.Drawing.Point(13, 32);
             this.cbGPIBDevModel.Name = "cbGPIBDevModel";
-            this.cbGPIBDevModel.Size = new System.Drawing.Size(174, 21);
+            this.cbGPIBDevModel.Size = new System.Drawing.Size(176, 21);
             this.cbGPIBDevModel.TabIndex = 20;
             // 
             // tabPage2
@@ -877,6 +953,7 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.dGridVolt.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dGridVolt.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colNN,
             this.colTemp,
             this.ColTime,
             this.ColVolt,
@@ -885,6 +962,11 @@
             this.dGridVolt.Name = "dGridVolt";
             this.dGridVolt.Size = new System.Drawing.Size(449, 482);
             this.dGridVolt.TabIndex = 131;
+            // 
+            // colNN
+            // 
+            this.colNN.HeaderText = "NN";
+            this.colNN.Name = "colNN";
             // 
             // colTemp
             // 
@@ -910,6 +992,7 @@
             // 
             // tabPage13
             // 
+            this.tabPage13.Controls.Add(this.dGridFreqMeas);
             this.tabPage13.Controls.Add(this.label10);
             this.tabPage13.Controls.Add(this.tFreqList);
             this.tabPage13.Location = new System.Drawing.Point(4, 22);
@@ -919,6 +1002,31 @@
             this.tabPage13.TabIndex = 2;
             this.tabPage13.Text = "Frequency";
             this.tabPage13.UseVisualStyleBackColor = true;
+            // 
+            // dGridFreqMeas
+            // 
+            this.dGridFreqMeas.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.dGridFreqMeas.AllowUserToResizeColumns = false;
+            this.dGridFreqMeas.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.dGridFreqMeas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dGridFreqMeas.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.DGridFreqMeas_NN,
+            this.DGridFreqMeas_Freq});
+            this.dGridFreqMeas.Location = new System.Drawing.Point(178, 40);
+            this.dGridFreqMeas.Name = "dGridFreqMeas";
+            this.dGridFreqMeas.Size = new System.Drawing.Size(241, 445);
+            this.dGridFreqMeas.TabIndex = 127;
+            // 
+            // DGridFreqMeas_NN
+            // 
+            this.DGridFreqMeas_NN.HeaderText = "NN";
+            this.DGridFreqMeas_NN.Name = "DGridFreqMeas_NN";
+            // 
+            // DGridFreqMeas_Freq
+            // 
+            this.DGridFreqMeas_Freq.HeaderText = "Frequency";
+            this.DGridFreqMeas_Freq.Name = "DGridFreqMeas_Freq";
             // 
             // label10
             // 
@@ -942,6 +1050,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnAddFreqUbias);
             this.panel1.Controls.Add(this.cbClear);
             this.panel1.Controls.Add(this.cbDefaultFreq);
             this.panel1.Controls.Add(this.cbAllFreq);
@@ -987,6 +1096,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(429, 559);
             this.panel1.TabIndex = 122;
+            // 
+            // btnAddFreqUbias
+            // 
+            this.btnAddFreqUbias.Location = new System.Drawing.Point(313, 354);
+            this.btnAddFreqUbias.Name = "btnAddFreqUbias";
+            this.btnAddFreqUbias.Size = new System.Drawing.Size(100, 23);
+            this.btnAddFreqUbias.TabIndex = 145;
+            this.btnAddFreqUbias.Text = "Add Freq_U_bias";
+            this.btnAddFreqUbias.UseVisualStyleBackColor = true;
+            this.btnAddFreqUbias.Click += new System.EventHandler(this.btnAddFreqUbias_Click);
             // 
             // cbClear
             // 
@@ -1208,9 +1327,9 @@
             this.label25.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label25.Location = new System.Drawing.Point(210, 121);
             this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(97, 23);
+            this.label25.Size = new System.Drawing.Size(112, 23);
             this.label25.TabIndex = 122;
-            this.label25.Text = "Point count";
+            this.label25.Text = "U point count";
             // 
             // txtPointCountU
             // 
@@ -1219,13 +1338,13 @@
             this.txtPointCountU.Name = "txtPointCountU";
             this.txtPointCountU.Size = new System.Drawing.Size(96, 29);
             this.txtPointCountU.TabIndex = 121;
-            this.txtPointCountU.Text = "8";
+            this.txtPointCountU.Text = "40";
             // 
             // label26
             // 
             this.label26.AutoSize = true;
             this.label26.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label26.Location = new System.Drawing.Point(210, 57);
+            this.label26.Location = new System.Drawing.Point(315, 57);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(71, 23);
             this.label26.TabIndex = 120;
@@ -1234,11 +1353,11 @@
             // txtUmax
             // 
             this.txtUmax.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtUmax.Location = new System.Drawing.Point(210, 83);
+            this.txtUmax.Location = new System.Drawing.Point(315, 83);
             this.txtUmax.Name = "txtUmax";
             this.txtUmax.Size = new System.Drawing.Size(100, 29);
             this.txtUmax.TabIndex = 119;
-            this.txtUmax.Text = "2700";
+            this.txtUmax.Text = "40";
             // 
             // label32
             // 
@@ -1266,7 +1385,7 @@
             // 
             this.label30.AutoSize = true;
             this.label30.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label30.Location = new System.Drawing.Point(316, 57);
+            this.label30.Location = new System.Drawing.Point(210, 57);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(67, 23);
             this.label30.TabIndex = 116;
@@ -1275,7 +1394,7 @@
             // txtUmin
             // 
             this.txtUmin.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtUmin.Location = new System.Drawing.Point(316, 83);
+            this.txtUmin.Location = new System.Drawing.Point(210, 83);
             this.txtUmin.Name = "txtUmin";
             this.txtUmin.Size = new System.Drawing.Size(100, 29);
             this.txtUmin.TabIndex = 115;
@@ -1443,11 +1562,13 @@
             "Logarithm",
             "Piezo",
             "Auto from your list",
-            "From loading list"});
+            "From loading list",
+            "f1_f3"});
             this.cFreqMode.Location = new System.Drawing.Point(12, 30);
             this.cFreqMode.Name = "cFreqMode";
             this.cFreqMode.Size = new System.Drawing.Size(121, 21);
             this.cFreqMode.TabIndex = 88;
+            this.cFreqMode.SelectedIndexChanged += new System.EventHandler(this.cFreqMode_SelectedIndexChanged_1);
             // 
             // label16
             // 
@@ -1483,7 +1604,8 @@
             "d33Rev_Auto",
             "d33Rev",
             "Magnit_hand",
-            "CTE"});
+            "CTE",
+            "CTE_S33_fr"});
             this.cWorkMode.Location = new System.Drawing.Point(150, 30);
             this.cWorkMode.Name = "cWorkMode";
             this.cWorkMode.Size = new System.Drawing.Size(203, 21);
@@ -2259,6 +2381,7 @@
             this.tabPage9.PerformLayout();
             this.tabPage10.ResumeLayout(false);
             this.tabPage10.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dGridMeters)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.tabPage2.ResumeLayout(false);
@@ -2272,6 +2395,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dGridVolt)).EndInit();
             this.tabPage13.ResumeLayout(false);
             this.tabPage13.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dGridFreqMeas)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.tabPage8.ResumeLayout(false);
@@ -2538,12 +2662,24 @@
         private System.Windows.Forms.Label label58;
         public System.Windows.Forms.TextBox txtRoExp;
         public System.Windows.Forms.DataGridView dGridVolt;
+        private System.Windows.Forms.Label label59;
+        public System.Windows.Forms.TextBox txtComments;
+        private System.Windows.Forms.DataGridView dGridFreqMeas;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DGridFreqMeas_NN;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DGridFreqMeas_Freq;
+        public System.Windows.Forms.DataGridView dGridMeters;
+        private System.Windows.Forms.Button btnAddFreqUbias;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colNN;
         private System.Windows.Forms.DataGridViewTextBoxColumn colTemp;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColTime;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColVolt;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColFreq;
-        private System.Windows.Forms.Label label59;
-        public System.Windows.Forms.TextBox txtComments;
+        private System.Windows.Forms.DataGridViewComboBoxColumn dGridMeters_NN;
+        private System.Windows.Forms.DataGridViewComboBoxColumn dGridMeters_Meters;
+        private System.Windows.Forms.DataGridViewComboBoxColumn dGridMeterUD;
+        private System.Windows.Forms.DataGridViewComboBoxColumn dGridMeters_Interface;
+        private System.Windows.Forms.DataGridViewComboBoxColumn dGridMeters_TermoContr;
+        private System.Windows.Forms.DataGridViewComboBoxColumn dGridMeter_ContollerInterface;
 #pragma warning restore CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmMeasTempOpt.txtTimerReversive"
     }
 }

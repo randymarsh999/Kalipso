@@ -133,11 +133,11 @@
     <Compile Include="Forms\AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\frmComPort.cs">
+    <Compile Include="Forms\FrmComPort.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\frmComPort.Designer.cs">
-      <DependentUpon>frmComPort.cs</DependentUpon>
+    <Compile Include="Forms\FrmComPort.Designer.cs">
+      <DependentUpon>FrmComPort.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\frmDataBase.cs">
       <SubType>Form</SubType>
@@ -176,8 +176,8 @@
     <EmbeddedResource Include="Forms\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmComPort.resx">
-      <DependentUpon>frmComPort.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\FrmComPort.resx">
+      <DependentUpon>FrmComPort.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmDataBase.resx">
       <DependentUpon>frmDataBase.cs</DependentUpon>

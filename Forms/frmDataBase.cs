@@ -81,7 +81,6 @@ namespace Kalipso
         {
            //ConnString();
             ConnectionStringToDB = Server + Port + UserId + Password + DB;
-            int i = 0;
         }
 		/// <summary>
 		/// Устанавливает базу данных для соединения

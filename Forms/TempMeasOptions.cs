@@ -11,10 +11,18 @@ using System.Windows.Forms;
 
 namespace Kalipso
 {
-#pragma warning disable CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmMeasTempOpt"
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="System.Windows.Forms.Form" />
     public partial class frmMeasTempOpt : Form
-#pragma warning restore CS1591 // Отсутствует комментарий XML для публично видимого типа или члена "frmMeasTempOpt"
     {
+
+        /// <summary>
+        /// The pp
+        /// </summary>
+        public PiezoParameters PP = new PiezoParameters();
+
         /// <summary>
         ///Constructor of measurment options form
         /// </summary>
@@ -31,20 +39,6 @@ namespace Kalipso
             cCUCycle.SelectedIndex = 0;
             cbExportDBMeasTemp.SelectedIndex = 0;
             cbGraphOptions.SelectedIndex = 0;
-        }
-
-        private void textBox9_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label16_Click(object sender, EventArgs e)
-        {
 
         }
 
@@ -55,94 +49,6 @@ namespace Kalipso
         }
 
         private void frmMeasTempOpt_FormClosed(object sender, FormClosedEventArgs e)
-        {
-
-        }
-
-        private void frmMeasTempOpt_Load(object sender, EventArgs e)
-        {
-            txtHeight.Text = Properties.Settings.Default.defHeight;
-            txtDiameter.Text = Properties.Settings.Default.defWidth;
-            txtTempEnd.Text = Properties.Settings.Default.defTempEnd;
-            txtTempSint.Text = Properties.Settings.Default.defTempSint;
-            cmbOperator.Text = Properties.Settings.Default.defOperator;
-            cbGPIBDevModel.Text = Properties.Settings.Default.defDevice;
-            cbExportDBMeasTemp.Text = Properties.Settings.Default.defExportMod;
-            txtComposition.Text = Properties.Settings.Default.defComposition;
-            txtTempStep.Text = Properties.Settings.Default.deftempStep;
-            txtNewCycleTemp.Text = Properties.Settings.Default.defNewCycleTemp;
-            tFreqList.Text = Properties.Settings.Default.defFreq;
-            cbGraphOptions.Text = Properties.Settings.Default.defGraphMode;
-            cWorkMode.Text = Properties.Settings.Default.defWorkMode;
-            tTempList.Text = Properties.Settings.Default.defTempList;
-            txtStartFreq.Text = Properties.Settings.Default.defFreqStart;
-            txtEndFreq.Text = Properties.Settings.Default.defFreqEnd;
-            txtApproxCTE_A_20.Text = Properties.Settings.Default.defParamA_CTE_20.ToString();
-            txtApproxCTE_B_20.Text = Properties.Settings.Default.defParamB_CTE_20.ToString();
-            txtApproxCTE_A_200.Text = Properties.Settings.Default.defParamA_CTE_200.ToString();
-            txtApproxCTE_B_200.Text = Properties.Settings.Default.defParamB_CTE_200.ToString();
-            txtApproxCTE_A_2000.Text = Properties.Settings.Default.defParamA_CTE_2000.ToString();
-            txtApproxCTE_B_2000.Text = Properties.Settings.Default.defParamB_CTE_2000.ToString();
-
-            txtApproxD33_A_20.Text = Properties.Settings.Default.defParamA_d33_20.ToString();
-            txtApproxD33_B_20.Text = Properties.Settings.Default.defParamB_d33_20.ToString();
-            txtApproxD33_A_200.Text = Properties.Settings.Default.defParamA_d33_200.ToString();
-            txtApproxD33_B_200.Text = Properties.Settings.Default.defParamB_d33_200.ToString();
-            txtApproxD33_A_2000.Text = Properties.Settings.Default.defParamA_d33_2000.ToString();
-            txtApproxD33_B_2000.Text = Properties.Settings.Default.defParamB_d33_2000.ToString();
-
-            txtApproxU_d33_A.Text = Properties.Settings.Default.defParamA_U_d33.ToString();
-            txtApproxU_d33_B.Text = Properties.Settings.Default.defParamB_U_d33.ToString();
-            cmbSolidState.Text = Properties.Settings.Default.defParamSolidState;
-            txtRoExp.Text= Properties.Settings.Default.defParam_r_exp.ToString();
-            txtSampleNumber.Text = Properties.Settings.Default.defParamSampleNum.ToString();
-
-
-            switch (cWorkMode.Text)
-            {
-                case "Magnit_hand":
-                    {
-                        txtApproxA.Text = Properties.Settings.Default.defParamAMagnit;
-                        txtApproxB.Text = Properties.Settings.Default.defParamBMagnit;
-                        txtApproxC.Text = Properties.Settings.Default.defParamCMagnit;
-                        break;
-                    }
-                case "C(dU)_hand_reversive":
-                    {
-                        txtApproxA.Text = Properties.Settings.Default.defParamAReversive;
-                        txtApproxB.Text = Properties.Settings.Default.defParamBReversive;
-                        txtApproxC.Text = Properties.Settings.Default.defParamCReversive;
-                        break;
-                    }
-                case "d33Rev":
-                    {
-                        txtApproxA.Text = Properties.Settings.Default.defParamAd33;
-                        txtApproxB.Text = Properties.Settings.Default.defParamBd33;
-                        txtApproxC.Text = Properties.Settings.Default.defParamCd33;
-                        break;
-                    }
-                default:
-                    break;
-            }
-
-
-        }
-
-        private void txtHeight_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-        /// <summary>
-        /// Adding of tempratures to list
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void btnAddTemp_Click(object sender, EventArgs e)
         {
 
         }
@@ -158,60 +64,88 @@ namespace Kalipso
                 case "Agilent4980A":
                     {
                         tFreqList.Clear();
-                        tFreqList.Text = "";
-                        if (cFreqMode.Text == "Step")
-                        {
-                            for (int i = 0; i < chListFreq.CheckedItems.Count; i++)
-                            {
-                                tFreqList.AppendText(chListFreq.CheckedItems[i].ToString() + Environment.NewLine);
-                            }
-                        }
-                        if (cFreqMode.Text == "Auto")
-                        {
+                        dGridFreqMeas.Rows.Clear();
 
-                            int start = Convert.ToInt32(txtStartFreq.Text);
-                            int end = Convert.ToInt32(txtEndFreq.Text);
-                            int step = Convert.ToInt32(txtStepFreq.Text);
-                            int a;
-                            a = (end - start) / step;
-                            tFreqList.AppendText(start.ToString() + Environment.NewLine);
-                            for (int i = 0; i < a; i++)
-                            {
-                                start = start + step;
-                                if (start < end)
+                        switch (cFreqMode.Text)
+                        {
+                            case "Step":
                                 {
+                                    for (int i = 0; i < chListFreq.CheckedItems.Count; i++)
+                                    {
+                                        tFreqList.AppendText(chListFreq.CheckedItems[i].ToString() + Environment.NewLine);
+                                        dGridFreqMeas.Rows.Add(i.ToString(), chListFreq.CheckedItems[i].ToString());
+                                        PP.array_f_dispersion = new int[dGridFreqMeas.Rows.Count];
+                                        for (int j = 0; j < PP.array_f_dispersion.Count(); j++)
+                                        {
+                                            PP.array_f_dispersion[j] = Convert.ToInt32(tFreqList.Lines[j]);
+                                        }
+                                    }
+                                    break;
+                                }
+                            case "Auto":
+                                {
+                                    int start = Convert.ToInt32(txtStartFreq.Text);
+                                    int end = Convert.ToInt32(txtEndFreq.Text);
+                                    int step = Convert.ToInt32(txtStepFreq.Text);
+                                    int a;
+                                    a = (end - start) / step;
                                     tFreqList.AppendText(start.ToString() + Environment.NewLine);
+                                    for (int i = 0; i < a; i++)
+                                    {
+                                        start = start + step;
+                                        if (start < end)
+                                        {
+                                            tFreqList.AppendText(start.ToString() + Environment.NewLine);
+                                            dGridFreqMeas.Rows.Add(i.ToString(), start.ToString());
+                                        }
+                                        if (start >= end)
+                                        {
+                                            tFreqList.AppendText(end.ToString());
+                                            dGridFreqMeas.Rows.Add(i.ToString(), end.ToString());
+                                            PP.array_f_dispersion = new int[dGridFreqMeas.Rows.Count];
+                                            for (int j = 0; j < PP.array_f_dispersion.Count(); j++)
+                                            {
+                                                PP.array_f_dispersion[j] = Convert.ToInt32(tFreqList.Lines[j]);
+                                            }
+                                            return;
+                                        }
+                                    }
+                                    break;
                                 }
-                                if (start >= end)
+                            case "Logarithm":
                                 {
-                                    tFreqList.AppendText(end.ToString());
-                                    return;
-                                }
-                            }
-                        }
-                        if (cFreqMode.Text == "Logarithm")
-                        {
-                            tFreqList.Clear();
-                            int start = Convert.ToInt32(txtStartFreq.Text);
-                            int end = Convert.ToInt32(txtEndFreq.Text);
-                            double step = Convert.ToDouble(txtCoefficient.Text);
-                            tFreqList.AppendText(start.ToString() + Environment.NewLine);
 
-                            for (int i = 0; i < end; i++)
-                            {
-                                start = Convert.ToInt32(Convert.ToDouble(start) * step);
-                                if (start < end)
-                                {
+
+                                    int start = Convert.ToInt32(txtStartFreq.Text);
+                                    int end = Convert.ToInt32(txtEndFreq.Text);
+                                    double step = Convert.ToDouble(txtCoefficient.Text);
                                     tFreqList.AppendText(start.ToString() + Environment.NewLine);
-                                }
-                                if (start >= end)
-                                {
-                                    tFreqList.AppendText(end.ToString());
-                                    return;
-                                }
-                            }
-                        }
 
+                                    for (int i = 0; i < end; i++)
+                                    {
+                                        start = Convert.ToInt32(Convert.ToDouble(start) * step);
+                                        if (start < end)
+                                        {
+                                            dGridFreqMeas.Rows.Add(i.ToString(), start.ToString());
+                                            tFreqList.AppendText(start.ToString() + Environment.NewLine);
+                                        }
+                                        if (start >= end)
+                                        {
+                                            dGridFreqMeas.Rows.Add(i.ToString(), end.ToString());
+                                            tFreqList.AppendText(end.ToString());
+                                            PP.array_f_dispersion = new int[dGridFreqMeas.Rows.Count];
+                                            for (int j = 0; j < PP.array_f_dispersion.Count(); j++)
+                                            {
+                                                PP.array_f_dispersion[j] = Convert.ToInt32(tFreqList.Lines[j]);
+                                            }
+                                            return;
+                                        }
+                                    }
+                                    break;
+                                }
+                            default:
+                                break;
+                        }
                         break;
                     }
                 case "Agilent4263B":
@@ -222,6 +156,17 @@ namespace Kalipso
                         tFreqList.AppendText("1000" + Environment.NewLine);
                         tFreqList.AppendText("10000" + Environment.NewLine);
                         tFreqList.AppendText("100000");
+
+                        dGridFreqMeas.Rows.Add(1.ToString(), "100");
+                        dGridFreqMeas.Rows.Add(2.ToString(), "120");
+                        dGridFreqMeas.Rows.Add(3.ToString(), "1000");
+                        dGridFreqMeas.Rows.Add(4.ToString(), "10000");
+                        dGridFreqMeas.Rows.Add(5.ToString(), "100000");
+                        PP.array_f_dispersion = new int[dGridFreqMeas.Rows.Count];
+                        for (int j = 0; j < PP.array_f_dispersion.Count(); j++)
+                        {
+                            PP.array_f_dispersion[j] = Convert.ToInt32(tFreqList.Lines[j]);
+                        }
                         break;
                     }
                 case "WayneKerr4300":
@@ -243,6 +188,11 @@ namespace Kalipso
                                 if (start >= end)
                                 {
                                     tFreqList.AppendText(end.ToString());
+                                    PP.array_f_dispersion = new int[dGridFreqMeas.Rows.Count];
+                                    for (int j = 0; j < PP.array_f_dispersion.Count(); j++)
+                                    {
+                                        PP.array_f_dispersion[j] = Convert.ToInt32(tFreqList.Lines[j]);
+                                    }
                                     return;
                                 }
                             }
@@ -269,6 +219,11 @@ namespace Kalipso
                         tFreqList.AppendText("200000" + Environment.NewLine);
                         tFreqList.AppendText("500000" + Environment.NewLine);
                         tFreqList.AppendText("1000000");
+                        PP.array_f_dispersion = new int[dGridFreqMeas.Rows.Count];
+                        for (int j = 0; j < PP.array_f_dispersion.Count(); j++)
+                        {
+                            PP.array_f_dispersion[j] = Convert.ToInt32(tFreqList.Lines[j]);
+                        }
                         break;
                     }
                 default:
@@ -291,6 +246,11 @@ namespace Kalipso
                                 if (start >= end)
                                 {
                                     tFreqList.AppendText(end.ToString());
+                                    PP.array_f_dispersion = new int[dGridFreqMeas.Rows.Count];
+                                    for (int j = 0; j < PP.array_f_dispersion.Count(); j++)
+                                    {
+                                        PP.array_f_dispersion[j] = Convert.ToInt32(tFreqList.Lines[j]);
+                                    }
                                     return;
                                 }
                             }
@@ -306,158 +266,7 @@ namespace Kalipso
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void cbAllFreq_CheckedChanged(object sender, EventArgs e)
         {
-            cbDefaultFreq.Checked = false;
-            cbClear.Checked = false;
-            tFreqList.Text = "";
-            //agilent 4980
-            for (int i = 0; i < chListFreq.Items.Count; i++)
-            {
-                chListFreq.SetItemChecked(i, false);
-            }
-            if (cbGPIBDevModel.SelectedIndex == 0)
-            {
-                for (int i = 0; i < chListFreq.Items.Count; i++)
-                {
-                    if (Convert.ToInt32(chListFreq.Items[i].ToString()) >= 20 &&
-                        Convert.ToInt32(chListFreq.Items[i].ToString()) <= 2000000)
-                    {
-                        chListFreq.SetItemChecked(i, true);
-                        tFreqList.AppendText(chListFreq.Items[i].ToString() + Environment.NewLine);
-                    }
-                }
-            }
-            //agilent 4285
-            if (cbGPIBDevModel.SelectedIndex == 1)
-            {
-                for (int i = 0; i < chListFreq.Items.Count; i++)
-                {
-                    if (Convert.ToInt32(chListFreq.Items[i].ToString()) >= 75000 &&
-                        Convert.ToInt32(chListFreq.Items[i].ToString()) <= 30000000)
-                    {
-                        chListFreq.SetItemChecked(i, true);
-                        tFreqList.AppendText(chListFreq.Items[i].ToString() + Environment.NewLine);
-                    }
-                }
-            }
-            //agilent 4263
-            if (cbGPIBDevModel.SelectedIndex == 2)
-            {
-                for (int i = 0; i < chListFreq.Items.Count; i++)
-                {
-                    if (Convert.ToInt32(chListFreq.Items[i].ToString()) == 100 |
-                        Convert.ToInt32(chListFreq.Items[i].ToString()) == 1000 |
-                        Convert.ToInt32(chListFreq.Items[i].ToString()) == 10000 |
-                        Convert.ToInt32(chListFreq.Items[i].ToString()) == 100000)
-                    {
-                        chListFreq.SetItemChecked(i, true);
-                        tFreqList.AppendText(chListFreq.Items[i].ToString() + Environment.NewLine);
-                    }
-                }
-            }
-            //agilent 34401A
-            if (cbGPIBDevModel.SelectedIndex == 3)
-            {
-                return;
-            }
-            //agilent Wayneker
-            if (cbGPIBDevModel.SelectedIndex == 4)
-            {
-                for (int i = 0; i < chListFreq.Items.Count; i++)
-                {
-                    if (Convert.ToInt32(chListFreq.Items[i].ToString()) >= 20 &&
-                        Convert.ToInt32(chListFreq.Items[i].ToString()) <= 15000000)
-                    {
-                        chListFreq.SetItemChecked(i, true);
-                        tFreqList.AppendText(chListFreq.Items[i].ToString() + Environment.NewLine);
-                    }
-                }
-                var lines = tFreqList.Lines.ToList();
 
-                lines.RemoveAt(tFreqList.Lines.Count() - 1);
-                tFreqList.Lines = lines.ToArray();
-            }
-        }
-        /// <summary>
-        /// Defaul values
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void cbDefaultFreq_CheckedChanged(object sender, EventArgs e)
-        {
-            cbClear.Checked = false;
-
-
-            tFreqList.Text = "";
-            //agilent 4980
-            for (int i = 0; i < chListFreq.Items.Count; i++)
-            {
-                chListFreq.SetItemChecked(i, false);
-            }
-
-            if (cbGPIBDevModel.SelectedIndex == 0)
-            {
-                for (int i = 0; i < chListFreq.Items.Count; i++)
-                {
-                    if (Convert.ToInt32(chListFreq.Items[i].ToString()) >= 20 &&
-                        Convert.ToInt32(chListFreq.Items[i].ToString()) <= 2000000)
-                    {
-                        chListFreq.SetItemChecked(i, true);
-                        tFreqList.AppendText(chListFreq.Items[i].ToString() + Environment.NewLine);
-                        i = i + 4;
-                    }
-                }
-            }
-            //agilent 4285
-            if (cbGPIBDevModel.SelectedIndex == 1)
-            {
-                for (int i = 0; i < chListFreq.Items.Count; i++)
-                {
-                    if (Convert.ToInt32(chListFreq.Items[i].ToString()) >= 75000 &&
-                        Convert.ToInt32(chListFreq.Items[i].ToString()) <= 30000000)
-                    {
-                        chListFreq.SetItemChecked(i, true);
-                        tFreqList.AppendText(chListFreq.Items[i].ToString() + Environment.NewLine);
-                        i = i + 4;
-                    }
-                }
-            }
-            //agilent 4263
-            if (cbGPIBDevModel.SelectedIndex == 2)
-            {
-                for (int i = 0; i < chListFreq.Items.Count; i++)
-                {
-                    if (Convert.ToInt32(chListFreq.Items[i].ToString()) == 100 |
-                        Convert.ToInt32(chListFreq.Items[i].ToString()) == 1000 |
-                        Convert.ToInt32(chListFreq.Items[i].ToString()) == 10000 |
-                        Convert.ToInt32(chListFreq.Items[i].ToString()) == 100000)
-                    {
-                        chListFreq.SetItemChecked(i, true);
-                        tFreqList.AppendText(chListFreq.Items[i].ToString() + Environment.NewLine);
-                    }
-                }
-            }
-            //agilent 34401A
-            if (cbGPIBDevModel.SelectedIndex == 3)
-            {
-                return;
-            }
-            //agilent Wayneker
-            if (cbGPIBDevModel.SelectedIndex == 4)
-            {
-                for (int i = 0; i < chListFreq.Items.Count; i++)
-                {
-                    if (Convert.ToInt32(chListFreq.Items[i].ToString()) >= 20 &&
-                        Convert.ToInt32(chListFreq.Items[i].ToString()) <= 15000000)
-                    {
-                        chListFreq.SetItemChecked(i, true);
-                        tFreqList.AppendText(chListFreq.Items[i].ToString() + Environment.NewLine);
-                        i = i + 7;
-                    }
-                }
-                //var lines = tFreqList.Lines.ToList();
-                //lines.RemoveAt(tFreqList.Lines.Count()-1);
-                //tFreqList.Lines = lines.ToArray();
-            }
         }
         /// <summary>
         /// Clear frequency list
@@ -469,11 +278,6 @@ namespace Kalipso
             tFreqList.Text = "";
             cbAllFreq.Checked = false;
             cbDefaultFreq.Checked = false;
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-
         }
 
         //private void btnAddUList_Click(object sender, EventArgs e)
@@ -529,22 +333,7 @@ namespace Kalipso
         //        }
         //    }
         //}
-        /// <summary>
-        /// Halfpluses the specified increment.
-        /// </summary>
-        /// <param name="increment">The increment.</param>
-        /// <param name="step">The step.</param>
-        /// <returns></returns>
-        //private double halfplus(double increment, double step)
-        //{
-        //    //increment = 0;
-        //    //do
-        //    //{
-        //    //    increment = increment + step;
-        //    //    tVoltageList.AppendText(increment.ToString() + Environment.NewLine);
-        //    //} while (increment < Convert.ToInt32(txtUmax.Text));
-        //    //return increment;
-        //}
+        
         /// <summary>
         /// Halfpluses the 1.
         /// </summary>
@@ -560,54 +349,6 @@ namespace Kalipso
             //} while (increment > 1);
             return increment;
         }
-        /// <summary>
-        /// Halfminuses the specified increment.
-        /// </summary>
-        /// <param name="increment">The increment.</param>
-        /// <param name="step">The step.</param>
-        /// <returns></returns>
-        //private double halfminus(double increment, double step)
-        //{
-        //    //do
-        //    //{
-        //    //    increment = increment - step;
-        //    //    tVoltageList.AppendText(increment.ToString() + Environment.NewLine);
-        //    //}
-        //    //while (increment > Convert.ToInt32(txtUmax.Text) * (-1));
-        //    //return increment;
-        //}
-        /// <summary>
-        /// Halfminuses the 1.
-        /// </summary>
-        /// <param name="increment">The increment.</param>
-        /// <param name="step">The step.</param>
-        /// <returns></returns>
-        //private double halfminus_1(double increment, double step)
-        //{
-        //    do
-        //    {
-        //        increment = increment + step;
-        //        tVoltageList.AppendText(increment.ToString() + Environment.NewLine);
-        //    } while (increment < 0);
-        //    return increment;
-        //}
-
-
-        private void txtUmax_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtUDelay_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtComposition_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void txtCBF_TextChanged(object sender, EventArgs e)
         {
 
@@ -715,9 +456,9 @@ namespace Kalipso
 
         private void opnFileVoltage_FileOk(object sender, CancelEventArgs e)
         {
-         
-            
-            
+
+
+
             //FileJob fj = new FileJob();
             //string[] str = new string[fj.ReadF(opnFileVoltage.FileName).Length];
             //str = fj.ReadF(opnFileVoltage.FileName);
@@ -779,11 +520,6 @@ namespace Kalipso
 
         }
 
-        private void label14_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void FrmMeasTempOpt_Shown(object sender, EventArgs e)
         {
             txtHeight.Text = Properties.Settings.Default.defHeight;
@@ -808,6 +544,7 @@ namespace Kalipso
             Properties.Settings.Default.defTempList = tTempList.Text;
             Properties.Settings.Default.defFreqStart = txtStartFreq.Text;
             Properties.Settings.Default.defFreqEnd = txtEndFreq.Text;
+            Properties.Settings.Default.defFreqStep = Convert.ToInt32(txtStepFreq.Text);
 
             Properties.Settings.Default.defParamACTE = txtApproxCTE_A_20.Text;
             Properties.Settings.Default.defParamBCTE = txtApproxCTE_B_20.Text;
@@ -859,10 +596,85 @@ namespace Kalipso
 
 
             Properties.Settings.Default.Save();
+        }
+        /// <summary>
+        /// Handles the Load event of the frmMeasTempOpt control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void frmMeasTempOpt_Load(object sender, EventArgs e)
+        {
+            txtHeight.Text = Properties.Settings.Default.defHeight;
+            txtDiameter.Text = Properties.Settings.Default.defWidth;
+            txtTempEnd.Text = Properties.Settings.Default.defTempEnd;
+            txtTempSint.Text = Properties.Settings.Default.defTempSint;
+            cmbOperator.Text = Properties.Settings.Default.defOperator;
+            cbGPIBDevModel.Text = Properties.Settings.Default.defDevice;
+            cbExportDBMeasTemp.Text = Properties.Settings.Default.defExportMod;
+            txtComposition.Text = Properties.Settings.Default.defComposition;
+            txtTempStep.Text = Properties.Settings.Default.deftempStep;
+            txtNewCycleTemp.Text = Properties.Settings.Default.defNewCycleTemp;
+            tFreqList.Text = Properties.Settings.Default.defFreq;
+            cbGraphOptions.Text = Properties.Settings.Default.defGraphMode;
+            cWorkMode.Text = Properties.Settings.Default.defWorkMode;
+            tTempList.Text = Properties.Settings.Default.defTempList;
+            txtStartFreq.Text = Properties.Settings.Default.defFreqStart;
+            txtEndFreq.Text = Properties.Settings.Default.defFreqEnd;
+            txtApproxCTE_A_20.Text = Properties.Settings.Default.defParamA_CTE_20.ToString();
+            txtApproxCTE_B_20.Text = Properties.Settings.Default.defParamB_CTE_20.ToString();
+            txtApproxCTE_A_200.Text = Properties.Settings.Default.defParamA_CTE_200.ToString();
+            txtApproxCTE_B_200.Text = Properties.Settings.Default.defParamB_CTE_200.ToString();
+            txtApproxCTE_A_2000.Text = Properties.Settings.Default.defParamA_CTE_2000.ToString();
+            txtApproxCTE_B_2000.Text = Properties.Settings.Default.defParamB_CTE_2000.ToString();
+
+            txtApproxD33_A_20.Text = Properties.Settings.Default.defParamA_d33_20.ToString();
+            txtApproxD33_B_20.Text = Properties.Settings.Default.defParamB_d33_20.ToString();
+            txtApproxD33_A_200.Text = Properties.Settings.Default.defParamA_d33_200.ToString();
+            txtApproxD33_B_200.Text = Properties.Settings.Default.defParamB_d33_200.ToString();
+            txtApproxD33_A_2000.Text = Properties.Settings.Default.defParamA_d33_2000.ToString();
+            txtApproxD33_B_2000.Text = Properties.Settings.Default.defParamB_d33_2000.ToString();
+
+            txtApproxU_d33_A.Text = Properties.Settings.Default.defParamA_U_d33.ToString();
+            txtApproxU_d33_B.Text = Properties.Settings.Default.defParamB_U_d33.ToString();
+            cmbSolidState.Text = Properties.Settings.Default.defParamSolidState;
+            txtRoExp.Text = Properties.Settings.Default.defParam_r_exp.ToString();
+            txtSampleNumber.Text = Properties.Settings.Default.defParamSampleNum.ToString();
+
+
+            switch (cWorkMode.Text)
+            {
+                case "Magnit_hand":
+                    {
+                        txtApproxA.Text = Properties.Settings.Default.defParamAMagnit;
+                        txtApproxB.Text = Properties.Settings.Default.defParamBMagnit;
+                        txtApproxC.Text = Properties.Settings.Default.defParamCMagnit;
+                        break;
+                    }
+                case "C(dU)_hand_reversive":
+                    {
+                        txtApproxA.Text = Properties.Settings.Default.defParamAReversive;
+                        txtApproxB.Text = Properties.Settings.Default.defParamBReversive;
+                        txtApproxC.Text = Properties.Settings.Default.defParamCReversive;
+                        break;
+                    }
+                case "d33Rev":
+                    {
+                        txtApproxA.Text = Properties.Settings.Default.defParamAd33;
+                        txtApproxB.Text = Properties.Settings.Default.defParamBd33;
+                        txtApproxC.Text = Properties.Settings.Default.defParamCd33;
+                        break;
+                    }
+                default:
+                    break;
+            }
 
 
         }
-
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the CWorkMode control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void CWorkMode_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (cWorkMode.Text)
@@ -1097,7 +909,7 @@ namespace Kalipso
 
         private void DGTempData_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            
+
         }
 
         private void DGTempData_MouseClick_1(object sender, MouseEventArgs e)
@@ -1144,5 +956,85 @@ namespace Kalipso
         {
 
         }
+
+        
+        private void btnAddFreqUbias_Click(object sender, EventArgs e)
+        {
+            if (cWorkMode.Text == "CTE_S33_fr")
+            {
+                PiezoMathCalculation PM = new PiezoMathCalculation();
+                #region cleardatagridview
+                int rowsCount = dGridVolt.Rows.Count;
+                for (int i = 0; i < rowsCount-1; i++)
+                {
+                    dGridVolt.Rows.Remove(dGridVolt.Rows[0]);
+                }
+                #endregion
+                
+
+                //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!rebuild function of array filling
+                PP.array_u = new int[Convert.ToInt32(txtStepFreq.Text)];
+                PP.array_f_fr = new int[Convert.ToInt32(txtPointCountU.Text)];
+                PP.array_u = PM.getArrayFromStartEndCountVals(Convert.ToInt32(txtUmin.Text), Convert.ToInt32(txtUmax.Text), Convert.ToInt32(txtPointCountU.Text));
+                PP.array_f_fr = PM.getArrayFromStartEndCountVals(Convert.ToInt32(txtStartFreq.Text), Convert.ToInt32(txtEndFreq.Text), Convert.ToInt32(txtStepFreq.Text));
+                for (int i = 0; i < PP.array_u.Count(); i++)
+                {
+                    for (int j = 0; j < PP.array_f_fr.Count(); j++)
+                    {
+                        this.dGridVolt.Rows.Add(i.ToString(), 300,1, PP.array_u[i].ToString(), PP.array_f_fr[j].ToString());
+                    }
+                }
+
+                for (int i = PP.array_u.Count() - 2; i > -1; i--)
+                {
+                    for (int j = 0; j < PP.array_f_fr.Count(); j++)
+                    {
+                        this.dGridVolt.Rows.Add(i.ToString(), 300, 1, (PP.array_u[i]).ToString(), PP.array_f_fr[j].ToString());
+                    }
+                }
+
+                for (int i = 0; i < PP.array_u.Count(); i++)
+                {
+                    for (int j = 0; j < PP.array_f_fr.Count(); j++)
+                    {
+                        this.dGridVolt.Rows.Add(i.ToString(), 300, 1, (-1* PP.array_u[i]).ToString(), PP.array_f_fr[j].ToString());
+                    }
+                }
+
+                for (int i = PP.array_u.Count()-2; i > -1; i--)
+                {
+                    for (int j = 0; j < PP.array_f_fr.Count(); j++)
+                    {
+                        this.dGridVolt.Rows.Add(i.ToString(), 300, 1, (-1*PP.array_u[i]).ToString(), PP.array_f_fr[j].ToString());
+                    }
+                }
+            }
+        }
+
+        private void cFreqMode_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+            switch (cFreqMode.Text)
+            {
+                case "f1_f3":
+                    {
+                        txtStartFreq.Text = 200000.ToString();
+                        txtEndFreq.Text = 300000.ToString();
+                        txtStepFreq.Text = 100.ToString();
+                        break;
+                    }
+                default:
+                    {
+                        txtStartFreq.Text = 20.ToString();
+                        txtEndFreq.Text = 2000000.ToString();
+                        txtStepFreq.Text = 1000.ToString();
+                        txtCoefficient.Text = 1.3.ToString();
+                    }
+                    break;
+            }
+            
+        }
+
+
+
     }
 }

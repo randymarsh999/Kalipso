@@ -106,8 +106,6 @@ namespace Kalipso.Сalculations
                 table[i] = temp;
             }
         }
-
-
     }
 }
 
@@ -120,7 +118,11 @@ public class Crc16
 {
     const ushort polynomial = 0xA001;
     ushort[] table = new ushort[256];
-
+    /// <summary>
+    /// Computes the checksum.
+    /// </summary>
+    /// <param name="bytes">The bytes.</param>
+    /// <returns></returns>
     public ushort ComputeChecksum(byte[] bytes)
     {
         ushort crc = 0;
@@ -131,13 +133,19 @@ public class Crc16
         }
         return crc;
     }
-
+    /// <summary>
+    /// Computes the checksum bytes.
+    /// </summary>
+    /// <param name="bytes">The bytes.</param>
+    /// <returns></returns>
     public byte[] ComputeChecksumBytes(byte[] bytes)
     {
         ushort crc = ComputeChecksum(bytes);
         return BitConverter.GetBytes(crc);
     }
-
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Crc16"/> class.
+    /// </summary>
     public Crc16()
     {
         ushort value;

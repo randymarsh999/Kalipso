@@ -595,5 +595,17 @@ namespace Kalipso.Properties {
                 this["defParamInterfaceType"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public int defFreqStep {
+            get {
+                return ((int)(this["defFreqStep"]));
+            }
+            set {
+                this["defFreqStep"] = value;
+            }
+        }
     }
 }

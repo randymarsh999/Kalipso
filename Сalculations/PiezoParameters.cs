@@ -571,13 +571,7 @@ public class PiezoParameters
     /// The fetch agilent4285.
     /// </value>
     public string FetchAgilent4285 { get; set; }
-    //FetchGPIBDevices                
-    /// <summary>
-    /// Gets or sets the fetch gpib devices.
-    /// </summary>
-    /// <value>
-    /// The fetch gpib devices.
-    /// </value>
+
     #endregion
 
     #region E7-20
@@ -742,19 +736,96 @@ public class PiezoParameters
 
     #region ColName
     private List<string> col { get; set; }
-
+    /// <summary>
+    /// Gets or sets the col1.
+    /// </summary>
+    /// <value>
+    /// The col1.
+    /// </value>
     public string col1 { get; set; }
+    /// <summary>
+    /// Gets or sets the col2.
+    /// </summary>
+    /// <value>
+    /// The col2.
+    /// </value>
     public string col2 { get; set; }
+    /// <summary>
+    /// Gets or sets the col3.
+    /// </summary>
+    /// <value>
+    /// The col3.
+    /// </value>
     public string col3 { get; set; }
+    /// <summary>
+    /// Gets or sets the col4.
+    /// </summary>
+    /// <value>
+    /// The col4.
+    /// </value>
     public string col4 { get; set; }
+    /// <summary>
+    /// Gets or sets the col5.
+    /// </summary>
+    /// <value>
+    /// The col5.
+    /// </value>
     public string col5 { get; set; }
+    /// <summary>
+    /// Gets or sets the col6.
+    /// </summary>
+    /// <value>
+    /// The col6.
+    /// </value>
     public string col6 { get; set; }
+    /// <summary>
+    /// Gets or sets the col7.
+    /// </summary>
+    /// <value>
+    /// The col7.
+    /// </value>
     public string col7 { get; set; }
+    /// <summary>
+    /// Gets or sets the col8.
+    /// </summary>
+    /// <value>
+    /// The col8.
+    /// </value>
     public string col8 { get; set; }
+    /// <summary>
+    /// Gets or sets the col9.
+    /// </summary>
+    /// <value>
+    /// The col9.
+    /// </value>
     public string col9 { get; set; }
+    /// <summary>
+    /// Gets or sets the col10.
+    /// </summary>
+    /// <value>
+    /// The col10.
+    /// </value>
     public string col10 { get; set; }
+    /// <summary>
+    /// Gets or sets the col11.
+    /// </summary>
+    /// <value>
+    /// The col11.
+    /// </value>
     public string col11 { get; set; }
+    /// <summary>
+    /// Gets or sets the col12.
+    /// </summary>
+    /// <value>
+    /// The col12.
+    /// </value>
     public string col12 { get; set; }
+    /// <summary>
+    /// Gets or sets the col13.
+    /// </summary>
+    /// <value>
+    /// The col13.
+    /// </value>
     public string col13 { get; set; }
 
     #endregion
@@ -839,7 +910,12 @@ public class PiezoParameters
     /// The polarity.
     /// </value>
     public string Polarity { get; set; }
-    
+    /// <summary>
+    /// Gets or sets the polarity positive.
+    /// </summary>
+    /// <value>
+    /// The polarity positive.
+    /// </value>
     public string PolarityPositive { get; set; }
     /// <summary>
     /// Gets or sets the polarity negative.
@@ -862,6 +938,29 @@ public class PiezoParameters
     /// The col.
     /// </value>
     public List<string> Col { get => col; set => col = value; }
+
+    /// <summary>
+    /// Gets or sets the array u.
+    /// </summary>
+    /// <value>
+    /// The array u.
+    /// </value>
+    public int[] array_u { get; set; }
+    /// <summary>
+    /// Gets or sets the array f fr.
+    /// </summary>
+    /// <value>
+    /// The array f fr.
+    /// </value>
+    public int[] array_f_fr { get; set; }
+    /// <summary>
+    /// Gets or sets the array f dispersion.
+    /// </summary>
+    /// <value>
+    /// The array f dispersion.
+    /// </value>
+    public int[] array_f_dispersion { get; set; }
+
     /// <summary>
     /// Gets or sets a value indicating whether this <see cref="PiezoParameters"/> is hand.
     /// </summary>

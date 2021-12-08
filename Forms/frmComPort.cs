@@ -47,17 +47,17 @@ namespace Kalipso
         /// <summary>
         ///  Set device Address RS458
         /// </summary>
-        public int deviceAddressRS458 { get; set; }
+        public int DeviceAddressRS458 { get; set; }
         /// <summary>
         /// list of Device Address RS458
         /// </summary>
-        public int[] listDeviceAddressRS458 { get; set; }
+        public int[] ListDeviceAddressRS458 { get; set; }
     }
 
     /// <summary>
     /// 
     /// </summary>
-    public partial class frmComPort : Form
+    public partial class FrmComPort : Form
     {
 
 
@@ -99,7 +99,7 @@ namespace Kalipso
         /// <summary>
         /// Constrctor of comport class
         /// </summary>
-        public frmComPort()
+        public FrmComPort()
         {
             InitializeComponent();
             cbComDevice.SelectedIndex = 0;
@@ -265,7 +265,7 @@ namespace Kalipso
         /// </summary>
         public void GetTempVarta703I(int i)
         {
-            string s = "";
+            string s;
             try
             {
                 s = ActivePorts[i].ReadExisting();
@@ -617,7 +617,7 @@ namespace Kalipso
         /// <param name="i"></param>
         public void GetDataFromVarta(int i)
         {
-            string s = "";
+            string s;
             try
             {
                 s = allComPort[i].ActivePort.ReadExisting();
@@ -643,7 +643,7 @@ namespace Kalipso
             {
                 if (deviceName[i] == "Varta703I")
                 {
-                    string s = "";
+                    string s;
                     try
                     {
                         s = ActivePorts[i].ReadExisting();
@@ -712,7 +712,7 @@ namespace Kalipso
         {
             if (s != "")
             {
-                Int32 ww = Convert.ToInt32(s.Substring(1, 4));
+                //Int32 ww = Convert.ToInt32(s.Substring(1, 4));
                 return (Convert.ToInt32(s.Substring(1, 4))).ToString();
             }
             else return "";
@@ -725,7 +725,7 @@ namespace Kalipso
         /// <summary>
         /// Close for random com port
         /// </summary>
-        public void closeRandomPort()
+        public void CloseRandomPort()
         {
             try
             {
@@ -1032,10 +1032,7 @@ namespace Kalipso
             int offset = 0;
             int max = 22;
             byte[] byteBuffer = new byte[max];
-            byte[] responce = new byte[max];
-
             short[] values = new short[max];
-
             for (int i = 0; i < allComPort.Count(); i++)
             {
                 if (allComPort[i].DeviceName == device)
@@ -1053,23 +1050,6 @@ namespace Kalipso
                             values[j] <<= 8;
                             values[j] += byteBuffer[2 * j + 4];
                         }
-
-                        //txtComLog.AppendText(Environment.NewLine+ "---------"+ Environment.NewLine);
-                        //for (int j = 0; j < max; j++)
-                        //{
-                        //    txtComLog.AppendText("[" + j.ToString() + "]" + Convert.ToString(byteBuffer[j], 16) + " ");  
-                        //}
-                        //txtComLog.AppendText(Environment.NewLine);
-
-                        //for (int j = 0; j < max; j++)
-                        //{
-                        //    txtComLog.AppendText("["+j.ToString()+"]"+ byteBuffer[j].ToString() + " ");
-                        //}
-                        //txtComLog.AppendText(Environment.NewLine + "---------");
-
-
-                        //txtComLog.AppendText(Environment.NewLine);
-
                         return values;
                     }
                 }
@@ -1444,8 +1424,8 @@ namespace Kalipso
             {
                 if (allComPort[j].DeviceName == "XMTF")
                 {
-                    allComPort[j].deviceAddressRS458 = i;
-                    txtComLog.AppendText(allComPort[j].deviceAddressRS458.ToString());
+                    allComPort[j].DeviceAddressRS458 = i;
+                    txtComLog.AppendText(allComPort[j].DeviceAddressRS458.ToString());
                 }
             }
 
@@ -1534,21 +1514,10 @@ namespace Kalipso
             }
         }
 
-        //private void btnCheckXMFT_Click_1(object sender, EventArgs e)
-        //{
-        //    CheckXMTF();
-        //}
+        
 
 
-        /// <summary>
-        /// Handles the Click event of the btnGetAllDataFromXMFT control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        //private void btnGetAllDataFromXMFT_Click(object sender, EventArgs e)
-        //{
-        //    GetAllDataFromXMFT();
-        //}
+        
         /// <summary>
         /// Fills the of XMFT data grid view.
         /// </summary>
@@ -1574,12 +1543,12 @@ namespace Kalipso
             byte[] tt = new byte[2];
             short[] get = new short[8];
 
-            bool varta = false;
+            //bool varta = false;
             for (int j = 0; j < allComPort.Count() - 1; j++)
             {
                 if (allComPort[j].DeviceName == XMTF.xmt_model)
                 {
-                    nn[0] = Convert.ToByte(allComPort[j].deviceAddressRS458);
+                    nn[0] = Convert.ToByte(allComPort[j].DeviceAddressRS458);
                     nn[1] = 4;
                     nn[2] = 0;
                     nn[3] = 0;
@@ -1600,9 +1569,6 @@ namespace Kalipso
             }
         }
 
-
-
-
         /// <summary>
         /// Gets all data from XMFT.
         /// </summary>
@@ -1615,6 +1581,7 @@ namespace Kalipso
             if (dGridXMFT.Rows.Count < 2)
             {
                 dGridXMFT.Rows.Add();
+                
             }
             fillOfXMFTDataGridView();
             for (int j = 0; j < allComPort.Count() - 1; j++)
@@ -1626,7 +1593,7 @@ namespace Kalipso
                         if ((bool)dGridXMFT["isReadValue", i].EditedFormattedValue == true)
                         {
                             System.Threading.Thread.Sleep(400);
-                            nn[0] = Convert.ToByte(allComPort[j].deviceAddressRS458);
+                            nn[0] = Convert.ToByte(allComPort[j].DeviceAddressRS458);
                             nn[1] = 3;
                             nn[2] = 0;
                             nn[3] = Convert.ToByte(i);
@@ -1657,9 +1624,9 @@ namespace Kalipso
                     {
                         if ((bool)dGridXMFT["isReadValue", i].EditedFormattedValue == true)
                         {
-                            if (dGridXMFT["Command", i].Value == xmt.XMFT_commands[26])
+                            if (dGridXMFT["Command", i].Value.ToString() == xmt.XMFT_commands[26].ToString())
                             {
-                                nn[0] = Convert.ToByte(allComPort[j].deviceAddressRS458);
+                                nn[0] = Convert.ToByte(allComPort[j].DeviceAddressRS458);
                                 nn[1] = 4;
                                 nn[2] = 0;
                                 nn[3] = 0;
@@ -1696,7 +1663,7 @@ namespace Kalipso
                 {
                     for (int i = 0; i < 27; i++)
                     {
-                        nn[0] = Convert.ToByte(allComPort[j].deviceAddressRS458);
+                        nn[0] = Convert.ToByte(allComPort[j].DeviceAddressRS458);
                         nn[1] = 6;
                         nn[2] = 0;
                         nn[3] = Convert.ToByte(command);
@@ -1729,7 +1696,7 @@ namespace Kalipso
                 {
                     for (int i = 0; i < 27; i++)
                     {
-                        nn[0] = Convert.ToByte(allComPort[j].deviceAddressRS458);
+                        nn[0] = Convert.ToByte(allComPort[j].DeviceAddressRS458);
                         nn[1] = 4;
                         nn[2] = Convert.ToByte(i);
                         nn[3] = 0;
@@ -1761,7 +1728,7 @@ namespace Kalipso
                         byte[] nn = new byte[6];
                         byte[] tt = new byte[2];
                         short[] get = new short[8];
-                        nn[0] = Convert.ToByte(allComPort[j].deviceAddressRS458);
+                        nn[0] = Convert.ToByte(allComPort[j].DeviceAddressRS458);
                         nn[1] = 3;
                         nn[2] = 0;
                         nn[3] = Convert.ToByte(i); 
@@ -1792,7 +1759,7 @@ namespace Kalipso
             {
                 if (allComPort[j].DeviceName == XMTF.xmt_model)
                 {
-                        nn[0] = Convert.ToByte(allComPort[j].deviceAddressRS458);
+                        nn[0] = Convert.ToByte(allComPort[j].DeviceAddressRS458);
                         nn[1] = 6;
                         nn[2] = 0;
                         nn[3] = 0x1A;
@@ -1810,7 +1777,7 @@ namespace Kalipso
             {
                 if (allComPort[j].DeviceName == XMTF.xmt_model)
                 {
-                    nn[0] = Convert.ToByte(allComPort[j].deviceAddressRS458);
+                    nn[0] = Convert.ToByte(allComPort[j].DeviceAddressRS458);
                     nn[1] = 6;
                     nn[2] = 0;
                     nn[3] = 0x1B;
