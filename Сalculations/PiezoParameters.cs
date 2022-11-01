@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Timers;
 /// <summary>
 /// 
 /// </summary>
@@ -574,6 +574,48 @@ public class PiezoParameters
 
     #endregion
 
+    #region Dielectric paramaters
+    /// <summary>
+    /// Real part of dielectric constant
+    /// </summary>
+    public double e_re { get; set; }
+
+    public double es_re { get; set; }
+    public double ep_re { get; set; }
+
+    /// <summary>
+    /// Imaginary part of dielectric constant
+    /// </summary>
+    public double e_im { get; set; }
+    public double es_im { get; set; }
+    public double ep_im { get; set; }
+    /// <summary>
+    /// Capacitance from LCR-meter
+    /// </summary>
+    public double C_pf { get; set;}
+    /// <summary>
+    /// 
+    /// </summary>
+    public double Cs_pf { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public double Cp_pf { get; set; }
+    /// <summary>
+    /// Tangent angle
+    /// </summary>
+    public double tgd { get; set; }
+    /// <summary>
+    /// Value A from LCR-meter
+    /// </summary>
+    public double valA { get; set; }
+    /// <summary>
+    /// Value B from LCR-meter
+    /// </summary>
+    public double valB { get; set; }
+    #endregion
+
+
     #region E7-20
     /// <summary>
     /// bufer of LCR E7_20
@@ -605,6 +647,151 @@ public class PiezoParameters
     public int frequencyE7_20 { get; set; }
 
     #endregion
+
+    #region E7-28
+
+    public int e7_28_dev_address { get; set; }
+    /// <summary>
+    /// 64 – Получить имя прибора
+    /// 65 - Включить АВП	(0хAA,65)
+    /// 66 - Выключить АВП	(0хAA,66)
+    /// РС:	(0хAA,67, f4,f3,f2,f1) ;	ПРИБОР: (0хAA,67)
+    /// Где: f1,f2,f3,f4 – 4 байта целого числа;
+    /// 70 – Установить смещение РС: (0хAA, 70, U1, U0); ПРИБОР: (0хAA, 70) 
+    ///         Где: U1, U0 – 2 байта целого (int16) числа * 10
+    /// 71 – Сброс в состояние по умолчанию РС:	(0хAA, 71); ПРИБОР:	(0хAA, 71)
+    /// 72 – Выдача полной измеряемой информации
+    /// РС:	(0хAA, 72): 1. РС:  (0хAA, 72, 0) – измерение не закончено
+    ///         2. ПРИБОР:  (0хAA [0], 72[1], flags [2], mode [3], 
+    ///         slow [4], diap [5], Uсм1 [6], Uсм0 [7],  
+    ///         f3…f0 [8-11], Z3…Z0 [12-15], φ3…φ0 [16-19])
+    ///         Flags(биты): 
+    ///         0-АВП;
+    ///         1-Ток(не используется);
+    ///         2-Перегрузка;
+    ///         3-Автовыбор параметра;
+    ///         4-Схема замещения(1-пар, 0-посл.)
+    ///         7-цикл измерения завершен.
+    ///         mode: параметр, изменяемый клавиатурой (функциональными клавишами F1-F4): F1 … 3- F4
+    ///         slow: скорость измерения:  0-быстро; 1-норма; 2-усредение по 10
+    ///         diap: диапазон измерения:
+    ///         0 - 10МОм
+    ///         1 - 1МОм
+    ///         2 – 100кОм
+    ///         3 – 10кОм
+    ///         4 – 1кОм
+    ///         5 – 100Ом
+    ///         6 – 10Ом
+    ///         7 – 1Ом
+    ///         Uсм1..Uсм0 – 2 байта 16-разрядного (int16) целого числа (смещение*10)
+    ///         f3…f0 – 4 байта(int32) целого числа(рабочая частота)
+    ///         Z3…Z0 – 4 байта(float) вещественного числа(модуль комплексного сопротив-ления для последовательной схемы замещения.)
+    ///         φ 3… φ 0 – 4 байта(float) вещественного числа(фазовый угол для последова-тельной схемы замещения.)
+    /// </summary>
+    public int e7_28_command { get; set; }
+    /// <summary>
+    /// 0-АВП; 
+    /// 1-Ток(не используется); 
+    /// 2-Перегрузка; 
+    /// 3-Автовыбор параметра; 
+    /// 4-Схема замещения(1-пар, 0-посл.) 
+    /// 7-цикл измерения завершен.
+    /// </summary>
+    public string e7_28_flags { get; set; }
+    /// parameter changed by the keyboard (function keys F1-F4)
+    /// </summary>
+    public int e7_28_mode { get; set; }
+    /// <summary>
+    /// measurment speed 
+    /// </summary>
+    public int e7_28_slow { get; set; }
+    /// <summary>
+    /// range of measurment
+    /// </summary>
+    public int e7_28_diap { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public Int16 e7_28_biasU { get; set; }
+
+    #endregion
+
+#region dielectrics variables
+    /// <summary>
+    /// Impedance
+    /// </summary>
+    public float var_Z { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public float var_angleZ { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+
+    public double var_angleY { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public double var_absY { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public double var_Rs { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public double var_Xs { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public double var_Gs { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public double var_Bs { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public double var_Gp { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public double var_Xp { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public double var_Bp { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public double var_Rp { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public double var_Cs { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public double var_Cp { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public double var_Lp { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public double var_Ls { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public double var_Q { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public double var_tg { get; set; }
+    #endregion
+
 
     #region GPIB        
     /// <summary>
@@ -831,7 +1018,79 @@ public class PiezoParameters
     #endregion
 
 
+    #region vars for DB
+    /// <summary>
+    /// 
+    /// </summary>
+    public string composition { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public string id_sample { get; set; }
+    #endregion
 
+
+
+
+    struct Active_Meas_Device 
+    {
+        /// <summary>
+        /// Gets or sets the device identifier.
+        /// </summary>
+        /// <value>
+        /// The device identifier.
+        /// </value>
+        public int DeviceID { get; set; }
+        /// <summary>
+        /// Gets or sets the name of the device.
+        /// </summary>
+        /// <value>
+        /// The name of the device.
+        /// </value>
+        public string DeviceName { get; set; }
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="Active_Meas_Device"/> is measuring.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if measuring; otherwise, <c>false</c>.
+        /// </value>
+        public bool make_measutrment { get; set;}
+        /// <summary>
+        /// Sets the information.
+        /// </summary>
+        /// <param name="deviceIdentificator">The device identificator.</param>
+        /// <param name="DeviceName">Name of the device.</param>
+        /// <param name="meas">if set to <c>true</c> [meas].</param>
+        public void SetInfo(int deviceIdentificator, string DevName, bool measuring)
+        {
+            DeviceID = deviceIdentificator;
+            DeviceName = DevName;
+            make_measutrment = measuring;
+        }
+    }
+
+    public struct DeviceTimersStruct
+    {
+        /// <summary>
+        /// The timer
+        /// </summary>
+        public Timer Timer;
+        /// <summary>
+        /// The device identifier
+        /// </summary>
+        public int DeviceID;
+        /// <summary>
+        /// Sets the sata.
+        /// </summary>
+        /// <param name="timer">The timer.</param>
+        /// <param name="id">The identifier.</param>
+        public void SetSata(Timer timer, int id)
+        {
+            Timer = timer;
+            DeviceID = id;
+        }
+    }
+    public DeviceTimersStruct [] DeviceTimers = new DeviceTimersStruct[10];
     /// <summary>
     /// Gets or sets the cel sel.
     /// </summary>

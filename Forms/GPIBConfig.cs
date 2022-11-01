@@ -97,6 +97,14 @@ namespace Kalipso
         /// <summary>
         /// 
         /// </summary>
+        public frmMeasTempOpt frmMeasTempOpt = new frmMeasTempOpt();
+        /// <summary>
+        /// Com port form
+        /// </summary>
+        public FrmComPort frmComPort = new FrmComPort();
+        /// <summary>
+        /// 
+        /// </summary>
         Device device = null;
         /// <summary>
         /// 
@@ -669,6 +677,13 @@ namespace Kalipso
             txtAnswer.AppendText(GPIBdev + Environment.NewLine);
 
         }
+
+        void SendDeviseSettings()
+        { 
+           
+        }
+
+
         /// <summary>
         /// Setups the state of the control.
         /// </summary>

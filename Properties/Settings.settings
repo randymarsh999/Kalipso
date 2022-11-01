@@ -149,5 +149,14 @@
     <Setting Name="defFreqStep" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">100</Value>
     </Setting>
+    <Setting Name="defFreqMode" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Logarithm</Value>
+    </Setting>
+    <Setting Name="defComPort" Type="System.String" Scope="User">
+      <Value Profile="(Default)">COM3</Value>
+    </Setting>
+    <Setting Name="defComDevice" Type="System.String" Scope="User">
+      <Value Profile="(Default)">E7-28</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

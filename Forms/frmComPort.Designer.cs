@@ -76,6 +76,7 @@ namespace Kalipso
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.officeDataSourceObjectBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.btnGetDataE7_28 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -86,6 +87,7 @@ namespace Kalipso
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnGetDataE7_28);
             this.panel1.Controls.Add(this.button4);
             this.panel1.Controls.Add(this.button3);
             this.panel1.Controls.Add(this.btnClosePorts);
@@ -101,7 +103,7 @@ namespace Kalipso
             // 
             // button4
             // 
-            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.button4.Location = new System.Drawing.Point(3, 273);
             this.button4.Name = "button4";
@@ -113,7 +115,7 @@ namespace Kalipso
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(75, 174);
+            this.button3.Location = new System.Drawing.Point(3, 149);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 13;
@@ -133,7 +135,7 @@ namespace Kalipso
             // 
             // btnOpenPortDif
             // 
-            this.btnOpenPortDif.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.btnOpenPortDif.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOpenPortDif.Location = new System.Drawing.Point(3, 38);
             this.btnOpenPortDif.Name = "btnOpenPortDif";
@@ -145,7 +147,7 @@ namespace Kalipso
             // 
             // btnTransmitCMD
             // 
-            this.btnTransmitCMD.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.btnTransmitCMD.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnTransmitCMD.Location = new System.Drawing.Point(3, 245);
             this.btnTransmitCMD.Name = "btnTransmitCMD";
@@ -161,10 +163,11 @@ namespace Kalipso
             this.txtTransmit.Name = "txtTransmit";
             this.txtTransmit.Size = new System.Drawing.Size(201, 20);
             this.txtTransmit.TabIndex = 5;
+            this.txtTransmit.TextChanged += new System.EventHandler(this.txtTransmit_TextChanged);
             // 
             // btnTransmitDataComPort
             // 
-            this.btnTransmitDataComPort.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.btnTransmitDataComPort.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnTransmitDataComPort.Location = new System.Drawing.Point(3, 111);
             this.btnTransmitDataComPort.Name = "btnTransmitDataComPort";
@@ -176,7 +179,7 @@ namespace Kalipso
             // 
             // btnShowPorts
             // 
-            this.btnShowPorts.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.btnShowPorts.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnShowPorts.Location = new System.Drawing.Point(3, 3);
             this.btnShowPorts.Name = "btnShowPorts";
@@ -211,6 +214,7 @@ namespace Kalipso
             "ArduinoUno",
             "VoltageMeter HY-AV51-T",
             "E7-20",
+            "E7-28",
             "XMTF"});
             this.cbComDevice.Location = new System.Drawing.Point(3, 39);
             this.cbComDevice.Name = "cbComDevice";
@@ -260,8 +264,8 @@ namespace Kalipso
             // 
             // txtComLog
             // 
-            this.txtComLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.txtComLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtComLog.Location = new System.Drawing.Point(14, 96);
             this.txtComLog.Multiline = true;
@@ -281,7 +285,7 @@ namespace Kalipso
             // 
             // txtReadString
             // 
-            this.txtReadString.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.txtReadString.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtReadString.Location = new System.Drawing.Point(14, 70);
             this.txtReadString.Name = "txtReadString";
@@ -309,7 +313,7 @@ namespace Kalipso
             // 
             // button1
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.Location = new System.Drawing.Point(231, 391);
             this.button1.Name = "button1";
@@ -321,7 +325,7 @@ namespace Kalipso
             // 
             // button2
             // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.Location = new System.Drawing.Point(231, 429);
             this.button2.Name = "button2";
@@ -383,7 +387,7 @@ namespace Kalipso
             // btnGetAllDataFromXMFT
             // 
             this.btnGetAllDataFromXMFT.AccessibleRole = System.Windows.Forms.AccessibleRole.PageTabList;
-            this.btnGetAllDataFromXMFT.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.btnGetAllDataFromXMFT.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnGetAllDataFromXMFT.Location = new System.Drawing.Point(140, 379);
             this.btnGetAllDataFromXMFT.Name = "btnGetAllDataFromXMFT";
@@ -465,7 +469,7 @@ namespace Kalipso
             // 
             // btnSendDataToXMFT
             // 
-            this.btnSendDataToXMFT.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.btnSendDataToXMFT.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSendDataToXMFT.Location = new System.Drawing.Point(3, 407);
             this.btnSendDataToXMFT.Name = "btnSendDataToXMFT";
@@ -477,7 +481,7 @@ namespace Kalipso
             // 
             // btnCheckXMFT
             // 
-            this.btnCheckXMFT.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.btnCheckXMFT.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCheckXMFT.Location = new System.Drawing.Point(3, 379);
             this.btnCheckXMFT.Name = "btnCheckXMFT";
@@ -512,7 +516,17 @@ namespace Kalipso
             // 
             this.officeDataSourceObjectBindingSource.DataSource = typeof(Microsoft.Office.Core.OfficeDataSourceObject);
             // 
-            // frmComPort
+            // btnGetDataE7_28
+            // 
+            this.btnGetDataE7_28.Location = new System.Drawing.Point(97, 149);
+            this.btnGetDataE7_28.Name = "btnGetDataE7_28";
+            this.btnGetDataE7_28.Size = new System.Drawing.Size(75, 23);
+            this.btnGetDataE7_28.TabIndex = 15;
+            this.btnGetDataE7_28.Text = "button8";
+            this.btnGetDataE7_28.UseVisualStyleBackColor = true;
+            this.btnGetDataE7_28.Click += new System.EventHandler(this.btnGetDataE7_28_Click);
+            // 
+            // FrmComPort
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -528,11 +542,12 @@ namespace Kalipso
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "frmComPort";
+            this.Name = "FrmComPort";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Com Port options";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmComPort_FormClosed);
             this.Load += new System.EventHandler(this.frmComPort_Load);
+            this.VisibleChanged += new System.EventHandler(this.FrmComPort_VisibleChanged);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
@@ -589,5 +604,6 @@ namespace Kalipso
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
         private System.Windows.Forms.Timer timer2;
         private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button btnGetDataE7_28;
     }
 }

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Kalipso.Сalculations;
 
 namespace Kalipso
 {
@@ -22,13 +23,16 @@ namespace Kalipso
         /// The pp
         /// </summary>
         public PiezoParameters PP = new PiezoParameters();
-
         /// <summary>
         ///Constructor of measurment options form
         /// </summary>
         public frmMeasTempOpt()
         {
             InitializeComponent();
+            FillCbFreqMode();
+            FillCbMeasType();
+            FillcdExportTypeToDB();
+            FillMeasModel();
             cFreqMode.SelectedIndex = 0;
             cbGPIBDevModel.SelectedIndex = 0;
             cFreqMode.SelectedIndex = 0;
@@ -39,7 +43,6 @@ namespace Kalipso
             cCUCycle.SelectedIndex = 0;
             cbExportDBMeasTemp.SelectedIndex = 0;
             cbGraphOptions.SelectedIndex = 0;
-
         }
 
         private void frmMeasTempOpt_FormClosing(object sender, FormClosingEventArgs e)
@@ -120,7 +123,7 @@ namespace Kalipso
                                     int end = Convert.ToInt32(txtEndFreq.Text);
                                     double step = Convert.ToDouble(txtCoefficient.Text);
                                     tFreqList.AppendText(start.ToString() + Environment.NewLine);
-
+                                    
                                     for (int i = 0; i < end; i++)
                                     {
                                         start = Convert.ToInt32(Convert.ToDouble(start) * step);
@@ -333,7 +336,7 @@ namespace Kalipso
         //        }
         //    }
         //}
-        
+
         /// <summary>
         /// Halfpluses the 1.
         /// </summary>
@@ -553,7 +556,7 @@ namespace Kalipso
             Properties.Settings.Default.defParam_r_exp = Convert.ToDouble(txtRoExp.Text);
             Properties.Settings.Default.defParamSampleNum = txtSampleNumber.Text;
 
-
+            Properties.Settings.Default.defFreqMode = cFreqMode.Text;
 
             #region d33 approximation 
             //Properties.Settings.Default.defParamA_d33_20 = Convert.ToDouble(txtApproxD33_A_20.Text);
@@ -640,6 +643,8 @@ namespace Kalipso
             txtRoExp.Text = Properties.Settings.Default.defParam_r_exp.ToString();
             txtSampleNumber.Text = Properties.Settings.Default.defParamSampleNum.ToString();
 
+            cFreqMode.Text = Properties.Settings.Default.defFreqMode;
+
 
             switch (cWorkMode.Text)
             {
@@ -667,9 +672,50 @@ namespace Kalipso
                 default:
                     break;
             }
-
-
         }
+        /// <summary>
+        /// fill combobox meas model 
+        /// </summary>
+        void FillMeasModel()
+        { 
+        foreach (var item in Constants.MeasModel)
+            {
+                cbGPIBDevModel.Items.Add(item);
+            }
+        }
+        /// <summary>
+        /// fill combobox export type for DB
+        /// </summary>
+        void FillcdExportTypeToDB()
+        {
+            foreach (var item in Constants.export_types_DB)
+            {
+                cbExportDBMeasTemp.Items.Add(item);
+            }
+            
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        void FillCbMeasType()
+        {
+            foreach (var item in Constants.MeasurmentTypes)
+            {
+                cWorkMode.Items.Add(item);
+            }
+        }
+        /// <summary>
+        /// Fill list of frequency type
+        /// </summary>
+        void FillCbFreqMode()
+        {
+            foreach (var item in Constants.freqTypes)
+            {
+                cFreqMode.Items.Add(item);
+            }
+        }
+
         /// <summary>
         /// Handles the SelectedIndexChanged event of the CWorkMode control.
         /// </summary>

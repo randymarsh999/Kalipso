@@ -49,9 +49,9 @@
             this.btnSentDBRequest = new System.Windows.Forms.Button();
             this.dataSet1 = new System.Data.DataSet();
             this.npgsqlDataAdapter1 = new Npgsql.NpgsqlDataAdapter();
-            this.npgsqlConnection1 = new Npgsql.NpgsqlConnection();
             this.dbView = new System.Windows.Forms.DataGridView();
             this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataSet1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dbView)).BeginInit();
             this.SuspendLayout();
@@ -61,7 +61,7 @@
             this.btnSetSever.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnSetSever.Location = new System.Drawing.Point(128, 21);
             this.btnSetSever.Name = "btnSetSever";
-            this.btnSetSever.Size = new System.Drawing.Size(75, 20);
+            this.btnSetSever.Size = new System.Drawing.Size(73, 20);
             this.btnSetSever.TabIndex = 0;
             this.btnSetSever.Text = "Set server";
             this.btnSetSever.UseVisualStyleBackColor = true;
@@ -79,7 +79,7 @@
             // 
             // btnSetDB
             // 
-            this.btnSetDB.Location = new System.Drawing.Point(128, 63);
+            this.btnSetDB.Location = new System.Drawing.Point(128, 61);
             this.btnSetDB.Name = "btnSetDB";
             this.btnSetDB.Size = new System.Drawing.Size(75, 20);
             this.btnSetDB.TabIndex = 2;
@@ -190,11 +190,11 @@
             // 
             // btnConnectDB
             // 
-            this.btnConnectDB.Location = new System.Drawing.Point(79, 208);
+            this.btnConnectDB.Location = new System.Drawing.Point(22, 208);
             this.btnConnectDB.Name = "btnConnectDB";
-            this.btnConnectDB.Size = new System.Drawing.Size(87, 29);
+            this.btnConnectDB.Size = new System.Drawing.Size(181, 21);
             this.btnConnectDB.TabIndex = 15;
-            this.btnConnectDB.Text = "Connect";
+            this.btnConnectDB.Text = "Connect and Close";
             this.btnConnectDB.UseVisualStyleBackColor = true;
             this.btnConnectDB.Click += new System.EventHandler(this.btnConnectDB_Click);
             // 
@@ -245,11 +245,6 @@
             this.npgsqlDataAdapter1.SelectCommand = null;
             this.npgsqlDataAdapter1.UpdateCommand = null;
             // 
-            // npgsqlConnection1
-            // 
-            this.npgsqlConnection1.ProvideClientCertificatesCallback = null;
-            this.npgsqlConnection1.UserCertificateValidationCallback = null;
-            // 
             // dbView
             // 
             this.dbView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -268,11 +263,22 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(224, 285);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 23;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click_1);
+            // 
             // frmDataBase
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(695, 379);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.dbView);
             this.Controls.Add(this.label6);
@@ -335,5 +341,6 @@
         private Npgsql.NpgsqlConnection npgsqlConnection1;
         private System.Windows.Forms.DataGridView dbView;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
     }
 }

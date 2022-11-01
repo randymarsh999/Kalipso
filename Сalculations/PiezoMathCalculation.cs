@@ -11,6 +11,10 @@ using System.Windows.Forms;
 public class PiezoMathCalculation
 {
     /// <summary>
+    /// Pi constant
+    /// </summary>
+    private const double pi = 3.14;
+    /// <summary>
     /// The sigma array
     /// </summary>
     private double[] sigma;
@@ -4208,7 +4212,7 @@ public class PiezoMathCalculation
     /// <returns></returns>
     public double XiVal_1(double Uin)
     {
-        
+
         return 19.411155 * Uin + 2.98926;
     }
     /// <summary>
@@ -5234,17 +5238,31 @@ public class PiezoMathCalculation
         return Math.Round(x, 3);
     }
     /// <summary>
-    /// e_re the re.
+    /// 
     /// </summary>
-    /// <param name="t">The t.</param>
-    /// <param name="d">The d.</param>
-    /// <param name="c">The c.</param>
+    /// <param name="t"></param>
+    /// <param name="d"></param>
+    /// <param name="c"></param>
+    /// <param name="order"></param>
+    /// <returns></returns>
+    public double e_re(double t, double d, double c, double order)
+    {
+        double x = (14.4 * c * t) / (Math.Pow(d, 2)) * order;
+        return Math.Round(x, 3);
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="t"></param>
+    /// <param name="d"></param>
+    /// <param name="c"></param>
     /// <returns></returns>
     public double e_re(double t, double d, double c)
     {
-        double x = (14.4 * c * t) / (Math.Pow(d, 2));
+        double x = (14.4 * c * t) / (Math.Pow(d, 2)) * 1e12;
         return Math.Round(x, 3);
     }
+
     /// <summary>
     /// es the im.
     /// </summary>
@@ -5700,9 +5718,6 @@ public class PiezoMathCalculation
     {
         return command.Replace("\\n", "\n").Replace("\\r", "\r");
     }
-
-
-
     /// <summary>
     /// Byteses to float.
     /// </summary>
@@ -5808,7 +5823,7 @@ public class PiezoMathCalculation
 
 
     /// <summary>
-    /// Byteses to double.
+    /// Bytes to double.
     /// </summary>
     /// <param name="inB">The in b.</param>
     /// <returns></returns>
@@ -5817,7 +5832,7 @@ public class PiezoMathCalculation
         return BitConverter.ToDouble(inB, 0);
     }
     /// <summary>
-    /// Byteses to double.
+    /// Bytes to double.
     /// </summary>
     /// <param name="inB">The in b.</param>
     /// <param name="offset">The offset.</param>
@@ -5853,9 +5868,9 @@ public class PiezoMathCalculation
     public int[] getArrayFromStartEndCountVals(int start, int end, int count)
     {
         int step = (end - start) / count;
-        int[] result = new int[count+1];
+        int[] result = new int[count + 1];
         result[0] = start;
-        for (int j = 1; j < count+1; j++)
+        for (int j = 1; j < count + 1; j++)
         {
             start = step + start;
             result[j] = start;
@@ -5881,5 +5896,140 @@ public class PiezoMathCalculation
         }
         return result;
     }
+    /// <summary>
+    /// Conductivity calculation for measuring sample using LCR-meter E7-28, Sm
+    /// </summary>
+    /// <param name="abs_Z">Module of Impedance value</param>
+    /// <returns>Module of conductivity</returns>
+    public double abs_Y_e7_28(double abs_Z)
+    {
+        return 1 / abs_Z;
+    }
+    /// <summary>
+    /// Angle calculation for paralel measuring scheme using LCR-meter E7-28, rad
+    /// </summary>
+    /// <param name="angle_rad">Angle in radian of serial scheme</param>
+    /// <returns>Angle in radian of serial scheme</returns>
+    public double fi_y_e7_28(double angle_rad)
+    {
+        return Math.Abs(angle_rad);
+    }
+    /// <summary>
+    /// Resistance calculation for serial scheme using LCR-meter E7-28, Om
+    /// </summary>
+    /// <param name="z"></param>
+    /// <param name="angle_z"></param>
+    /// <returns></returns>
+    public double Rs_e7_28(double z, double angle_z)
+    {
+        return z * Math.Cos(angle_z);
+    }
+    /// <summary>
+    /// Reactance calculation for measuring sample using LCR-meter E7-28, Om
+    /// </summary>
+    /// <param name="z"></param>
+    /// <param name="angle_z"></param>
+    /// <returns></returns>
+    public double Xs_e7_28(double z, double angle_z)
+    {
+        return z * Math.Sin(angle_z);
+    }
+    /// <summary>
+    /// Condactance calculation for measuring sample using LCR-meter E7-28, S
+    /// </summary>
+    /// <param name="y"></param>
+    /// <param name="angle_y"></param>
+    /// <returns></returns>
+    public double Gp_e7_28(double y, double angle_y)
+    {
+        return y * Math.Cos(angle_y);
+    }
+    /// <summary>
+    /// Resistance calculation for paralel scheme using LCR-meter E7-28
+    /// </summary>
+    /// <param name="Gp"></param>
+    /// <returns></returns>
+    public double Rp_e7_28(double Gp)
+    {
+        return 1 / Gp;
+    }
+    /// <summary>
+    /// Susceptance calculation for paralel scheme using LCR-meter E7-28, S
+    /// </summary>
+    /// <param name="Bp"></param>
+    /// <returns></returns>
+    public double Xp_e7_28(double Z, double anglez)
+    {
+        return Z * Math.Sin(anglez);
+    }
+    /// <summary>
+    /// Conductance calculation for serial scheme using LCR-meter E7-28, S
+    /// </summary>
+    /// <param name="Rs"></param>
+    /// <returns></returns>
+    public double Gs_e7_28(double Rs)
+    {
+        return 1 / Rs;
+    }
+    /// <summary>
+    /// Susceptance, S
+    /// </summary>
+    /// <param name="Xs"></param>
+    /// <returns></returns>
+    public double Bs_e7_28(double Xs)
+    {
+        return 1 / Xs;
+    }
+    /// <summary>
+    /// Susceptance, S
+    /// </summary>
+    /// <param name="angleY"></param>
+    /// <returns></returns>
+    public double Bp_e7_28(double angleY, double z)
+    {
+        return Math.Sin(angleY) * z;
+    }
+    /// <summary>
+    /// Capacitance for serial scheme using LCR-meter E7-28, F
+    /// </summary>
+    /// <param name="frequency"></param>
+    /// <param name="X"></param>
+    /// <returns></returns>
+    public double C_e7_28(int frequency, double X)
+    {
+        return 1 / (2 * pi * frequency * X) * -1;
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="frequency"></param>
+    /// <param name="X"></param>
+    /// <returns></returns>
+    public double L_e7_28(int frequency, double X)
+    {
+        return 2 * pi * frequency * X;
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="fi"></param>
+    /// <returns></returns>
+    public double qualityFactor_e7_28(double fi)
+    {
+        return Math.Tan(fi);
+    }
+    /// <summary>
+    /// Tan(d)
+    /// </summary>
+    /// <param name="qualityFactor"></param>
+    /// <returns></returns>
+    public double tand_e7_28(double qualityFactor)
+    {
+        return 1 / qualityFactor;
+    }
 
+    public double angleY_e7_28(double angleZ)
+    {
+        return -1 * angleZ;
+    }
 }

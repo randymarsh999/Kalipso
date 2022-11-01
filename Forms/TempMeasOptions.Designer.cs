@@ -73,6 +73,7 @@
             this.tabPage10 = new System.Windows.Forms.TabPage();
             this.dGridMeters = new System.Windows.Forms.DataGridView();
             this.dGridMeters_NN = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.MeterActive = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.dGridMeters_Meters = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dGridMeterUD = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dGridMeters_Interface = new System.Windows.Forms.DataGridViewComboBoxColumn();
@@ -705,14 +706,15 @@
             this.dGridMeters.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dGridMeters.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dGridMeters_NN,
+            this.MeterActive,
             this.dGridMeters_Meters,
             this.dGridMeterUD,
             this.dGridMeters_Interface,
             this.dGridMeters_TermoContr,
             this.dGridMeter_ContollerInterface});
-            this.dGridMeters.Location = new System.Drawing.Point(6, 122);
+            this.dGridMeters.Location = new System.Drawing.Point(7, 130);
             this.dGridMeters.Name = "dGridMeters";
-            this.dGridMeters.Size = new System.Drawing.Size(595, 152);
+            this.dGridMeters.Size = new System.Drawing.Size(595, 144);
             this.dGridMeters.TabIndex = 128;
             // 
             // dGridMeters_NN
@@ -721,6 +723,11 @@
             this.dGridMeters_NN.Name = "dGridMeters_NN";
             this.dGridMeters_NN.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dGridMeters_NN.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // MeterActive
+            // 
+            this.MeterActive.HeaderText = "Active";
+            this.MeterActive.Name = "MeterActive";
             // 
             // dGridMeters_Meters
             // 
@@ -761,7 +768,7 @@
             // 
             this.label33.AutoSize = true;
             this.label33.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label33.Location = new System.Drawing.Point(224, 16);
+            this.label33.Location = new System.Drawing.Point(404, 16);
             this.label33.Name = "label33";
             this.label33.Size = new System.Drawing.Size(97, 23);
             this.label33.TabIndex = 41;
@@ -774,7 +781,7 @@
             "None",
             "Export to DB parallel",
             "Export to DB(only)"});
-            this.cbExportDBMeasTemp.Location = new System.Drawing.Point(228, 42);
+            this.cbExportDBMeasTemp.Location = new System.Drawing.Point(408, 42);
             this.cbExportDBMeasTemp.Name = "cbExportDBMeasTemp";
             this.cbExportDBMeasTemp.Size = new System.Drawing.Size(121, 21);
             this.cbExportDBMeasTemp.TabIndex = 40;
@@ -829,14 +836,6 @@
             this.cbGPIBDevModel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cbGPIBDevModel.FormattingEnabled = true;
-            this.cbGPIBDevModel.Items.AddRange(new object[] {
-            "Agilent4980A",
-            "Agilent4285A",
-            "Agilent4263B",
-            "Agilent34401A",
-            "WayneKerr6500B",
-            "WayneKerr4300",
-            "E7-20"});
             this.cbGPIBDevModel.Location = new System.Drawing.Point(13, 32);
             this.cbGPIBDevModel.Name = "cbGPIBDevModel";
             this.cbGPIBDevModel.Size = new System.Drawing.Size(176, 21);
@@ -1556,14 +1555,6 @@
             // cFreqMode
             // 
             this.cFreqMode.FormattingEnabled = true;
-            this.cFreqMode.Items.AddRange(new object[] {
-            "Step",
-            "Auto from generated list",
-            "Logarithm",
-            "Piezo",
-            "Auto from your list",
-            "From loading list",
-            "f1_f3"});
             this.cFreqMode.Location = new System.Drawing.Point(12, 30);
             this.cFreqMode.Name = "cFreqMode";
             this.cFreqMode.Size = new System.Drawing.Size(121, 21);
@@ -1583,29 +1574,6 @@
             // cWorkMode
             // 
             this.cWorkMode.FormattingEnabled = true;
-            this.cWorkMode.Items.AddRange(new object[] {
-            "Auto",
-            "Man",
-            "Cycle",
-            "Cycle_ramp",
-            "C(dU)_man",
-            "C(dU)_auto",
-            "C(dU)_relaxation",
-            "C(dU,dt,df)_relaxation_(law from file)",
-            "C(dU_df_dT)",
-            "Piezo",
-            "Ramp",
-            "C(dU)_auto_reversive",
-            "C(dU)_hand_reversive",
-            "C(dU_dt)_auto_reversive",
-            "C(dU_dT)_auto_reversive",
-            "dt(dU)",
-            "dt(dU&dT)",
-            "d33Rev_Auto",
-            "d33Rev",
-            "Magnit_hand",
-            "CTE",
-            "CTE_S33_fr"});
             this.cWorkMode.Location = new System.Drawing.Point(150, 30);
             this.cWorkMode.Name = "cWorkMode";
             this.cWorkMode.Size = new System.Drawing.Size(203, 21);
@@ -2675,6 +2643,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ColVolt;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColFreq;
         private System.Windows.Forms.DataGridViewComboBoxColumn dGridMeters_NN;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn MeterActive;
         private System.Windows.Forms.DataGridViewComboBoxColumn dGridMeters_Meters;
         private System.Windows.Forms.DataGridViewComboBoxColumn dGridMeterUD;
         private System.Windows.Forms.DataGridViewComboBoxColumn dGridMeters_Interface;

@@ -12,12 +12,12 @@ using System.IO;
 using System.Diagnostics;
 using TChart = System.Windows.Forms.DataVisualization.Charting;
 using System.Text.RegularExpressions;
-//это типа define
 using ExcelObj = Microsoft.Office.Interop.Excel;
 using Kalipso.Forms;
 using System.Reflection;
 using System.Xml;
 using Microsoft.Office.Core;
+using Kalipso.Сalculations;
 
 namespace Kalipso
 {
@@ -34,7 +34,7 @@ namespace Kalipso
         /// <summary>
         /// The COM
         /// </summary>
-        public FrmComPort Com = new FrmComPort();
+        public FrmComPort frmComPort = new FrmComPort();
         /// <summary>
         /// The FRM database connection
         /// </summary>
@@ -56,6 +56,14 @@ namespace Kalipso
         /// </summary>
         public Graphs graphs = new Graphs();
         /// <summary>
+        /// 
+        /// </summary>
+        public DBconnect DBcon = new DBconnect();
+
+
+
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="frmMain"/> class.
         /// </summary>
         public frmMain()
@@ -65,14 +73,14 @@ namespace Kalipso
             frmMOpt.Enabled = true;
             Hand = false;
             this.Text = "Kalipso " + Application.ProductVersion.ToString();
-            //Vers();
+            
         }
 
         private void HHH1()
         {
 
             PP.DBTableName = frmMOpt.txtComposition.Text;
-            PP.DBSQLConnctionString = frmDBConnection.ConnectionStringToDB;
+            PP.DBSQLConnctionString = frmDBConnection.DBcon.ConnectionString;
             PP.LCR_model = frmMOpt.cbGPIBDevModel.Text;
 
             PP.BiasUCurrent = Convert.ToDouble(frmMOpt.txtUcur.Text);
@@ -88,18 +96,18 @@ namespace Kalipso
 
         private void HHH(object state, ElapsedEventArgs e)
         {
-            PP.DBTableName = frmMOpt.txtComposition.Text;
-            PP.DBSQLConnctionString = frmDBConnection.ConnectionStringToDB;
-            PP.LCR_model = frmMOpt.cbGPIBDevModel.Text;
+            //PP.DBTableName = frmMOpt.txtComposition.Text;
+            //PP.DBSQLConnctionString = frmDBConnection.ConnectionStringToDB;
+            //PP.LCR_model = frmMOpt.cbGPIBDevModel.Text;
 
-            PP.BiasUCurrent = Convert.ToDouble(frmMOpt.txtUcur.Text);
-            PP.BiasUmax = Convert.ToDouble(frmMOpt.txtUmax.Text);
-            PP.TimeStartU = Convert.ToInt32(frmMOpt.txtTimeStartU.Text) * 1000;
-            PP.TimePeriodU = Convert.ToInt32(frmMOpt.txtPeriodU.Text) * 1000;
+            //PP.BiasUCurrent = Convert.ToDouble(frmMOpt.txtUcur.Text);
+            //PP.BiasUmax = Convert.ToDouble(frmMOpt.txtUmax.Text);
+            //PP.TimeStartU = Convert.ToInt32(frmMOpt.txtTimeStartU.Text) * 1000;
+            //PP.TimePeriodU = Convert.ToInt32(frmMOpt.txtPeriodU.Text) * 1000;
 
-            PP.thicknes = Convert.ToDouble(frmMOpt.txtHeight.Text);
-            PP.diametr = Convert.ToDouble(frmMOpt.txtDiameter.Text);
-            PP.TemperatureStep = Convert.ToDouble(frmMOpt.txtTempStep.Text);
+            //PP.thicknes = Convert.ToDouble(frmMOpt.txtHeight.Text);
+            //PP.diametr = Convert.ToDouble(frmMOpt.txtDiameter.Text);
+            //PP.TemperatureStep = Convert.ToDouble(frmMOpt.txtTempStep.Text);
         }
         /// <summary>
         /// Handles the 1 event of the btnCalcPiezo_Click control.
@@ -242,7 +250,7 @@ namespace Kalipso
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void comPortToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Com.ShowDialog();
+            frmComPort.ShowDialog();
         }
         /// <summary>
         /// Handles the Click event of the button2 control.
@@ -263,7 +271,7 @@ namespace Kalipso
         {
             try
             {
-                lbTemp.Text = Com.Temperature;
+                lbTemp.Text = frmComPort.Temperature;
             }
             catch (Exception ex)
             {
@@ -304,7 +312,9 @@ namespace Kalipso
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void dataBaseConnectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            frmDBConnection.DBcon = DBcon;
 
+            frmDBConnection.ShowDialog();
         }
         /// <summary>
         /// Handles the Click event of the closeToolStripMenuItem control. Close Main form.
@@ -383,12 +393,12 @@ namespace Kalipso
         {
             switch (frmMOpt.cWorkMode.Text)
             {
-                case "Cycle":
+                case Constants.M3:
                     {
                         sDlg.FileName = frmMOpt.txtComposition.Text + "_cycle_" + DateTime.Now.ToShortDateString();
                         break;
                     }
-                case "Cycle_ramp":
+                case Constants.M4:
                     {
                         sDlg.FileName = frmMOpt.txtComposition.Text + "_CycleRamp_" + DateTime.Now.ToShortDateString();
                         break;
@@ -399,8 +409,6 @@ namespace Kalipso
                     PP.FileNameSaveTempMeasDBLog = frmMOpt.txtComposition.Text + "_Log_" + DateTime.Now.ToShortDateString();
                     break;
             }
-            //tempMeasFullToolStripMenuItem.Enabled = true;
-            //sDlg.FileName = PP.FileNameSaveTempMeasDB;
             sDlg.ShowDialog();
         }
         /// <summary>
@@ -442,9 +450,9 @@ namespace Kalipso
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void gPIBConfigurationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmGPIB.ShowDialog();
             frmGPIB.frmMOpt = frmMOpt;
-
+            frmGPIB.frmComPort = frmComPort;
+            frmGPIB.ShowDialog();
         }
         /// <summary>
         /// Handles the Click event of the button1 control.
@@ -1707,12 +1715,8 @@ namespace Kalipso
         {
 
         }
-        /// <summary>
-        /// Enable timer for measurments hi tempereature
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void btnStart_Click(object sender, EventArgs e)
+
+        void CheakMeasDev()
         {
             switch (frmMOpt.cWorkMode.Text)
             {
@@ -1726,13 +1730,25 @@ namespace Kalipso
                         break;
                     }
                 default:
-                    if (frmGPIB.GPIBdev == "GPIB device not initialized try again")
                     {
-                        MessageBox.Show("You must find gpib device");
-                        return;
+                        if (frmGPIB.GPIBdev == "GPIB device not initialized try again")
+                        {
+                            //MessageBox.Show("You must find gpib device");
+                            //return;
+                        }
+                        break;
                     }
-                    break;
+                    
             }
+        }
+        /// <summary>
+        /// Enable timer for measurments hi tempereature
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            CheakMeasDev();
             if (frmMOpt.cmbOperator.Text == "")
             {
                 MessageBox.Show("You must choice operator");
@@ -1755,17 +1771,25 @@ namespace Kalipso
                         MessageBox.Show("Done");
                         if (frmMOpt.cWorkMode.Text == "C(dU)_auto_reversive")
                         {
-                            Com.TransmitStringToArduiono("e");
+                            frmComPort.TransmitStringToArduiono("e");
                             System.Threading.Thread.Sleep(400);
-                            Com.TransmitStringToArduiono("x");
+                            frmComPort.TransmitStringToArduiono("x");
                             System.Threading.Thread.Sleep(400);
-                            Com.TransmitStringToArduiono("v");
+                            frmComPort.TransmitStringToArduiono("v");
                         }
                         break;
                     }
                 default:
                     break;
             }
+        }
+        public void SendPriliminariInformationToDB()
+        { 
+            
+        }
+        void SetTimerOption()
+        {
+
         }
         /// <summary>
         /// Meas the timer initialization enable.
@@ -1792,10 +1816,20 @@ namespace Kalipso
             TimeCurrentMeas.Enabled = true;
             timerMeas.Enabled = true;
         }
-
+        /// <summary>
+        /// Validation of input parameters for experiment
+        /// </summary>
         void Input_validation()
         {
-
+            if (frmMOpt.txtHeight.Text == "" || frmMOpt.txtDiameter.Text == "" ||
+                frmMOpt.txtTempStart.Text == "" || frmMOpt.txtCycleCount.Text == "" ||
+                frmMOpt.txtComposition.Text == "" || frmMOpt.txtTempEnd.Text == "" ||
+                frmMOpt.txtTempSint.Text == "" || frmMOpt.tFreqList.Text == "")
+            {
+                txtLog.AppendText(Environment.NewLine + "You must check parameters");
+                //MessageBox.Show("You must check parameters");
+                return;
+            }
         }
         /// <summary>
         /// Initializes the grid for temperatures measurments.
@@ -1807,57 +1841,68 @@ namespace Kalipso
 
             FileJob FJ = new FileJob();
             FJ.ClearDataGridView(dGridTempMeas);
-
-            if (frmMOpt.txtHeight.Text == "" || frmMOpt.txtDiameter.Text == "" ||
-                frmMOpt.txtTempStart.Text == "" || frmMOpt.txtCycleCount.Text == "" ||
-                frmMOpt.txtComposition.Text == "" || frmMOpt.txtTempEnd.Text == "" ||
-                frmMOpt.txtTempSint.Text == "" || frmMOpt.tFreqList.Text == "")
-            {
-                txtLog.AppendText(Environment.NewLine + "You must check parameters");
-                //MessageBox.Show("You must check parameters");
-                return;
-            }
-
-
             DataGridJob DGJ = new DataGridJob();
-            DGJ.AddColumn(dGridTempMeas, "id", "serial");
-            DGJ.AddColumn(dGridTempMeas, "composition", "text");
-            DGJ.AddColumn(dGridTempMeas, "Tsint_K", "double precision");
-            DGJ.AddColumn(dGridTempMeas, "id_sample", "INT");
-            DGJ.AddColumn(dGridTempMeas, "h_cm", "double precision");
-            DGJ.AddColumn(dGridTempMeas, "d_cm", "double precision");
-            DGJ.AddColumn(dGridTempMeas, "T_K", "double precision");
-            if (frmMOpt.cWorkMode.Text != "CTE")
+            DGJ.AddColumn(dGridTempMeas, Constants.id, "serial");
+            DGJ.AddColumn(dGridTempMeas, Constants.composition, "text");
+            DGJ.AddColumn(dGridTempMeas, Constants.Tsint, "double precision");
+            DGJ.AddColumn(dGridTempMeas, Constants.id_sample, "INT");
+            DGJ.AddColumn(dGridTempMeas, Constants.h_cm, "double precision");
+            DGJ.AddColumn(dGridTempMeas, Constants.d_cm, "double precision");
+            DGJ.AddColumn(dGridTempMeas, Constants.T_K, "double precision");
+            DGJ.AddColumn(dGridTempMeas, Constants.Ubias, "double precision");
+            DGJ.AddColumn(dGridTempMeas, Constants.Hbias, "double precision");
+            DGJ.AddColumn(dGridTempMeas, Constants.CycleNum, "INT");
+            DGJ.AddColumn(dGridTempMeas, Constants.step, "INT");
+            DGJ.AddColumn(dGridTempMeas, Constants.direction, "text");
+            DGJ.AddColumn(dGridTempMeas, Constants.polarity, "text");
+            DGJ.AddColumn(dGridTempMeas, Constants.CurTime, "time");
+            DGJ.AddColumn(dGridTempMeas, Constants.CurDate, "date");
+            DGJ.AddColumn(dGridTempMeas, Constants.cur_timer, "INT");
+            DGJ.AddColumn(dGridTempMeas, Constants.meas_type, "text");
+            DGJ.AddColumn(dGridTempMeas, Constants.current_meas_type, "int");
+            DGJ.AddColumn(dGridTempMeas, Constants.Operator, "text");
+            DGJ.AddColumn(dGridTempMeas, Constants.ro_exp, "double precision");
+            DGJ.AddColumn(dGridTempMeas, Constants.solid_state, "text");
+            DGJ.AddColumn(dGridTempMeas, Constants.comments, "text");
+            if (frmMOpt.cWorkMode.Text != Constants.M21)
             {
-                DGJ.AddColumn(dGridTempMeas, "f_Hz", "INT");
-                DGJ.AddColumn(dGridTempMeas, "C_pF", "double precision");
-                DGJ.AddColumn(dGridTempMeas, "e_re", "double precision");
-                DGJ.AddColumn(dGridTempMeas, "tgd1e2", "double precision");
-                DGJ.AddColumn(dGridTempMeas, "e_im", "double precision");
-                DGJ.AddColumn(dGridTempMeas, "tgd", "double precision");
-                DGJ.AddColumn(dGridTempMeas, "Y", "double precision");
+                DGJ.AddColumn(dGridTempMeas, Constants.f, "INT");
+                DGJ.AddColumn(dGridTempMeas, Constants.Cp, "double precision");
+                DGJ.AddColumn(dGridTempMeas, Constants.Cs, "double precision");
+                DGJ.AddColumn(dGridTempMeas, Constants.e_re, "double precision");
+                DGJ.AddColumn(dGridTempMeas, Constants.ep_re, "double precision");
+                DGJ.AddColumn(dGridTempMeas, Constants.es_re, "double precision");
+                DGJ.AddColumn(dGridTempMeas, Constants.tgd2, "double precision");
+                DGJ.AddColumn(dGridTempMeas, Constants.e_im, "double precision");
+                DGJ.AddColumn(dGridTempMeas, Constants.es_im, "double precision");
+                DGJ.AddColumn(dGridTempMeas, Constants.ep_im, "double precision");
+                DGJ.AddColumn(dGridTempMeas, Constants.tgd, "double precision");
+                DGJ.AddColumn(dGridTempMeas, Constants.Y, "double precision");
+                #region if there is E7-28
+                DGJ.AddColumn(dGridTempMeas, Constants.angZ, "double precision");
+                DGJ.AddColumn(dGridTempMeas, Constants.abs_Z, "double precision");
+                DGJ.AddColumn(dGridTempMeas, Constants.abs_Y, "double precision");
+                DGJ.AddColumn(dGridTempMeas, Constants.angY, "double precision");
+                DGJ.AddColumn(dGridTempMeas, Constants.Rs, "double precision");
+                DGJ.AddColumn(dGridTempMeas, Constants.Xs, "double precision");
+                DGJ.AddColumn(dGridTempMeas, Constants.Gs, "double precision");
+                DGJ.AddColumn(dGridTempMeas, Constants.Bs, "double precision");
+                DGJ.AddColumn(dGridTempMeas, Constants.Gp, "double precision");
+                DGJ.AddColumn(dGridTempMeas, Constants.Xp, "double precision");
+                DGJ.AddColumn(dGridTempMeas, Constants.Bp, "double precision");
+                DGJ.AddColumn(dGridTempMeas, Constants.Rp, "double precision");
+                DGJ.AddColumn(dGridTempMeas, Constants.Ls, "double precision");
+                DGJ.AddColumn(dGridTempMeas, Constants.Lp, "double precision");
+                DGJ.AddColumn(dGridTempMeas, Constants.Q, "double precision");
+                #endregion
             }
-            DGJ.AddColumn(dGridTempMeas, "Ubias_V", "double precision");
-            DGJ.AddColumn(dGridTempMeas, "Hbias_T", "double precision");
-            DGJ.AddColumn(dGridTempMeas, "Cycle", "INT");
-            DGJ.AddColumn(dGridTempMeas, "Step", "INT");
-            DGJ.AddColumn(dGridTempMeas, "Direction", "text");
-            DGJ.AddColumn(dGridTempMeas, "Polarity", "text");
-            DGJ.AddColumn(dGridTempMeas, "Time", "time");
-            DGJ.AddColumn(dGridTempMeas, "Date", "date");
-            DGJ.AddColumn(dGridTempMeas, "Timer", "INT");
-            DGJ.AddColumn(dGridTempMeas, "Meas_type", "text");
-            DGJ.AddColumn(dGridTempMeas, "current_meas_type", "int");
-            DGJ.AddColumn(dGridTempMeas, "operator", "text");
-            DGJ.AddColumn(dGridTempMeas, "ro_exp", "double precision");
-            DGJ.AddColumn(dGridTempMeas, "solid_state", "text");
-            DGJ.AddColumn(dGridTempMeas, "comments", "text");
+
             dGridTempMeas.Rows.Add();
             PP.CelSel = 0;
 
-            for (int i = 0; i < Com.allComPort.Count() - 1; i++)
+            for (int i = 0; i < frmComPort.allComPort.Count() - 1; i++)
             {
-                if (Com.allComPort[i].DeviceName == "Varta703I")
+                if (frmComPort.allComPort[i].DeviceName == Constants.T_model1)
                 {
                     GetTempFromVarta();
                 }
@@ -1873,7 +1918,6 @@ namespace Kalipso
             PP.TimeMeas = 0;
             PP.CurrentTimeStep = 0;
             PP.CurrentTime = 0;
-
 
             //get voltagelist
             switch (frmMOpt.cWorkMode.Text)
@@ -1987,9 +2031,9 @@ namespace Kalipso
                         PP.BiasUCurrent = 0;
                         PP.Polarity = "Positive";
                         PP.StepReversiveLong = Convert.ToInt32(frmMOpt.txtTimerReversive.Text);
-                        Com.TransmitStringToArduiono("r");
+                        frmComPort.TransmitStringToArduiono("r");
                         Thread.Sleep(400);
-                        Com.TransmitStringToArduiono("z");
+                        frmComPort.TransmitStringToArduiono("z");
                         PP.cycleCurrentNum = 0;
                         PP.NextCurrentStep = 1;
                         break;
@@ -2002,34 +2046,20 @@ namespace Kalipso
                         PP.BiasUCurrent = 0;
                         PP.Polarity = "Positive";
                         PP.StepReversiveLong = Convert.ToInt32(frmMOpt.txtTimerReversive.Text);
-                        Com.TransmitStringToArduiono("r");
+                        frmComPort.TransmitStringToArduiono("r");
                         Thread.Sleep(400);
-                        Com.TransmitStringToArduiono("z");
+                        frmComPort.TransmitStringToArduiono("z");
                         PP.cycleCurrentNum = 0;
                         PP.NextCurrentStep = 1;
                         break;
                     }
                 case "C(dU,dt,df)_relaxation_(law from file)":
                     {
-                        //PiezoMathCalculation PM = new PiezoMathCalculation();
-                        //PP.ListTimer = new string[frmMOpt.tTimerList.Lines.Count()];
-                        //for (int i = 0; i < frmMOpt.tTimerList.Lines.Count(); i++)
-                        //{
-                        //    PP.ListTimer[i] = frmMOpt.tTimerList.Lines[i];
-                        //}
-                        //PP.CurrentTime = Convert.ToDouble(PP.ListTimer[0]);
-                        //PP.CurrentTimeStep = 0;
-                        //frmGPIB.WriteCommandDev(PP.BiasAgilent4980 + PP.ListVoltage[PP.CurrentTimeStep]);
-                        //frmGPIB.WriteCommandDev(PP.FreqAgilent4980 + PP.ListFreq[PP.CurrentTimeStep]);
+
                         break;
                     }
                 case "d33Rev":
                     {
-                        //PP.ListTimer = new string[frmMOpt.tTimerList.Lines.Count()];
-                        //for (int i = 0; i < frmMOpt.tTimerList.Lines.Count(); i++)
-                        //{
-                        //    PP.ListTimer[i] = frmMOpt.tTimerList.Lines[i];
-                        //}
                         DGJ.AddColumn(dGridTempMeas, "Uin_voltmeter", "double precision");
                         DGJ.AddColumn(dGridTempMeas, "Ubias_V_conv", "double precision");
                         DGJ.AddColumn(dGridTempMeas, "Xi", "double precision");
@@ -2122,19 +2152,19 @@ namespace Kalipso
                             default:
                                 switch (frmMOpt.cbGPIBDevModel.Text)
                                 {
-                                    case "Agilent4980A":
+                                    case Constants.M_model0:
                                         {
                                             frmGPIB.WriteCommandDev("FUNC:IMP CPD");
                                             frmGPIB.WriteCommandDev(PP.FreqAgilent4980 + PP.ListFreq[0]);
                                             break;
                                         }
-                                    case "Agilent4285A":
+                                    case Constants.M_model1:
                                         {
                                             frmGPIB.WriteCommandDev(PP.FuncAgilent4285 + "CPD");
                                             frmGPIB.WriteCommandDev(PP.FreqAgilent4285 + PP.ListFreq[0]);
                                             break;
                                         }
-                                    case "Agilent4263B":
+                                    case Constants.M_model2:
                                         {
                                             frmGPIB.WriteCommandDev(PP.SensFuncAgilent4263);
                                             frmGPIB.WriteCommandDev(PP.FuncAgilent4263Ch1 + "CP");
@@ -2144,17 +2174,17 @@ namespace Kalipso
                                             frmGPIB.WriteCommandDev(PP.FreqAgilent4263 + PP.ListFreq[0]);
                                             break;
                                         }
-                                    case "WayneKerr6500B":
+                                    case Constants.M_model4:
                                         {
                                             frmGPIB.WriteCommandDev(PP.RLCWayneKerr6500B + "1 C;2 D");
                                             frmGPIB.WriteCommandDev(PP.FreqWayneKerr6500B + PP.ListFreq[0]);
                                             break;
                                         }
-                                    case "E7-20":
+                                    case Constants.M_model6:
                                         {
                                             byte[] data = new byte[2];
                                             data[0] = 0xD;
-                                            Com.SendDataToComPort("E7 - 20", data);
+                                            frmComPort.SendDataToComPort("E7 - 20", data);
                                             break;
                                         }
                                     default: break;
@@ -2227,13 +2257,13 @@ namespace Kalipso
                 case "Export to DB(only)":
                     {
 
-                        PP.DBTableName = frmMOpt.txtComposition.Text;
-                        PP.DBSQLConnctionString = frmDBConnection.ConnectionStringToDB;
-                        DBConn dBConn = new DBConn();
-                        PP.DB_SQL_CMD = dBConn.DBCreateTableSQLCommand(this.dGridTempMeas, PP.DBTableName);
-                        FJ.WriteF(PP.DB_SQL_CMD, PP.FileNameSaveTempMeasDB);
-                        txtLog.AppendText(PP.DB_SQL_CMD + Environment.NewLine);
-                        txtLog.AppendText(PP.FileNameSaveTempMeasDB + Environment.NewLine);
+                        //PP.DBTableName = frmMOpt.txtComposition.Text;
+                        //PP.DBSQLConnctionString = frmDBConnection.ConnectionStringToDB;
+                        //DBconnect dBConn = new DBconnect();
+                        //PP.DB_SQL_CMD = dBConn.DBCreateTableSQLCommand(this.dGridTempMeas, PP.DBTableName);
+                        //FJ.WriteF(PP.DB_SQL_CMD, PP.FileNameSaveTempMeasDB);
+                        //txtLog.AppendText(PP.DB_SQL_CMD + Environment.NewLine);
+                        //txtLog.AppendText(PP.FileNameSaveTempMeasDB + Environment.NewLine);
                         break;
                     }
                 default:
@@ -2246,6 +2276,20 @@ namespace Kalipso
             }
             Directory.CreateDirectory(@"C:\\temp\\");
         }
+
+        void IntitDataForDB()
+        {
+            string sql = "";
+            sql = "select ";
+            DBcon.DBSendCMD(sql);
+        }
+
+        public void selectComposition()
+        {
+            string sql = "";
+            //DBcon.
+        }
+
         /// <summary>
         /// Gets the freq list.
         /// </summary>
@@ -2280,9 +2324,9 @@ namespace Kalipso
         /// </summary>
         void initXMFT()
         {
-            Com.WriteDataToXMFT(0, Convert.ToInt32(frmMOpt.DGTempData["Temp", 0].Value));
+            frmComPort.WriteDataToXMFT(0, Convert.ToInt32(frmMOpt.DGTempData["Temp", 0].Value));
             System.Threading.Thread.Sleep(250);
-            Com.WriteDataToXMFT(0, Convert.ToInt32(frmMOpt.DGTempData["TimeS", 0].Value));
+            frmComPort.WriteDataToXMFT(0, Convert.ToInt32(frmMOpt.DGTempData["TimeS", 0].Value));
         }
 
         /// <summary>
@@ -2291,7 +2335,7 @@ namespace Kalipso
         public void GetCurrentUfromArduino()
         {
             double temps = 0;
-            string[] s_u = Regex.Split(Com.GetDataFromComPort("ArduinoUno"), "Last average=  ");
+            string[] s_u = Regex.Split(frmComPort.GetDataFromComPort("ArduinoUno"), "Last average=  ");
             var list = new List<double>();
             for (int t = 0; t < s_u.Count() - 1; t++)
             {
@@ -2317,7 +2361,7 @@ namespace Kalipso
         /// </summary>
         public void GetCurrentUfromArduino1()
         {
-            string s = Com.GetDataFromComPort("ArduinoUno");
+            string s = frmComPort.GetDataFromComPort("ArduinoUno");
             string[] ss = s.Split('\n');
             string s1 = "";
             for (int i = 0; i < ss.Count(); i++)
@@ -2426,7 +2470,7 @@ namespace Kalipso
         /// </summary>
         public void IncBiasU()
         {
-            Com.SendDataToComPort("ArduinoUno", "+");
+            frmComPort.SendDataToComPort("ArduinoUno", "+");
             //PP.BiasUCurrent = PP.BiasUCurrent + 250;
             //this.txtUbias.Text = PP.BiasUCurrent.ToString();
         }
@@ -2435,7 +2479,7 @@ namespace Kalipso
         /// </summary>
         public void DecBiasU()
         {
-            Com.SendDataToComPort("ArduinoUno", "-");
+            frmComPort.SendDataToComPort("ArduinoUno", "-");
         }
 
 
@@ -2467,8 +2511,8 @@ namespace Kalipso
             try
             {
                 PiezoMathCalculation PM = new PiezoMathCalculation();
-                Com.GetTemperatureFromXMFT();
-                PP.Temperature1 = PM.ConvertCelciusToKelvin(Convert.ToDouble(Com.Temperature));
+                frmComPort.GetTemperatureFromXMFT();
+                PP.Temperature1 = PM.ConvertCelciusToKelvin(Convert.ToDouble(frmComPort.Temperature));
                 PP.TemperatureReserv = PP.Temperature1;
                 lbTemp.Text = PP.Temperature1.ToString();
                 Thread.Sleep(100);
@@ -2491,8 +2535,8 @@ namespace Kalipso
             {
                 try
                 {
-                    Com.GetDataFromVarta();
-                    PP.Temperature1 = PM.ConvertCelciusToKelvin(Convert.ToDouble(Com.Temperature));
+                    frmComPort.GetDataFromVarta();
+                    PP.Temperature1 = PM.ConvertCelciusToKelvin(Convert.ToDouble(frmComPort.Temperature));
                     PP.TemperatureReserv = PP.Temperature1;
                     lbTemp.Text = PP.Temperature1.ToString();
                     System.Threading.Thread.Sleep(400);
@@ -2528,7 +2572,7 @@ namespace Kalipso
         {
             getTempFromTermocontroller();
 
-            if (PP.TimeMeas < Convert.ToInt32(frmMOpt.DGTempData["TimerS", PP.CelSelTemp].Value))
+            /*if (PP.TimeMeas < Convert.ToInt32(frmMOpt.DGTempData["TimerS", PP.CelSelTemp].Value))
             {
                 PP.cycleCurrentNum = Convert.ToInt32(frmMOpt.DGTempData["Cycle", PP.CelSelTemp].Value);
                 MainMeas();
@@ -2538,7 +2582,7 @@ namespace Kalipso
             {
                 ++PP.CelSelTemp;
                 PP.cycleCurrentNum = Convert.ToInt32(frmMOpt.DGTempData["Cycle", PP.CelSelTemp].Value);
-                Com.WriteDataToXMFT(0, Convert.ToInt32(frmMOpt.DGTempData["Temp", PP.CelSelTemp].Value));
+                frmComPort.WriteDataToXMFT(0, Convert.ToInt32(frmMOpt.DGTempData["Temp", PP.CelSelTemp].Value));
                 MainMeas();
             }
             if (PP.TimeMeas >= Convert.ToInt32(frmMOpt.DGTempData["TimerS", PP.CelSelTemp].Value)
@@ -2546,7 +2590,7 @@ namespace Kalipso
             {
                 timerMeas.Enabled = false;
                 MessageBox.Show("Measuring is done");
-            }
+            }*/
         }
         /// <summary>
         /// WorkMode C(dU_df)
@@ -2685,7 +2729,7 @@ namespace Kalipso
             {
                 MainMeas();
                 System.Threading.Thread.Sleep(500);
-                Com.TransmitStringToArduiono("x");
+                frmComPort.TransmitStringToArduiono("x");
                 btnStart.Text = "Stop";
                 timerMeas.Enabled = false;
                 return;
@@ -2718,7 +2762,7 @@ namespace Kalipso
                 //Com.TransmitStringToArduiono("-");
                 System.Threading.Thread.Sleep(500);
                 //включение реле отрицательной полярности
-                Com.TransmitStringToArduiono("z");
+                frmComPort.TransmitStringToArduiono("z");
                 System.Threading.Thread.Sleep(500);
                 PP.Direction = "Inc";
                 frmMOpt.cDirect.Text = "Negative";
@@ -2765,7 +2809,7 @@ namespace Kalipso
                     {
                         DecBiasU();
 
-                        Com.TransmitStringToArduiono("-");
+                        frmComPort.TransmitStringToArduiono("-");
                         //System.Threading.Thread.Sleep(300);
                         System.Threading.Thread.Sleep(Convert.ToInt32(frmMOpt.txtTimerReversive.Text) * 1000);
                         //отключение реле положительной полярности
@@ -2782,11 +2826,11 @@ namespace Kalipso
                         //    //отключение реле отрицательной полярности
                         //    Com.TransmitStringToArduiono("e");
                         System.Threading.Thread.Sleep(300);
-                        Com.TransmitStringToArduiono("e");
+                        frmComPort.TransmitStringToArduiono("e");
                         System.Threading.Thread.Sleep(400);
-                        Com.TransmitStringToArduiono("x");
+                        frmComPort.TransmitStringToArduiono("x");
                         System.Threading.Thread.Sleep(400);
-                        Com.TransmitStringToArduiono("v");
+                        frmComPort.TransmitStringToArduiono("v");
                         btnStart.Text = "Stop";
                     }
 
@@ -2798,7 +2842,7 @@ namespace Kalipso
                         MainMeas();
                         DecBiasU();
                         --PP.CurrentStep;
-                        Com.TransmitStringToArduiono("-");
+                        frmComPort.TransmitStringToArduiono("-");
                         System.Threading.Thread.Sleep(300);
                     }
                     //equal to max step
@@ -2810,7 +2854,7 @@ namespace Kalipso
                         --PP.CurrentStep;
                         //DecBiasU();
                         PP.Direction = "Dec";
-                        Com.TransmitStringToArduiono("-");
+                        frmComPort.TransmitStringToArduiono("-");
                         System.Threading.Thread.Sleep(300);
                     }
 
@@ -2823,7 +2867,7 @@ namespace Kalipso
                         IncBiasU();
                         ++PP.CurrentStep;
                         ++PP.NextCurrentStep;
-                        Com.TransmitStringToArduiono("+");
+                        frmComPort.TransmitStringToArduiono("+");
                         System.Threading.Thread.Sleep(300);
                     }
 
@@ -2834,16 +2878,16 @@ namespace Kalipso
                     {
                         DecBiasU();
 
-                        Com.TransmitStringToArduiono("-");
+                        frmComPort.TransmitStringToArduiono("-");
                         //System.Threading.Thread.Sleep(300);
                         //System.Threading.Thread.Sleep(Convert.ToInt32(frmMOpt.txtTimerReversive.Text) * 1000);
                         //отключение реле положительной полярности
-                        Com.TransmitStringToArduiono("x");
+                        frmComPort.TransmitStringToArduiono("x");
                         System.Threading.Thread.Sleep(300);
                         //MainMeas();
                         frmMOpt.cDirect.Text = "Negative";
                         //включение реле отрицательной полярности
-                        Com.TransmitStringToArduiono("c");
+                        frmComPort.TransmitStringToArduiono("c");
                         System.Threading.Thread.Sleep(300);
                         PP.Direction = "Inc";
                         PP.Polarity = "Negative";
@@ -2860,7 +2904,7 @@ namespace Kalipso
                         MainMeas();
                         DecBiasU();
                         --PP.CurrentStep;
-                        Com.TransmitStringToArduiono("-");
+                        frmComPort.TransmitStringToArduiono("-");
                         System.Threading.Thread.Sleep(300);
                         // --PP.NextCurrentStep;
                     }
@@ -2875,7 +2919,7 @@ namespace Kalipso
                         --PP.CurrentStep;
                         //DecBiasU();
                         PP.Direction = "Dec";
-                        Com.TransmitStringToArduiono("-");
+                        frmComPort.TransmitStringToArduiono("-");
                         System.Threading.Thread.Sleep(300);
                     }
 
@@ -2888,7 +2932,7 @@ namespace Kalipso
                         IncBiasU();
                         ++PP.CurrentStep;
                         ++PP.NextCurrentStep;
-                        Com.TransmitStringToArduiono("+");
+                        frmComPort.TransmitStringToArduiono("+");
                         System.Threading.Thread.Sleep(300);
                     }
                 }
@@ -2906,7 +2950,7 @@ namespace Kalipso
                     {
                         DecBiasU();
 
-                        Com.TransmitStringToArduiono("-");
+                        frmComPort.TransmitStringToArduiono("-");
                         //System.Threading.Thread.Sleep(300);
                         System.Threading.Thread.Sleep(Convert.ToInt32(frmMOpt.txtTimerReversive.Text) * 1000);
                         //отключение реле положительной полярности
@@ -2923,11 +2967,11 @@ namespace Kalipso
                         //    //отключение реле отрицательной полярности
                         //    Com.TransmitStringToArduiono("e");
                         System.Threading.Thread.Sleep(300);
-                        Com.TransmitStringToArduiono("e");
+                        frmComPort.TransmitStringToArduiono("e");
                         System.Threading.Thread.Sleep(400);
-                        Com.TransmitStringToArduiono("x");
+                        frmComPort.TransmitStringToArduiono("x");
                         System.Threading.Thread.Sleep(400);
-                        Com.TransmitStringToArduiono("v");
+                        frmComPort.TransmitStringToArduiono("v");
                         btnStart.Text = "Stop";
                     }
 
@@ -2941,7 +2985,7 @@ namespace Kalipso
                         MainMeas();
                         DecBiasU();
                         --PP.CurrentStep;
-                        Com.TransmitStringToArduiono("-");
+                        frmComPort.TransmitStringToArduiono("-");
                         System.Threading.Thread.Sleep(300);
                     }
 
@@ -2955,7 +2999,7 @@ namespace Kalipso
                         --PP.CurrentStep;
                         //DecBiasU();
                         PP.Direction = "Dec";
-                        Com.TransmitStringToArduiono("-");
+                        frmComPort.TransmitStringToArduiono("-");
                         System.Threading.Thread.Sleep(300);
                     }
 
@@ -2968,7 +3012,7 @@ namespace Kalipso
                         IncBiasU();
                         ++PP.CurrentStep;
                         ++PP.NextCurrentStep;
-                        Com.TransmitStringToArduiono("+");
+                        frmComPort.TransmitStringToArduiono("+");
                         System.Threading.Thread.Sleep(300);
                     }
                     //dec equal to min step
@@ -2977,16 +3021,16 @@ namespace Kalipso
                     {
                         DecBiasU();
 
-                        Com.TransmitStringToArduiono("-");
+                        frmComPort.TransmitStringToArduiono("-");
                         //System.Threading.Thread.Sleep(300);
                         //System.Threading.Thread.Sleep(Convert.ToInt32(frmMOpt.txtTimerReversive.Text) * 1000);
                         //отключение реле положительной полярности
-                        Com.TransmitStringToArduiono("x");
+                        frmComPort.TransmitStringToArduiono("x");
                         System.Threading.Thread.Sleep(300);
                         //MainMeas();
                         frmMOpt.cDirect.Text = "Negative";
                         //включение реле отрицательной полярности
-                        Com.TransmitStringToArduiono("c");
+                        frmComPort.TransmitStringToArduiono("c");
                         System.Threading.Thread.Sleep(300);
                         PP.Direction = "Inc";
                         PP.Polarity = "Negative";
@@ -3003,7 +3047,7 @@ namespace Kalipso
                         MainMeas();
                         DecBiasU();
                         --PP.CurrentStep;
-                        Com.TransmitStringToArduiono("-");
+                        frmComPort.TransmitStringToArduiono("-");
                         System.Threading.Thread.Sleep(300);
                         // --PP.NextCurrentStep;
                     }
@@ -3018,7 +3062,7 @@ namespace Kalipso
                         --PP.CurrentStep;
                         //DecBiasU();
                         PP.Direction = "Dec";
-                        Com.TransmitStringToArduiono("-");
+                        frmComPort.TransmitStringToArduiono("-");
                         System.Threading.Thread.Sleep(300);
                     }
 
@@ -3031,7 +3075,7 @@ namespace Kalipso
                         IncBiasU();
                         ++PP.CurrentStep;
                         ++PP.NextCurrentStep;
-                        Com.TransmitStringToArduiono("+");
+                        frmComPort.TransmitStringToArduiono("+");
                         System.Threading.Thread.Sleep(300);
                     }
                 }
@@ -3050,7 +3094,7 @@ namespace Kalipso
                     {
                         DecBiasU();
 
-                        Com.TransmitStringToArduiono("-");
+                        frmComPort.TransmitStringToArduiono("-");
                         //System.Threading.Thread.Sleep(300);
                         System.Threading.Thread.Sleep(Convert.ToInt32(frmMOpt.txtTimerReversive.Text) * 1000);
                         //отключение реле положительной полярности
@@ -3067,11 +3111,11 @@ namespace Kalipso
                         //    //отключение реле отрицательной полярности
                         //    Com.TransmitStringToArduiono("e");
                         System.Threading.Thread.Sleep(300);
-                        Com.TransmitStringToArduiono("e");
+                        frmComPort.TransmitStringToArduiono("e");
                         System.Threading.Thread.Sleep(400);
-                        Com.TransmitStringToArduiono("x");
+                        frmComPort.TransmitStringToArduiono("x");
                         System.Threading.Thread.Sleep(400);
-                        Com.TransmitStringToArduiono("v");
+                        frmComPort.TransmitStringToArduiono("v");
                         btnStart.Text = "Stop";
                     }
 
@@ -3085,7 +3129,7 @@ namespace Kalipso
                         MainMeas();
                         DecBiasU();
                         --PP.CurrentStep;
-                        Com.TransmitStringToArduiono("-");
+                        frmComPort.TransmitStringToArduiono("-");
                         System.Threading.Thread.Sleep(300);
                     }
 
@@ -3099,7 +3143,7 @@ namespace Kalipso
                         --PP.CurrentStep;
                         //DecBiasU();
                         PP.Direction = "Dec";
-                        Com.TransmitStringToArduiono("-");
+                        frmComPort.TransmitStringToArduiono("-");
                         System.Threading.Thread.Sleep(300);
                     }
 
@@ -3112,7 +3156,7 @@ namespace Kalipso
                         IncBiasU();
                         ++PP.CurrentStep;
                         ++PP.NextCurrentStep;
-                        Com.TransmitStringToArduiono("+");
+                        frmComPort.TransmitStringToArduiono("+");
                         System.Threading.Thread.Sleep(300);
                     }
 
@@ -3123,16 +3167,16 @@ namespace Kalipso
                     {
                         DecBiasU();
 
-                        Com.TransmitStringToArduiono("-");
+                        frmComPort.TransmitStringToArduiono("-");
                         //System.Threading.Thread.Sleep(300);
                         //System.Threading.Thread.Sleep(Convert.ToInt32(frmMOpt.txtTimerReversive.Text) * 1000);
                         //отключение реле положительной полярности
-                        Com.TransmitStringToArduiono("x");
+                        frmComPort.TransmitStringToArduiono("x");
                         System.Threading.Thread.Sleep(300);
                         //MainMeas();
                         frmMOpt.cDirect.Text = "Negative";
                         //включение реле отрицательной полярности
-                        Com.TransmitStringToArduiono("c");
+                        frmComPort.TransmitStringToArduiono("c");
                         System.Threading.Thread.Sleep(300);
                         PP.Direction = "Inc";
                         PP.Polarity = "Negative";
@@ -3149,7 +3193,7 @@ namespace Kalipso
                         MainMeas();
                         DecBiasU();
                         --PP.CurrentStep;
-                        Com.TransmitStringToArduiono("-");
+                        frmComPort.TransmitStringToArduiono("-");
                         System.Threading.Thread.Sleep(300);
                         // --PP.NextCurrentStep;
                     }
@@ -3164,7 +3208,7 @@ namespace Kalipso
                         --PP.CurrentStep;
                         //DecBiasU();
                         PP.Direction = "Dec";
-                        Com.TransmitStringToArduiono("-");
+                        frmComPort.TransmitStringToArduiono("-");
                         System.Threading.Thread.Sleep(300);
                     }
 
@@ -3177,7 +3221,7 @@ namespace Kalipso
                         IncBiasU();
                         ++PP.CurrentStep;
                         ++PP.NextCurrentStep;
-                        Com.TransmitStringToArduiono("+");
+                        frmComPort.TransmitStringToArduiono("+");
                         System.Threading.Thread.Sleep(300);
                     }
                 }
@@ -3219,18 +3263,21 @@ namespace Kalipso
             PP.Temperature3 = Convert.ToDouble(frmMOpt.txtNewCycleTemp.Text);
             this.lbCycleNum.Text = PP.cycleCurrentNum.ToString();
             lbDirect.Text = PP.Direction;
-
-            if (PP.Temperature1 >= PP.Temperature2 && PP.Direction == PP.heating)
+            if (PP.Temperature1 != 300)
             {
-                PP.Direction = PP.cooling;
+                if (PP.Temperature1 >= PP.Temperature2 && PP.Direction == PP.heating)
+                {
+                    PP.Direction = PP.cooling;
+                }
+
+                if (PP.Temperature1 <= PP.Temperature3 && PP.Direction == PP.cooling)
+                {
+                    ++PP.cycleCurrentNum;
+                    lbCycleNum.Text = PP.cycleCurrentNum.ToString();
+                    PP.Direction = PP.heating;
+                }
             }
 
-            if (PP.Temperature1 <= PP.Temperature3 && PP.Direction == PP.cooling)
-            {
-                ++PP.cycleCurrentNum;
-                lbCycleNum.Text = PP.cycleCurrentNum.ToString();
-                PP.Direction = PP.heating;
-            }
 
         }
         /// <summary>
@@ -3238,7 +3285,7 @@ namespace Kalipso
         /// </summary>
         void WorkMode_Cycle_ramp()
         {
-            //setCycleNumInc();
+            setCycleNumInc();
             MainMeas();
         }
         /// <summary>
@@ -3260,7 +3307,7 @@ namespace Kalipso
 
                 switch (frmMOpt.cbGPIBDevModel.Text)
                 {
-                    case "Agilent4980A":
+                    case Constants.M_model0:
                         Regex reg = new Regex(@"^[-+][0-9][.][0-9]{5}[E][-+][0-9]{2}[,][-+][0-9][.][0-9]{5}[E][-+][0-9]{2}[,][-+][0-9]{1}");
                         Regex reg1 = new Regex(@"^[-+][0-9][.][0-9]{5}[E][-+][0-9]{2}[,][-+][0-9][.][0-9]{5}[E][-+][0-9]{1}");
 
@@ -3354,27 +3401,27 @@ namespace Kalipso
 
             switch (frmMOpt.cWorkMode.Text)
             {
-                case "Auto":
+                case Constants.M1:
                     {
                         WorkMode_Auto();
                         break;
                     }
-                case "Cycle":
+                case Constants.M3:
                     {
                         WorkMode_Cycle();
                         break;
                     }
-                case "Cycle_ramp":
+                case Constants.M4:
                     {
                         WorkMode_Cycle_ramp();
                         break;
                     }
-                case "C(dU)_man":
+                case Constants.M23:
                     {
                         MainMeasuringUnderBiasU();
                         break;
                     }
-                case "C(dU)_auto":
+                case Constants.M6:
                     {
                         MainMeasuringUnderBiasU();
                         break;
@@ -3384,22 +3431,22 @@ namespace Kalipso
                         WorkMode_C_on_dU_df();
                         break;
                     }
-                case "C(dU_dT)":
+                case Constants.M15:
                     {
                         WorkMode_C_on_dU_dT();
                         break;
                     }
-                case "C(dU)_relaxation":
+                case Constants.M7:
                     {
                         WorkMode_C_on_dU_relaxation();
                         break;
                     }
-                case "C(dU_df_dT)":
+                case Constants.M9:
                     {
                         WorkMode_C_on_dU_df_dT();
                         break;
                     }
-                case "Ramp":
+                case Constants.M11:
                     {
                         MainMeas();
                         break;
@@ -3430,7 +3477,7 @@ namespace Kalipso
                         WorkMode_C_on_dU_dt_df_relaxation_LawFromFile();
                         break;
                     }
-                case "d33Rev":
+                case Constants.M19:
                     {
                         WorkModeD33rev();
                         break;
@@ -3580,7 +3627,7 @@ namespace Kalipso
                         plotGraphCTE();
 
 
-                        DBConn dBConn = new DBConn();
+                        DBconnect dBConn = new DBconnect();
                         string sql = dBConn.DBExportDataString(this.dGridTempMeas, PP.DBTableName, 0);
                         FileJob FJ = new FileJob();
                         FJ.WriteF(sql, PP.FileNameSaveTempMeasDB);
@@ -3628,7 +3675,7 @@ namespace Kalipso
 
                 switch (frmMOpt.cbGPIBDevModel.Text)
                 {
-                    case "Agilent4980A":
+                    case Constants.M_model0:
                         Regex reg = new Regex(@"^[-+][0-9][.][0-9]{5}[E][-+][0-9]{2}[,][-+][0-9][.][0-9]{5}[E][-+][0-9]{2}[,][-+][0-9]{1}");
                         Regex reg1 = new Regex(@"^[-+][0-9][.][0-9]{5}[E][-+][0-9]{2}[,][-+][0-9][.][0-9]{5}[E][-+][0-9]{1}");
 
@@ -3673,7 +3720,7 @@ namespace Kalipso
                         }
 
                         break;
-                    case "Agilent4263B":
+                    case Constants.M_model2:
                         break;
                     default:
                         frmGPIB.ReadDeviceAnswer();
@@ -3710,7 +3757,7 @@ namespace Kalipso
 
                 switch (frmMOpt.cbGPIBDevModel.Text)
                 {
-                    case "Agilent4980A":
+                    case Constants.M_model0:
                         Regex reg = new Regex(@"^[-+][0-9][.][0-9]{5}[E][-+][0-9]{2}[,][-+][0-9][.][0-9]{5}[E][-+][0-9]{2}[,][-+][0-9]{1}");
                         Regex reg1 = new Regex(@"^[-+][0-9][.][0-9]{5}[E][-+][0-9]{2}[,][-+][0-9][.][0-9]{5}[E][-+][0-9]{1}");
 
@@ -3755,7 +3802,7 @@ namespace Kalipso
                         }
 
                         break;
-                    case "Agilent4263B":
+                    case Constants.M_model2:
                         break;
                     default:
                         frmGPIB.ReadDeviceAnswer();
@@ -3790,7 +3837,7 @@ namespace Kalipso
 
                 switch (frmMOpt.cbGPIBDevModel.Text)
                 {
-                    case "Agilent4980A":
+                    case Constants.M_model0:
                         Regex reg = new Regex(@"^[-+][0-9][.][0-9]{5}[E][-+][0-9]{2}[,][-+][0-9][.][0-9]{5}[E][-+][0-9]{2}[,][-+][0-9]{1}");
                         Regex reg1 = new Regex(@"^[-+][0-9][.][0-9]{5}[E][-+][0-9]{2}[,][-+][0-9][.][0-9]{5}[E][-+][0-9]{1}");
                         switch (frmGPIB.cbInterfaceType.Text)
@@ -3838,13 +3885,13 @@ namespace Kalipso
                                 break;
                         }
                         break;
-                    case "E7-20":
+                    case Constants.M_model6:
                         {
                             PiezoMathCalculation pm = new PiezoMathCalculation();
                             do
                             {
                                 System.Threading.Thread.Sleep(500);
-                                PP.bufE7_20 = Com.GetDataFromCOMDevice("E7-20", 0, 22);
+                                PP.bufE7_20 = frmComPort.GetDataFromCOMDevice(Constants.M_model6, 0, 22);
                                 if (PP.bufE7_20[14] != 0)
                                 {
                                     PP.bufE7_20[12] = (byte)(PP.bufE7_20[12] ^ 0xff);
@@ -3862,8 +3909,6 @@ namespace Kalipso
 
                                 }
                                 else PP.param1_E7_20 = pm.BytesToDouble(PP.bufE7_20, 16, 3) * Math.Pow(Math.Pow(10, 256 - (int)(PP.bufE7_20[19])), -1);
-                                //if (m1 == false) PP.param1_E7_20 = pm.BytesToDouble(PP.bufE7_20, 16, 3) * Math.Pow(Math.Pow(10, 256 - (int)(PP.bufE7_20[19])), -1);
-                                //if (m2 == false) PP.param2_E7_20 = pm.BytesToDouble(PP.bufE7_20, 12, 3) * Math.Pow(Math.Pow(10, 256 - (int)(PP.bufE7_20[15])), -1);
                             } while (PP.bufE7_20[3] == 0 || PP.param1_E7_20 > 1e25);
 
                             break;
@@ -3903,7 +3948,7 @@ namespace Kalipso
             //ParseStringTab PS = new ParseStringTab();
             //switch (frmMOpt.cbGPIBDevModel.Text)
             //{
-            //    case "Agilent4980A":
+            //    case Constants.M_model0:
             //        {
             //            PS.AddMeasStringAgilent4980(s);
             //            switch (frmGPIB.cbInterfaceType.Text)
@@ -3921,16 +3966,16 @@ namespace Kalipso
             //            }
             //            break;
             //        }
-            //    case "Agilent4285A": PS.AddMeasStringAgilent4980(s); break;
-            //    case "Agilent4263B":
+            //    case Constants.M_model1: PS.AddMeasStringAgilent4980(s); break;
+            //    case Constants.M_model2:
             //        {
             //            PS.AddMeasStringAgilent4263(s);
             //            val1 = Convert.ToDouble(PS.ElementAt(1));
             //            val2 = Convert.ToDouble(PS.DeleteZero(PS.ElementAt(2)));
             //            break;
             //        }
-            //    case "Agilent34401A": PS.AddMeasStringAgilent4980(s); break;
-            //    case "WayneKerr6500B": PS.AddMeasStringWayneKerr6500B(s); break;
+            //    case Constants.M_model3: PS.AddMeasStringAgilent4980(s); break;
+            //    case Constants.M_model4: PS.AddMeasStringWayneKerr6500B(s); break;
             //    case "WayneKerr4300":
             //        {
             //            //+8.2556835e-13,-1.6205449e+00
@@ -4152,7 +4197,7 @@ namespace Kalipso
             PP.BiasHCurrent = Convert.ToDouble(txtHBias.Text);
             switch (frmMOpt.cbGPIBDevModel.Text)
             {
-                case "Agilent4980A":
+                case Constants.M_model0:
                     {
                         PS.AddMeasStringAgilent4980(frmGPIB.answer);
                         switch (frmGPIB.cbInterfaceType.Text)
@@ -4172,7 +4217,7 @@ namespace Kalipso
                         }
                         break;
                     }
-                case "Agilent4285A":
+                case Constants.M_model1:
                     PS.AddMeasStringAgilent4285A(frmGPIB.answer);
                     try
                     {
@@ -4185,15 +4230,15 @@ namespace Kalipso
                     }
                     break;
 
-                case "Agilent4263B":
+                case Constants.M_model2:
                     {
                         PS.AddMeasStringAgilent4263(frmGPIB.answer);
                         val1 = Convert.ToDouble(PS.ElementAt(1));
                         val2 = Convert.ToDouble(PS.DeleteZero(PS.ElementAt(2)));
                         break;
                     }
-                case "Agilent34401A": PS.AddMeasStringAgilent4980(frmGPIB.answer); break;
-                case "WayneKerr6500B": PS.AddMeasStringWayneKerr6500B(frmGPIB.answer); break;
+                case Constants.M_model3: PS.AddMeasStringAgilent4980(frmGPIB.answer); break;
+                case Constants.M_model4: PS.AddMeasStringWayneKerr6500B(frmGPIB.answer); break;
                 case "WayneKerr4300":
                     {
                         //+8.2556835e-13,-1.6205449e+00
@@ -4202,7 +4247,7 @@ namespace Kalipso
                         val2 = Convert.ToDouble(PS.ElementAt(1));
                         break;
                     }
-                case "E7-20":
+                case Constants.M_model6:
                     {
                         val2 = PP.param2_E7_20;
                         val1 = PP.param1_E7_20;
@@ -4288,30 +4333,30 @@ namespace Kalipso
             }
 
 
-            if (frmMOpt.cbExportDBMeasTemp.Text == "Export to DB parallel" && frmDBConnection.DataBaseConnected == true)
-            {
-                try
-                {
-                    NpgsqlConnection pgcon = new NpgsqlConnection(frmDBConnection.ConnectionStringToDB);
-                    pgcon.Open();
-                    string sql = "";
-                    NpgsqlCommand CSend = new NpgsqlCommand(sql, pgcon);
-                    string sql_data = "";
-                    for (int j = 1; j < dGridTempMeas.ColumnCount + 1; j++)
-                    {
-                        sql_data = sql_data + dGridTempMeas.Rows[0].Cells[j].Value.ToString() + ", ";
-                    }
-                    sql_data = sql_data.Substring(0, sql_data.Length - 2);
-                    sql = "Insert into " + frmMOpt.txtComposition + " values (" + sql_data + ");";
-                    CSend.ExecuteNonQuery();
-                    FileJob FJ = new FileJob();
-                    FJ.WriteF(sql, PP.FileNameSaveTempMeas + ".log");
-                }
-                catch (Exception ex)
-                {
-                    ex.ToString();
-                }
-            }
+            //if (frmMOpt.cbExportDBMeasTemp.Text == "Export to DB parallel" && frmDBConnection.DataBaseConnected == true)
+            //{
+            //    try
+            //    {
+            //        NpgsqlConnection pgcon = new NpgsqlConnection(frmDBConnection.ConnectionStringToDB);
+            //        pgcon.Open();
+            //        string sql = "";
+            //        NpgsqlCommand CSend = new NpgsqlCommand(sql, pgcon);
+            //        string sql_data = "";
+            //        for (int j = 1; j < dGridTempMeas.ColumnCount + 1; j++)
+            //        {
+            //            sql_data = sql_data + dGridTempMeas.Rows[0].Cells[j].Value.ToString() + ", ";
+            //        }
+            //        sql_data = sql_data.Substring(0, sql_data.Length - 2);
+            //        sql = "Insert into " + frmMOpt.txtComposition + " values (" + sql_data + ");";
+            //        CSend.ExecuteNonQuery();
+            //        FileJob FJ = new FileJob();
+            //        FJ.WriteF(sql, PP.FileNameSaveTempMeas + ".log");
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        ex.ToString();
+            //    }
+            //}
 
             if (frmMOpt.cbExportDBMeasTemp.Text == "Export to DB(only)")
             {
@@ -4459,7 +4504,7 @@ namespace Kalipso
                             break;
                         }
                 }
-                DBConn dBConn = new DBConn();
+                DBconnect dBConn = new DBconnect();
                 string sql = dBConn.DBExportDataString(this.dGridTempMeas, PP.DBTableName, 0);
                 FileJob FJ = new FileJob();
                 FJ.WriteF(sql, PP.FileNameSaveTempMeasDB);
@@ -4496,7 +4541,7 @@ namespace Kalipso
             //ParseStringTab PS = new ParseStringTab();
             //switch (frmMOpt.cbGPIBDevModel.Text)
             //{
-            //    case "Agilent4980A":
+            //    case Constants.M_model0:
             //        {
             //            PS.AddMeasStringAgilent4980(s);
             //            switch (frmGPIB.cbInterfaceType.Text)
@@ -4514,16 +4559,16 @@ namespace Kalipso
             //            }
             //            break;
             //        }
-            //    case "Agilent4285A": PS.AddMeasStringAgilent4980(s); break;
-            //    case "Agilent4263B":
+            //    case Constants.M_model1: PS.AddMeasStringAgilent4980(s); break;
+            //    case Constants.M_model2:
             //        {
             //            PS.AddMeasStringAgilent4263(s);
             //            val1 = Convert.ToDouble(PS.ElementAt(1));
             //            val2 = Convert.ToDouble(PS.DeleteZero(PS.ElementAt(2)));
             //            break;
             //        }
-            //    case "Agilent34401A": PS.AddMeasStringAgilent4980(s); break;
-            //    case "WayneKerr6500B": PS.AddMeasStringWayneKerr6500B(s); break;
+            //    case Constants.M_model3: PS.AddMeasStringAgilent4980(s); break;
+            //    case Constants.M_model4: PS.AddMeasStringWayneKerr6500B(s); break;
             //    case "WayneKerr4300":
             //        {
             //            //+8.2556835e-13,-1.6205449e+00
@@ -4721,7 +4766,7 @@ namespace Kalipso
             ParseStringTab PS = new ParseStringTab();
             switch (frmMOpt.cbGPIBDevModel.Text)
             {
-                case "Agilent4980A":
+                case Constants.M_model0:
                     {
                         PS.AddMeasStringAgilent4980(s);
                         switch (frmGPIB.cbInterfaceType.Text)
@@ -4739,16 +4784,16 @@ namespace Kalipso
                         }
                         break;
                     }
-                case "Agilent4285A": PS.AddMeasStringAgilent4980(s); break;
-                case "Agilent4263B":
+                case Constants.M_model1: PS.AddMeasStringAgilent4980(s); break;
+                case Constants.M_model2:
                     {
                         PS.AddMeasStringAgilent4263(s);
                         val1 = Convert.ToDouble(PS.ElementAt(1));
                         val2 = Convert.ToDouble(PS.DeleteZero(PS.ElementAt(2)));
                         break;
                     }
-                case "Agilent34401A": PS.AddMeasStringAgilent4980(s); break;
-                case "WayneKerr6500B": PS.AddMeasStringWayneKerr6500B(s); break;
+                case Constants.M_model3: PS.AddMeasStringAgilent4980(s); break;
+                case Constants.M_model4: PS.AddMeasStringWayneKerr6500B(s); break;
                 case "WayneKerr4300":
                     {
                         //+8.2556835e-13,-1.6205449e+00
@@ -4908,7 +4953,7 @@ namespace Kalipso
                             break;
                         }
                 }
-                DBConn dBConn = new DBConn();
+                DBconnect dBConn = new DBconnect();
                 string sql = dBConn.DBExportDataString(this.dGridTempMeas, PP.DBTableName, 0);
                 FileJob FJ = new FileJob();
                 FJ.WriteF(sql, PP.FileNameSaveTempMeasDB);
@@ -4922,7 +4967,7 @@ namespace Kalipso
         public double GetDataFromVoltageMeter_HY_AV51_T()
         {
             short[] values = new short[40];
-            values = Com.GetDataFromVoltageMeter_HY_AV51_T1();
+            values = frmComPort.GetDataFromVoltageMeter_HY_AV51_T1();
             //short[] valueArray = new short[2];
             int[] valueConv = new int[2];
 
@@ -4978,8 +5023,8 @@ namespace Kalipso
             #region  Get_data_from_micron
             do
             {
-                Com.SendDataToComPort("ArduinoUno", "m");
-                s = Com.ComReadString();
+                frmComPort.SendDataToComPort("ArduinoUno", "m");
+                s = frmComPort.ComReadString();
             } while (s.Length < 7);
             PS.AddUMicron(s);
             #endregion
@@ -5007,12 +5052,12 @@ namespace Kalipso
 
                 if (Convert.ToDouble(PP.ListVoltage[PP.CurrentTimeStep]) > Convert.ToDouble(PP.ListVoltage[PP.CurrentTimeStep - 1]))
                 {
-                    Com.SendDataToComPort("ArduinoUno", "+");
+                    frmComPort.SendDataToComPort("ArduinoUno", "+");
 
                 }
                 if (Convert.ToDouble(PP.ListVoltage[PP.CurrentTimeStep]) < Convert.ToDouble(PP.ListVoltage[PP.CurrentTimeStep - 1]))
                 {
-                    Com.SendDataToComPort("ArduinoUno", "-");
+                    frmComPort.SendDataToComPort("ArduinoUno", "-");
                 }
 
 
@@ -5330,7 +5375,7 @@ namespace Kalipso
         /// </summary>
         void SendCommandMeasAtUbias_1()
         {
-            if (frmMOpt.cbGPIBDevModel.Text == "Agilent4980A")
+            if (frmMOpt.cbGPIBDevModel.Text == Constants.M_model0)
             {
                 frmGPIB.WriteCommandeSync(PP.FreqAgilent4980 + PP.MeasuringFrequency.ToString());
                 frmGPIB.WriteCommandeSync(PP.TrigAgilent4980);
@@ -5338,7 +5383,7 @@ namespace Kalipso
                 frmGPIB.ReadDeviceAnswer();
             }
 
-            if (frmMOpt.cbGPIBDevModel.Text == "WayneKerr6500B")
+            if (frmMOpt.cbGPIBDevModel.Text == Constants.M_model4)
             {
                 frmGPIB.WriteCommandeSync(PP.FreqWayneKerr6500B + PP.MeasuringFrequency.ToString());
                 frmGPIB.WriteCommandeSync(PP.TrigWayneKerr6500B);
@@ -5353,7 +5398,7 @@ namespace Kalipso
         {
             switch (frmMOpt.cbGPIBDevModel.Text)
             {
-                case "Agilent4980A":
+                case Constants.M_model0:
                     {
                         frmGPIB.WriteCommandeSync(PP.FreqAgilent4980 + PP.MeasuringFrequency.ToString());
                         frmGPIB.WriteCommandeSync(PP.BiasAgilent4980 + PP.BiasUCurrent.ToString());
@@ -5362,7 +5407,7 @@ namespace Kalipso
                         frmGPIB.ReadDeviceAnswer();
                         break;
                     }
-                case "WayneKerr6500B":
+                case Constants.M_model4:
                     {
                         frmGPIB.WriteCommandeSync(PP.FreqWayneKerr6500B + PP.MeasuringFrequency.ToString());
                         frmGPIB.WriteCommandeSync(PP.BiasWayneKerr6500B + PP.BiasUCurrent.ToString());
@@ -5380,28 +5425,28 @@ namespace Kalipso
         {
             switch (frmMOpt.cbGPIBDevModel.Text)
             {
-                case "Agilent4980A":
+                case Constants.M_model0:
                     {
                         frmGPIB.WriteCommandDev(PP.FreqAgilent4980 + SingleFrequency, UD);
                         frmGPIB.WriteCommandDev(PP.TrigAgilent4980, UD);
                         break;
                     }
-                case "Agilent4285A":
+                case Constants.M_model1:
                     {
                         frmGPIB.WriteCommandDev(PP.FreqAgilent4285 + SingleFrequency + ";", UD);
                         break;
                     }
-                case "Agilent4263B":
+                case Constants.M_model2:
                     {
                         frmGPIB.WriteCommandDev(PP.FreqAgilent4263 + SingleFrequency + ";" + PP.TrigFetchAgilent4263, UD);
                         frmGPIB.ReadDeviceAnswer();
                         break;
                     }
-                case "Agilent34401A":
+                case Constants.M_model3:
                     {
                         break;
                     }
-                case "WayneKerr6500B":
+                case Constants.M_model4:
                     {
                         frmGPIB.WriteCommandDev(PP.FreqWayneKerr6500B + SingleFrequency, UD);
                         frmGPIB.WriteCommandDev(PP.TrigWayneKerr6500B, UD);
@@ -5414,13 +5459,13 @@ namespace Kalipso
                         frmGPIB.ReadDeviceAnswer(UD);
                         break;
                     }
-                case "E7-20":
+                case Constants.M_model6:
                     {
                         byte[] data = new byte[2];
                         PiezoMathCalculation pm = new PiezoMathCalculation();
                         do
                         {
-                            PP.bufE7_20 = Com.GetDataFromCOMDevice("E7-20", 0, 22);
+                            PP.bufE7_20 = frmComPort.GetDataFromCOMDevice(Constants.M_model6, 0, 22);
                         } while (PP.bufE7_20[4] == 0);
 
                         PP.frequencyE7_20 = (int)pm.BytesToDouble(PP.bufE7_20, 4, 2);
@@ -5431,11 +5476,11 @@ namespace Kalipso
                             do
                             {
                                 data[0] = 0x1;
-                                Com.SendDataToComPort("E7-20", data);
+                                frmComPort.SendDataToComPort(Constants.M_model6, data);
                                 System.Threading.Thread.Sleep(300);
                                 do
                                 {
-                                    PP.bufE7_20 = Com.GetDataFromCOMDevice("E7-20", 0, 22);
+                                    PP.bufE7_20 = frmComPort.GetDataFromCOMDevice(Constants.M_model6, 0, 22);
                                 } while (PP.bufE7_20[4] == 0);
                                 PP.frequencyE7_20 = (int)pm.BytesToDouble(PP.bufE7_20, 4, 2);
                                 PP.frequencyE7_20 = PP.frequencyE7_20 * (int)Math.Pow(10, pm.BytesToDouble(PP.bufE7_20, 6, 1));
@@ -5457,28 +5502,28 @@ namespace Kalipso
         {
             switch (frmMOpt.cbGPIBDevModel.Text)
             {
-                case "Agilent4980A":
+                case Constants.M_model0:
                     {
                         frmGPIB.WriteCommandDev(PP.FreqAgilent4980 + SingleFrequency);
                         //frmGPIB.WriteCommandDev(PP.TrigAgilent4980);
                         break;
                     }
-                case "Agilent4285A":
+                case Constants.M_model1:
                     {
                         frmGPIB.WriteCommandDev(PP.FreqAgilent4285 + SingleFrequency + ";");
                         break;
                     }
-                case "Agilent4263B":
+                case Constants.M_model2:
                     {
                         frmGPIB.WriteCommandDev(PP.FreqAgilent4263 + SingleFrequency + ";" + PP.TrigFetchAgilent4263);
                         frmGPIB.ReadDeviceAnswer();
                         break;
                     }
-                case "Agilent34401A":
+                case Constants.M_model3:
                     {
                         break;
                     }
-                case "WayneKerr6500B":
+                case Constants.M_model4:
                     {
                         frmGPIB.WriteCommandDev(PP.FreqWayneKerr6500B + SingleFrequency);
                         frmGPIB.WriteCommandDev(PP.TrigWayneKerr6500B);
@@ -5491,13 +5536,13 @@ namespace Kalipso
                         frmGPIB.ReadDeviceAnswer();
                         break;
                     }
-                case "E7-20":
+                case Constants.M_model6:
                     {
                         byte[] data = new byte[2];
                         PiezoMathCalculation pm = new PiezoMathCalculation();
                         do
                         {
-                            PP.bufE7_20 = Com.GetDataFromCOMDevice("E7-20", 0, 22);
+                            PP.bufE7_20 = frmComPort.GetDataFromCOMDevice(Constants.M_model6, 0, 22);
                         } while (PP.bufE7_20[4] == 0);
 
                         PP.frequencyE7_20 = (int)pm.BytesToDouble(PP.bufE7_20, 4, 2);
@@ -5508,11 +5553,11 @@ namespace Kalipso
                             do
                             {
                                 data[0] = 0x1;
-                                Com.SendDataToComPort("E7-20", data);
+                                frmComPort.SendDataToComPort(Constants.M_model6, data);
                                 System.Threading.Thread.Sleep(300);
                                 do
                                 {
-                                    PP.bufE7_20 = Com.GetDataFromCOMDevice("E7-20", 0, 22);
+                                    PP.bufE7_20 = frmComPort.GetDataFromCOMDevice(Constants.M_model6, 0, 22);
                                 } while (PP.bufE7_20[4] == 0);
                                 PP.frequencyE7_20 = (int)pm.BytesToDouble(PP.bufE7_20, 4, 2);
                                 PP.frequencyE7_20 = PP.frequencyE7_20 * (int)Math.Pow(10, pm.BytesToDouble(PP.bufE7_20, 6, 1));
@@ -5534,31 +5579,31 @@ namespace Kalipso
         {
             switch (frmMOpt.cbGPIBDevModel.Text)
             {
-                case "Agilent4980A":
+                case Constants.M_model0:
                     {
                         frmGPIB.WriteCommandDev(PP.FreqAgilent4980 + PP.ListFreq[i], UD);
                         //frmGPIB.WriteCommandDev(":INIT:IMM;:TRIG:IMM");
                         //frmGPIB.WriteCommandDev(PP.TrigAgilent4980);
                         break;
                     }
-                case "Agilent4285A":
+                case Constants.M_model1:
                     {
                         //System.Threading.Thread.Sleep(100);
                         frmGPIB.WriteCommandDev(PP.FreqAgilent4285 + PP.ListFreq[i] + ";", UD);
                         //frmGPIB.WriteCommandeSync(PP.TrigAgilent4285);
                         break;
                     }
-                case "Agilent4263B":
+                case Constants.M_model2:
                     {
                         frmGPIB.WriteCommandDev(PP.FreqAgilent4263 + PP.ListFreq[i] + ";" + PP.TrigFetchAgilent4263, UD);
                         frmGPIB.ReadDeviceAnswer(UD);
                         break;
                     }
-                case "Agilent34401A":
+                case Constants.M_model3:
                     {
                         break;
                     }
-                case "WayneKerr6500B":
+                case Constants.M_model4:
                     {
                         frmGPIB.WriteCommandDev(PP.FreqWayneKerr6500B + PP.ListFreq[i], UD);
                         frmGPIB.WriteCommandDev(PP.TrigWayneKerr6500B);
@@ -5571,13 +5616,13 @@ namespace Kalipso
                         frmGPIB.ReadDeviceAnswer(UD);
                         break;
                     }
-                case "E7-20":
+                case Constants.M_model6:
                     {
                         byte[] data = new byte[2];
                         PiezoMathCalculation pm = new PiezoMathCalculation();
                         do
                         {
-                            PP.bufE7_20 = Com.GetDataFromCOMDevice("E7-20", 0, 22);
+                            PP.bufE7_20 = frmComPort.GetDataFromCOMDevice(Constants.M_model6, 0, 22);
                         } while (PP.bufE7_20[4] == 0);
 
                         PP.frequencyE7_20 = (int)pm.BytesToDouble(PP.bufE7_20, 4, 2);
@@ -5588,11 +5633,11 @@ namespace Kalipso
                             do
                             {
                                 data[0] = 0x1;
-                                Com.SendDataToComPort("E7-20", data);
+                                frmComPort.SendDataToComPort(Constants.M_model6, data);
                                 System.Threading.Thread.Sleep(300);
                                 do
                                 {
-                                    PP.bufE7_20 = Com.GetDataFromCOMDevice("E7-20", 0, 22);
+                                    PP.bufE7_20 = frmComPort.GetDataFromCOMDevice(Constants.M_model6, 0, 22);
                                 } while (PP.bufE7_20[4] == 0);
                                 PP.frequencyE7_20 = (int)pm.BytesToDouble(PP.bufE7_20, 4, 2);
                                 PP.frequencyE7_20 = PP.frequencyE7_20 * (int)Math.Pow(10, pm.BytesToDouble(PP.bufE7_20, 6, 1));
@@ -5614,27 +5659,27 @@ namespace Kalipso
         {
             switch (frmMOpt.cbGPIBDevModel.Text)
             {
-                case "Agilent4980A":
+                case Constants.M_model0:
                     {
                         frmGPIB.WriteCommandDev(PP.FreqAgilent4980 + current_frequency.ToString());
                         break;
                     }
-                case "Agilent4285A":
+                case Constants.M_model1:
                     {
                         frmGPIB.WriteCommandDev(PP.FreqAgilent4285 + current_frequency.ToString() + ";");
                         break;
                     }
-                case "Agilent4263B":
+                case Constants.M_model2:
                     {
                         frmGPIB.WriteCommandDev(PP.FreqAgilent4263 + current_frequency.ToString() + ";" + PP.TrigFetchAgilent4263);
                         frmGPIB.ReadDeviceAnswer();
                         break;
                     }
-                case "Agilent34401A":
+                case Constants.M_model3:
                     {
                         break;
                     }
-                case "WayneKerr6500B":
+                case Constants.M_model4:
                     {
                         frmGPIB.WriteCommandDev(PP.FreqWayneKerr6500B + current_frequency.ToString());
                         frmGPIB.WriteCommandDev(PP.TrigWayneKerr6500B);
@@ -5647,13 +5692,13 @@ namespace Kalipso
                         frmGPIB.ReadDeviceAnswer();
                         break;
                     }
-                case "E7-20":
+                case Constants.M_model6:
                     {
                         byte[] data = new byte[2];
                         PiezoMathCalculation pm = new PiezoMathCalculation();
                         do
                         {
-                            PP.bufE7_20 = Com.GetDataFromCOMDevice("E7-20", 0, 22);
+                            PP.bufE7_20 = frmComPort.GetDataFromCOMDevice(Constants.M_model6, 0, 22);
                         } while (PP.bufE7_20[4] == 0);
 
                         PP.frequencyE7_20 = (int)pm.BytesToDouble(PP.bufE7_20, 4, 2);
@@ -5664,11 +5709,11 @@ namespace Kalipso
                             do
                             {
                                 data[0] = 0x1;
-                                Com.SendDataToComPort("E7-20", data);
+                                frmComPort.SendDataToComPort(Constants.M_model6, data);
                                 System.Threading.Thread.Sleep(300);
                                 do
                                 {
-                                    PP.bufE7_20 = Com.GetDataFromCOMDevice("E7-20", 0, 22);
+                                    PP.bufE7_20 = frmComPort.GetDataFromCOMDevice(Constants.M_model6, 0, 22);
                                 } while (PP.bufE7_20[4] == 0);
                                 PP.frequencyE7_20 = (int)pm.BytesToDouble(PP.bufE7_20, 4, 2);
                                 PP.frequencyE7_20 = PP.frequencyE7_20 * (int)Math.Pow(10, pm.BytesToDouble(PP.bufE7_20, 6, 1));
@@ -5690,27 +5735,27 @@ namespace Kalipso
         {
             switch (frmMOpt.cbGPIBDevModel.Text)
             {
-                case "Agilent4980A":
+                case Constants.M_model0:
                     {
                         frmGPIB.WriteCommandDev(PP.FreqAgilent4980 + PP.ListFreq[i]);
                         break;
                     }
-                case "Agilent4285A":
+                case Constants.M_model1:
                     {
                         frmGPIB.WriteCommandDev(PP.FreqAgilent4285 + PP.ListFreq[i] + ";");
                         break;
                     }
-                case "Agilent4263B":
+                case Constants.M_model2:
                     {
                         frmGPIB.WriteCommandDev(PP.FreqAgilent4263 + PP.ListFreq[i] + ";" + PP.TrigFetchAgilent4263);
                         frmGPIB.ReadDeviceAnswer();
                         break;
                     }
-                case "Agilent34401A":
+                case Constants.M_model3:
                     {
                         break;
                     }
-                case "WayneKerr6500B":
+                case Constants.M_model4:
                     {
                         frmGPIB.WriteCommandDev(PP.FreqWayneKerr6500B + PP.ListFreq[i]);
                         frmGPIB.WriteCommandDev(PP.TrigWayneKerr6500B);
@@ -5723,13 +5768,13 @@ namespace Kalipso
                         frmGPIB.ReadDeviceAnswer();
                         break;
                     }
-                case "E7-20":
+                case Constants.M_model6:
                     {
                         byte[] data = new byte[2];
                         PiezoMathCalculation pm = new PiezoMathCalculation();
                         do
                         {
-                            PP.bufE7_20 = Com.GetDataFromCOMDevice("E7-20", 0, 22);
+                            PP.bufE7_20 = frmComPort.GetDataFromCOMDevice(Constants.M_model6, 0, 22);
                         } while (PP.bufE7_20[4] == 0);
 
                         PP.frequencyE7_20 = (int)pm.BytesToDouble(PP.bufE7_20, 4, 2);
@@ -5740,21 +5785,21 @@ namespace Kalipso
                             do
                             {
                                 data[0] = 0x1;
-                                Com.SendDataToComPort("E7-20", data);
+                                frmComPort.SendDataToComPort(Constants.M_model6, data);
                                 System.Threading.Thread.Sleep(300);
                                 do
                                 {
-                                    PP.bufE7_20 = Com.GetDataFromCOMDevice("E7-20", 0, 22);
+                                    PP.bufE7_20 = frmComPort.GetDataFromCOMDevice(Constants.M_model6, 0, 22);
                                 } while (PP.bufE7_20[4] == 0);
                                 PP.frequencyE7_20 = (int)pm.BytesToDouble(PP.bufE7_20, 4, 2);
                                 PP.frequencyE7_20 = PP.frequencyE7_20 * (int)Math.Pow(10, pm.BytesToDouble(PP.bufE7_20, 6, 1));
                             } while (PP.frequencyE7_20.ToString() != PP.ListFreq[i]);
                         }
-
-
-
-
-
+                        break;
+                    }
+                case "E7-28":
+                    {
+                        frmComPort.setFreqE7_28(PP.ListFreq[i]);
                         break;
                     }
                 default:
@@ -5770,28 +5815,28 @@ namespace Kalipso
         {
             switch (frmMOpt.cbGPIBDevModel.Text)
             {
-                case "Agilent4980A":
+                case Constants.M_model0:
                     {
                         frmGPIB.WriteCommandDev(":INIT:IMM;:TRIG:IMM", UD);
                         break;
                     }
-                case "Agilent4285A":
+                case Constants.M_model1:
                     {
                         frmGPIB.WriteCommandDev(PP.TrigAgilent4285 + PP.FetchAgilent4285, UD);
                         frmGPIB.ReadDeviceAnswer(UD);
                         break;
                     }
-                case "Agilent4263B":
+                case Constants.M_model2:
                     {
                         frmGPIB.WriteCommandDev(PP.TrigFetchAgilent4263, UD);
                         frmGPIB.ReadDeviceAnswer(UD);
                         break;
                     }
-                case "Agilent34401A":
+                case Constants.M_model3:
                     {
                         break;
                     }
-                case "WayneKerr6500B":
+                case Constants.M_model4:
                     {
                         frmGPIB.WriteCommandDev(PP.TrigWayneKerr6500B, UD);
                         break;
@@ -5814,6 +5859,11 @@ namespace Kalipso
                         }
                         break;
                     }
+                case "E7-28":
+                    {
+                        frmComPort.getAllDataFromE7_28();
+                        break;
+                    }
                 default:
                     break;
             }
@@ -5825,34 +5875,34 @@ namespace Kalipso
         {
             switch (frmMOpt.cbGPIBDevModel.Text)
             {
-                case "Agilent4980A":
+                case Constants.M_model0:
                     {
 
                         frmGPIB.WriteCommandDev(":INIT:IMM;:TRIG:IMM", 17);
                         break;
                     }
-                case "Agilent4285A":
+                case Constants.M_model1:
                     {
                         frmGPIB.WriteCommandDev(PP.TrigAgilent4285 + PP.FetchAgilent4285, 17);
                         frmGPIB.ReadDeviceAnswer(17);
                         break;
                     }
-                case "Agilent4263B":
+                case Constants.M_model2:
                     {
                         frmGPIB.WriteCommandDev(PP.TrigFetchAgilent4263);
                         frmGPIB.ReadGPIBAnswer();
                         break;
                     }
-                case "Agilent34401A":
+                case Constants.M_model3:
                     {
                         break;
                     }
-                case "WayneKerr6500B":
+                case Constants.M_model4:
                     {
                         frmGPIB.WriteCommandDev(PP.TrigWayneKerr6500B);
                         break;
                     }
-                case "WayneKerr4300":
+                case Constants.M_model5:
                     {
                         string s = "O\\R,O\\R\n";
                         for (int i = 0; i < 7; i++)
@@ -5870,9 +5920,33 @@ namespace Kalipso
                         }
                         break;
                     }
+                case Constants.M_model7:
+                    {
+                        frmComPort.getAllDataFromE7_28();
+                        FillVarsE7_28();
+                        CalculateValuesE7_28();
+                        break;
+                    }
+
                 default:
                     break;
             }
+        }
+        /// <summary>
+        /// filling of variables by data from e7-28
+        /// </summary>
+        private void FillVarsE7_28()
+        {
+            PP.e7_28_dev_address = frmComPort.answerE7_28.dev_address;
+            PP.e7_28_command = frmComPort.answerE7_28.command;
+            PP.e7_28_flags = frmComPort.answerE7_28.flags;
+            PP.e7_28_mode = frmComPort.answerE7_28.mode;
+            PP.e7_28_slow = frmComPort.answerE7_28.slow;
+            PP.e7_28_diap = frmComPort.answerE7_28.diap;
+            PP.BiasUCurrent = frmComPort.answerE7_28.biasU;
+            PP.MeasuringFrequency = frmComPort.answerE7_28.frequecy;
+            PP.var_Z = frmComPort.answerE7_28.Z;
+            PP.var_angleZ = frmComPort.answerE7_28.angleZ;
         }
         /// <summary>
         /// Send command to get data from device via different connection type
@@ -5881,7 +5955,7 @@ namespace Kalipso
         {
             switch (frmMOpt.cbGPIBDevModel.Text)
             {
-                case "Agilent4980A":
+                case Constants.M_model0:
                     Regex reg = new Regex(@"^[-+][0-9][.][0-9]{5}[E][-+][0-9]{2}[,][-+][0-9][.][0-9]{5}[E][-+][0-9]{2}[,][-+][0-9]{1}");
                     Regex reg1 = new Regex(@"^[-+][0-9][.][0-9]{5}[E][-+][0-9]{2}[,][-+][0-9][.][0-9]{5}[E][-+][0-9]{1}");
                     switch (frmGPIB.cbInterfaceType.Text)
@@ -5943,13 +6017,13 @@ namespace Kalipso
                             break;
                     }
                     break;
-                case "E7-20":
+                case Constants.M_model6:
                     {
                         PiezoMathCalculation pm = new PiezoMathCalculation();
                         do
                         {
                             System.Threading.Thread.Sleep(500);
-                            PP.bufE7_20 = Com.GetDataFromCOMDevice("E7-20", 0, 22);
+                            PP.bufE7_20 = frmComPort.GetDataFromCOMDevice(Constants.M_model6, 0, 22);
                             if (PP.bufE7_20[14] != 0)
                             {
                                 PP.bufE7_20[12] = (byte)(PP.bufE7_20[12] ^ 0xff);
@@ -5964,18 +6038,25 @@ namespace Kalipso
                                 PP.bufE7_20[17] = (byte)(PP.bufE7_20[17] ^ 0xff);
                                 PP.bufE7_20[18] = (byte)(PP.bufE7_20[18] ^ 0xff);
                                 PP.param1_E7_20 = (-1 - PP.bufE7_20[16] - (PP.bufE7_20[17] + PP.bufE7_20[18] * 256) * 256) * Math.Pow(Math.Pow(10, 256 - (int)(PP.bufE7_20[19])), -1);
-
                             }
                             else PP.param1_E7_20 = pm.BytesToDouble(PP.bufE7_20, 16, 3) * Math.Pow(Math.Pow(10, 256 - (int)(PP.bufE7_20[19])), -1);
                         } while (PP.bufE7_20[3] == 0 || PP.param1_E7_20 > 1e25);
                         break;
                     }
+                case Constants.M_model7:
+                    {
+                        break;
+                    }
+
                 default:
                     break;
             }
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
         private void MainMeas(bool key)
         {
             Stopwatch myStopwatch = new Stopwatch();
@@ -6022,6 +6103,7 @@ namespace Kalipso
                 this.Refresh();
             }
             //-------------------------------------------------------------
+            timerMeas.Enabled = false;
             InitialiezeFreq(0);
             this.Refresh();
 
@@ -6097,7 +6179,6 @@ namespace Kalipso
                 dGridTempMeas["d_cm", 0].Value = frmMOpt.txtDiameter.Text;
                 d = Convert.ToDouble(frmMOpt.txtDiameter.Text);
                 dGridTempMeas["T_K", 0].Value = lbTemp.Text;
-                //dGridTempMeas["Direct", 0].Value = lbDirect.Text;
                 dGridTempMeas["Ubias_V", 0].Value = PP.BiasUCurrent;
                 dGridTempMeas["Hbias_T", 0].Value = txtHBias.Text;
                 dGridTempMeas["Cycle", 0].Value = PP.cycleCurrentNum.ToString();
@@ -6134,25 +6215,90 @@ namespace Kalipso
                 }
                 ++PP.CelSel;
 
-                //switch (frmMOpt.cWorkMode.Text)
-                //{
-                //    case "d33Rev":
-                //        {
-                //            chartMeasTemp1.Series[0].Points.AddXY(Convert.ToDouble(dGridTempMeas["E_kV_Div_cm", 0].Value), Convert.ToDouble(dGridTempMeas["k_10_E_4", 0].Value));
-                //            chartMeasTemp2.Series[0].Points.AddXY(Convert.ToDouble(dGridTempMeas["E_kV_Div_cm", 0].Value), Convert.ToDouble(dGridTempMeas["d33rev", 0].Value));
-                //            break;
-                //        }
-                //    default:
-                //        {
 
-                //            break;
-                //        }
-                //}
-                DBConn dBConn = new DBConn();
+                DBconnect dBConn = new DBconnect();
                 string sql = dBConn.DBExportDataString(this.dGridTempMeas, PP.DBTableName, 0);
                 FileJob FJ = new FileJob();
                 FJ.WriteF(sql, PP.FileNameSaveTempMeasDB);
             }
+        }
+        /// <summary>
+        /// Calculate parameters from data obtained via E7-28
+        /// </summary>
+        void CalculateValuesE7_28()
+        {
+            PiezoMathCalculation PM = new PiezoMathCalculation();
+            PP.MeasuringFrequency = frmComPort.answerE7_28.frequecy;
+            PP.var_angleZ = frmComPort.answerE7_28.angleZ;
+            PP.var_Z = frmComPort.answerE7_28.Z;
+            PP.var_angleY = PM.angleY_e7_28(Convert.ToDouble(frmComPort.answerE7_28.angleZ));
+            PP.var_absY = PM.abs_Y_e7_28(PP.var_Z);
+            PP.var_Rs = PM.Rs_e7_28(PP.var_Z, PP.var_angleY);
+            PP.var_Xs = PM.Xs_e7_28(PP.var_Z, PP.var_angleZ);
+            PP.var_Gs = PM.Gs_e7_28(PP.var_Rs);
+            PP.var_Bs = PM.Bs_e7_28(PP.var_Xs);
+            PP.var_Bp = PM.Bp_e7_28(PP.var_angleY, PP.var_Z);
+            PP.var_Gp = PM.Gp_e7_28(PP.var_absY, PP.var_angleY);
+            PP.var_Xp = PM.Xp_e7_28( PP.var_Z,PP.var_angleZ);
+            PP.var_Rp = PM.Rp_e7_28(PP.var_Gp);
+            PP.var_Cs = PM.C_e7_28(PP.MeasuringFrequency, PP.var_Xs);
+            PP.var_Cp = PM.C_e7_28(PP.MeasuringFrequency, PP.var_Xp);
+            PP.e7_28_flags= frmComPort.answerE7_28.flags;
+            if (PP.e7_28_flags.Substring(4, 1) == "1") PP.var_Lp = PM.L_e7_28(PP.MeasuringFrequency, PP.var_Xp);
+            if (PP.e7_28_flags.Substring(4, 1) == "0") PP.var_Ls = PM.L_e7_28(PP.MeasuringFrequency, PP.var_Xs);
+            PP.var_Q = PM.qualityFactor_e7_28( PP.var_angleY);
+            PP.var_tg = PM.tand_e7_28(PP.var_Q);
+            PP.tgd = PP.var_tg;
+            PP.Cs_pf = PP.var_Cs;
+            PP.Cp_pf = PP.var_Cp;
+        }
+        /// <summary>
+        /// Add calculated dielectric parameters obtaind via E7_28
+        /// </summary>
+        void AddCalculationValDielectricE7_28()
+        {
+            dGridTempMeas[Constants.angZ, 0].Value = PP.var_angleZ;
+            dGridTempMeas[Constants.angY, 0].Value = PP.var_angleY;
+            dGridTempMeas[Constants.abs_Z, 0].Value = PP.var_Z;
+            dGridTempMeas[Constants.abs_Y, 0].Value = PP.var_absY;
+            dGridTempMeas[Constants.Rs, 0].Value = PP.var_Rs;
+            dGridTempMeas[Constants.Xs, 0].Value = PP.var_Xs;
+            dGridTempMeas[Constants.Gs, 0].Value = PP.var_Gs;
+            dGridTempMeas[Constants.Bs, 0].Value = PP.var_Bs;
+            dGridTempMeas[Constants.Gp, 0].Value = PP.var_Gp;
+            dGridTempMeas[Constants.Bp, 0].Value = PP.var_Bp;
+            dGridTempMeas[Constants.Xp, 0].Value = PP.var_Xp;
+            dGridTempMeas[Constants.Rp, 0].Value = PP.var_Rp;
+            dGridTempMeas[Constants.Cs, 0].Value = PP.var_Cs;
+            dGridTempMeas[Constants.Cp, 0].Value = PP.var_Cp;
+            dGridTempMeas[Constants.Q, 0].Value = PP.var_Q;
+            dGridTempMeas[Constants.tgd, 0].Value = PP.var_tg;
+            dGridTempMeas[Constants.Lp, 0].Value = PP.var_Lp;
+            dGridTempMeas[Constants.Ls, 0].Value = PP.var_Ls;
+        }
+        /// <summary>
+        /// Add calculated dielectric parameters obtaind via E7_28
+        /// </summary>
+        void AddCalculationValDielectricE7_28(int rownum)
+        {
+            CalculateValuesE7_28();
+            dGridTempMeas[Constants.angZ, rownum].Value = PP.var_angleZ;
+            dGridTempMeas[Constants.angY, rownum].Value = PP.var_angleY;
+            dGridTempMeas[Constants.abs_Z, rownum].Value = PP.var_Z;
+            dGridTempMeas[Constants.abs_Y, rownum].Value = PP.var_absY;
+            dGridTempMeas[Constants.Rs, rownum].Value = PP.var_Rs;
+            dGridTempMeas[Constants.Xs, rownum].Value = PP.var_Xs;
+            dGridTempMeas[Constants.Gs, rownum].Value = PP.var_Gs;
+            dGridTempMeas[Constants.Bs, rownum].Value = PP.var_Bs;
+            dGridTempMeas[Constants.Gp, rownum].Value = PP.var_Gp;
+            dGridTempMeas[Constants.Bp, rownum].Value = PP.var_Bp;
+            dGridTempMeas[Constants.Xp, rownum].Value = PP.var_Xp;
+            dGridTempMeas[Constants.Rp, rownum].Value = PP.var_Rp;
+            dGridTempMeas[Constants.Cs, rownum].Value = PP.var_Cs;
+            dGridTempMeas[Constants.Cp, rownum].Value = PP.var_Cp;
+            dGridTempMeas[Constants.Q, rownum].Value = PP.var_Q;
+            dGridTempMeas[Constants.Lp, rownum].Value = PP.var_Lp;
+            dGridTempMeas[Constants.Ls, rownum].Value = PP.var_Ls;
         }
         /// <summary>
         /// Adds the parameters value.
@@ -6160,27 +6306,77 @@ namespace Kalipso
         public void AddParametersVal()
         {
             DateTime dateT = DateTime.Now;
-            dGridTempMeas["id", 0].Value = PP.CelSel.ToString();
-            dGridTempMeas["composition", 0].Value = frmMOpt.txtComposition.Text;
-            dGridTempMeas["id_sample", 0].Value = frmMOpt.txtSampleNumber.Text;
-            dGridTempMeas["Tsint_K", 0].Value = frmMOpt.txtTempSint.Text;
-            dGridTempMeas["d_cm", 0].Value = frmMOpt.txtDiameter.Text;
-            dGridTempMeas["h_cm", 0].Value = frmMOpt.txtHeight.Text;
-            dGridTempMeas["T_K", 0].Value = PP.Temperature1;
-            dGridTempMeas["Direction", 0].Value = PP.Direction;
-            dGridTempMeas["Ubias_V", 0].Value = PP.BiasUCurrent;
-            dGridTempMeas["Hbias_T", 0].Value = txtHBias.Text;
-            dGridTempMeas["Cycle", 0].Value = PP.cycleCurrentNum.ToString();
-            dGridTempMeas["Date", 0].Value = DateTime.Now.ToShortDateString();
-            dGridTempMeas["Time", 0].Value = dateT.ToString("hh:mm:ss.fff");
-            dGridTempMeas["operator", 0].Value = frmMOpt.cmbOperator.Text;
-            dGridTempMeas["Timer", 0].Value = (PP.TimeMeas).ToString();
-            dGridTempMeas["Meas_type", 0].Value = frmMOpt.cWorkMode.Text;
-            dGridTempMeas["Step", 0].Value = PP.CurrentStep;
-            dGridTempMeas["Polarity", 0].Value = PP.Polarity;
-            dGridTempMeas["ro_exp", 0].Value = frmMOpt.txtRoExp.Text;
-            dGridTempMeas["solid_state", 0].Value = frmMOpt.cmbSolidState.Text;
-            dGridTempMeas["comments", 0].Value = frmMOpt.txtComments.Text;
+            string dateformat = "hh:mm:ss.fff";
+            dGridTempMeas[Constants.id, 0].Value = PP.CelSel.ToString();
+            dGridTempMeas[Constants.composition, 0].Value = frmMOpt.txtComposition.Text;
+            dGridTempMeas[Constants.id_sample, 0].Value = frmMOpt.txtSampleNumber.Text;
+            dGridTempMeas[Constants.Tsint, 0].Value = frmMOpt.txtTempSint.Text;
+            dGridTempMeas[Constants.d_cm, 0].Value = frmMOpt.txtDiameter.Text;
+            dGridTempMeas[Constants.h_cm, 0].Value = frmMOpt.txtHeight.Text;
+            dGridTempMeas[Constants.T_K, 0].Value = PP.Temperature1;
+            dGridTempMeas[Constants.direction, 0].Value = PP.Direction;
+            dGridTempMeas[Constants.CycleNum, 0].Value = PP.cycleCurrentNum.ToString();
+            dGridTempMeas[Constants.CurDate, 0].Value = DateTime.Now.ToShortDateString();
+            dGridTempMeas[Constants.CurTime, 0].Value = dateT.ToString("hh:mm:ss.fff");
+            dGridTempMeas[Constants.meas_type, 0].Value = frmMOpt.cWorkMode.Text;
+            dGridTempMeas[Constants.step, 0].Value = PP.CurrentStep.ToString();
+            dGridTempMeas[Constants.polarity, 0].Value = PP.Polarity;
+            #region  additional data
+            dGridTempMeas[Constants.ro_exp, 0].Value = frmMOpt.txtRoExp.Text.ToString();
+            dGridTempMeas[Constants.solid_state, 0].Value = frmMOpt.cmbSolidState.Text.ToString();
+            dGridTempMeas[Constants.cur_timer, 0].Value = (PP.TimeMeas).ToString();
+            dGridTempMeas[Constants.comments, 0].Value = frmMOpt.txtComments.Text;
+            dGridTempMeas[Constants.current_meas_type, 0].Value = 10001.ToString(); //10001- dispersion code
+            #endregion
+            dGridTempMeas[Constants.Ubias, 0].Value = PP.BiasUCurrent;
+            dGridTempMeas[Constants.Hbias, 0].Value = PP.BiasHCurrent;
+            dGridTempMeas[Constants.direction, 0].Value = PP.Direction;
+            dGridTempMeas[Constants.Operator, 0].Value = frmMOpt.cmbOperator.Text;
+        }
+        /// <summary>
+        /// Calculation dielectric vals
+        /// </summary>
+        public void CalcDielecticVals()
+        {
+            PiezoMathCalculation PM = new PiezoMathCalculation();
+            PP.ep_re = PM.e_re(PP.thicknes, PP.diametr, PP.Cp_pf, 1e12);
+            PP.es_re = PM.e_re(PP.thicknes, PP.diametr, PP.Cs_pf, 1e12);
+            dGridTempMeas[Constants.ep_re, 0].Value = PP.ep_re;
+            dGridTempMeas[Constants.es_re, 0].Value = PP.es_re;
+            dGridTempMeas[Constants.es_im, 0].Value = PM.e_im(PP.es_re, PP.tgd);
+            dGridTempMeas[Constants.ep_im, 0].Value = PM.e_im(PP.ep_re, PP.tgd);
+            dGridTempMeas[Constants.tgd2, 0].Value = PM.tgdE2(PP.tgd);
+            dGridTempMeas[Constants.f, 0].Value = PP.MeasuringFrequency;
+        }
+        public void AddParametersVal(int rownum)
+        {
+            DateTime dateT = DateTime.Now;
+            string dateformat = "hh:mm:ss.fff";
+            dGridTempMeas[Constants.id, rownum].Value = PP.CelSel.ToString();
+            dGridTempMeas[Constants.composition, rownum].Value = frmMOpt.txtComposition.Text;
+            dGridTempMeas[Constants.id_sample, rownum].Value = frmMOpt.txtSampleNumber.Text;
+            dGridTempMeas[Constants.Tsint, rownum].Value = frmMOpt.txtTempSint.Text;
+            dGridTempMeas[Constants.d_cm, rownum].Value = frmMOpt.txtDiameter.Text;
+            dGridTempMeas[Constants.h_cm, rownum].Value = frmMOpt.txtHeight.Text;
+            dGridTempMeas[Constants.T_K, rownum].Value = PP.Temperature1;
+            dGridTempMeas[Constants.direction, rownum].Value = PP.Direction;
+            dGridTempMeas[Constants.CycleNum, rownum].Value = PP.cycleCurrentNum.ToString();
+            dGridTempMeas[Constants.CurDate, rownum].Value = DateTime.Now.ToShortDateString();
+            dGridTempMeas[Constants.CurTime, rownum].Value = dateT.ToString("hh:mm:ss.fff");
+            dGridTempMeas[Constants.meas_type, rownum].Value = frmMOpt.cWorkMode.Text;
+            dGridTempMeas[Constants.step, rownum].Value = PP.CurrentStep;
+            dGridTempMeas[Constants.polarity, rownum].Value = PP.Polarity;
+            #region  additional data
+            dGridTempMeas[Constants.ro_exp, rownum].Value = frmMOpt.txtRoExp.Text.ToString();
+            dGridTempMeas[Constants.solid_state, rownum].Value = frmMOpt.cmbSolidState.Text.ToString();
+            dGridTempMeas[Constants.cur_timer, rownum].Value = (PP.TimeMeas).ToString();
+            dGridTempMeas[Constants.comments, rownum].Value = frmMOpt.txtComments.Text;
+            dGridTempMeas[Constants.current_meas_type, rownum].Value = 10001.ToString(); //10001- dispersion code
+            #endregion
+            dGridTempMeas[Constants.Ubias, rownum].Value = PP.BiasUCurrent;
+            dGridTempMeas[Constants.Hbias, rownum].Value = PP.BiasHCurrent;
+            dGridTempMeas[Constants.direction, rownum].Value = PP.Direction;
+            dGridTempMeas[Constants.Operator, rownum].Value = frmMOpt.cmbOperator.Text;
         }
 
         /// <summary>
@@ -6204,44 +6400,43 @@ namespace Kalipso
             {
                 case "Export to DB(only)":
                     {
-
                         AddParametersVal();
                         myStopwatch.Stop();
                         PP.TimeMeas = PP.TimeMeas + (Convert.ToDouble(myStopwatch.ElapsedMilliseconds.ToString()) * timeCoef) + 0.14;
 
                         if (chPolarity.Checked == true)
                         {
-                            dGridTempMeas["Uout_V", 0].Value = Uin.ToString();
-                            dGridTempMeas["Ubias_V_conv", 0].Value = (Uin * Convert.ToDouble(frmMOpt.txtApproxU_d33_A.Text) + Convert.ToDouble(frmMOpt.txtApproxU_d33_B.Text)).ToString();
+                            dGridTempMeas[Constants.uout, 0].Value = Uin.ToString();
+                            dGridTempMeas[Constants.Ubias_V_conv, 0].Value = (Uin * Convert.ToDouble(frmMOpt.txtApproxU_d33_A.Text) + Convert.ToDouble(frmMOpt.txtApproxU_d33_B.Text)).ToString();
                         }
                         if (chPolarity.Checked == false)
                         {
-                            dGridTempMeas["Uout_V", 0].Value = (Uin * (-1)).ToString();
-                            dGridTempMeas["Ubias_V_conv", 0].Value = ((Uin * Convert.ToDouble(frmMOpt.txtApproxU_d33_A.Text) + Convert.ToDouble(frmMOpt.txtApproxU_d33_B.Text)) * (-1)).ToString();
+                            dGridTempMeas[Constants.uout, 0].Value = (Uin * (-1)).ToString();
+                            dGridTempMeas[Constants.Ubias_V_conv, 0].Value = ((Uin * Convert.ToDouble(frmMOpt.txtApproxU_d33_A.Text) + Convert.ToDouble(frmMOpt.txtApproxU_d33_B.Text)) * (-1)).ToString();
                         }
-                        txtUbias.Text = dGridTempMeas["Ubias_V_conv", 0].Value.ToString();
-                        lbField.Text = "U= " + dGridTempMeas["Ubias_V_conv", 0].Value.ToString();
-                        dGridTempMeas["Uin_voltmeter", 0].Value = Uin_Xi;
+                        txtUbias.Text = dGridTempMeas[Constants.Ubias_V_conv, 0].Value.ToString();
+                        lbField.Text = "U= " + dGridTempMeas[Constants.Ubias_V_conv, 0].Value.ToString();
+                        dGridTempMeas[Constants.Uin_voltm, 0].Value = Uin_Xi;
 
 
                         switch (cbCTE_Limit.Text)
                         {
                             case "20":
                                 {
-                                    dGridTempMeas["Xi", 0].Value = PM.XiVal_Law_linear(Convert.ToDouble(Uin_Xi), Convert.ToDouble(frmMOpt.txtApproxD33_A_20.Text), Convert.ToDouble(frmMOpt.txtApproxD33_B_20.Text)).ToString();
-                                    dGridTempMeas["conv_coef", 0].Value = "20";
+                                    dGridTempMeas[Constants.xi, 0].Value = PM.XiVal_Law_linear(Convert.ToDouble(Uin_Xi), Convert.ToDouble(frmMOpt.txtApproxD33_A_20.Text), Convert.ToDouble(frmMOpt.txtApproxD33_B_20.Text)).ToString();
+                                    dGridTempMeas[Constants.conv_c, 0].Value = "20";
                                     break;
                                 }
                             case "200":
                                 {
-                                    dGridTempMeas["Xi", 0].Value = PM.XiVal_Law_linear(Uin, Convert.ToDouble(frmMOpt.txtApproxD33_A_200.Text), Convert.ToDouble(frmMOpt.txtApproxD33_B_200.Text)).ToString();
-                                    dGridTempMeas["conv_coef", 0].Value = "200";
+                                    dGridTempMeas[Constants.xi, 0].Value = PM.XiVal_Law_linear(Uin, Convert.ToDouble(frmMOpt.txtApproxD33_A_200.Text), Convert.ToDouble(frmMOpt.txtApproxD33_B_200.Text)).ToString();
+                                    dGridTempMeas[Constants.conv_c, 0].Value = "200";
                                     break;
                                 }
                             case "2000":
                                 {
-                                    dGridTempMeas["Xi", 0].Value = PM.XiVal_Law_linear(Uin, Convert.ToDouble(frmMOpt.txtApproxD33_A_2000.Text), Convert.ToDouble(frmMOpt.txtApproxD33_B_2000.Text)).ToString();
-                                    dGridTempMeas["conv_coef", 0].Value = "2000";
+                                    dGridTempMeas[Constants.xi, 0].Value = PM.XiVal_Law_linear(Uin, Convert.ToDouble(frmMOpt.txtApproxD33_A_2000.Text), Convert.ToDouble(frmMOpt.txtApproxD33_B_2000.Text)).ToString();
+                                    dGridTempMeas[Constants.conv_c, 0].Value = "2000";
                                     break;
                                 }
                             default:
@@ -6251,57 +6446,6 @@ namespace Kalipso
 
 
 
-                        /*if (PP.BiasUCurrent == 0)
-                        {
-                            //dGridTempMeas["Xi", 0].Value = PM.XiVal_1(Uin).ToString();
-                            dGridTempMeas["Xi", 0].Value = PM.XiVal_Law_linear(Uin, Convert.ToDouble(frmMOpt.txtApproxA.Text), Convert.ToDouble(frmMOpt.txtApproxB.Text)).ToString();//PM.XiVal(PM.FindUmicron(Uin));
-                            // PM.XiVal(PM.FindUmicron(Uin));
-                            dGridTempMeas["Uout_V", 0].Value = Uin.ToString();
-                            dGridTempMeas["E_kV_Div_cm", 0].Value = (Convert.ToDouble(dGridTempMeas["Xi", 0].Value) / Convert.ToDouble(frmMOpt.txtHeight.Text)).ToString(); ;
-
-                            PP.Xi0.Add(Convert.ToDouble(dGridTempMeas["Xi", 0].Value));
-
-                            double ave = 0;
-                            for (int j = 0; j < PP.Xi0.Count(); j++)
-                            {
-                                ave += PP.Xi0[j];
-                            }
-                            dGridTempMeas["Ubias_V_conv", 0].Value = 0;
-                            dGridTempMeas["Xi0", 0].Value = ave / PP.Xi0.Count();
-                            dGridTempMeas["Xi-Xi0", 0].Value = Convert.ToDouble(dGridTempMeas["Xi", 0].Value) - Convert.ToDouble(dGridTempMeas["Xi0", 0].Value);
-                            dGridTempMeas["Uout_V", 0].Value = Uin.ToString();
-                            dGridTempMeas["E_kV_Div_cm", 0].Value = (Convert.ToDouble(PP.BiasUCurrent) / Convert.ToDouble(frmMOpt.txtHeight.Text) / 1000).ToString();
-                        }
-                        if (PP.BiasUCurrent != 0)
-                        {
-                            PM.SetXiMas();
-                            PM.SetUMicronOutMas();
-
-                            //dGridTempMeas["Xi", 0].Value = PM.XiVal_1(Uin).ToString();//PM.XiVal(PM.FindUmicron(Uin));
-                            dGridTempMeas["Xi", 0].Value = PM.XiVal_Law_linear(Uin, Convert.ToDouble(frmMOpt.txtApproxA.Text), Convert.ToDouble(frmMOpt.txtApproxB.Text)).ToString();//PM.XiVal(PM.FindUmicron(Uin));
-                            double ave = 0;
-                            for (int j = 0; j < PP.Xi0.Count(); j++)
-                            {
-                                ave += PP.Xi0[j];
-                            }
-                            if (PP.Polarity == PP.PolarityPositive)
-                            {
-                                dGridTempMeas["Ubias_V_conv", 0].Value = 49.516 * Convert.ToDouble(dGridTempMeas["Ubias_V", 0].Value) - 50.798;
-                            }
-                            if (PP.Polarity == PP.PolarityNegative)
-                            {
-                                dGridTempMeas["Ubias_V_conv", 0].Value = (49.516 * Convert.ToDouble(dGridTempMeas["Ubias_V", 0].Value) - 50.798) *(-1);
-                            }
-                            lbField.Text = "U= " + dGridTempMeas["Ubias_V_conv", 0].Value;
-
-                            dGridTempMeas["Xi0", 0].Value = ave / PP.Xi0.Count();
-                            dGridTempMeas["Xi-Xi0", 0].Value = Convert.ToDouble(dGridTempMeas["Xi", 0].Value) - Convert.ToDouble(dGridTempMeas["Xi0", 0].Value);
-                            dGridTempMeas["E_kV_Div_cm", 0].Value = (Convert.ToDouble(dGridTempMeas["Ubias_V_conv", 0].Value) / Convert.ToDouble(frmMOpt.txtHeight.Text) / 1000).ToString();
-                            dGridTempMeas["k_10_E_4", 0].Value = (Convert.ToDouble(dGridTempMeas["Xi", 0].Value) / Convert.ToDouble(frmMOpt.txtHeight.Text)).ToString();
-                            dGridTempMeas["d33rev", 0].Value = ((Convert.ToDouble(dGridTempMeas["k_10_E_4", 0].Value) / Convert.ToDouble(dGridTempMeas["E_kV_Div_cm", 0].Value)*1000)).ToString();
-                        }
-                        */
-
                         ++PP.CelSel;
 
                         switch (frmMOpt.cWorkMode.Text)
@@ -6309,20 +6453,6 @@ namespace Kalipso
                             case "d33Rev":
                                 {
                                     chartMeasTemp1.Series[0].Points.AddXY(Convert.ToDouble(dGridTempMeas["Ubias_V_conv", 0].Value), Convert.ToDouble(dGridTempMeas["Xi", 0].Value));
-                                    //chartMeasTemp2.Series[0].Points.AddXY(Convert.ToDouble(dGridTempMeas["Ubias_V_conv", 0].Value), Convert.ToDouble(dGridTempMeas["d33rev", 0].Value));
-
-                                    //if (PP.BiasUCurrent != 0)
-                                    //{
-                                    //    if (dGridTempMeas["k_10_E_4", 0].Value.ToString() != "")
-                                    //    {
-                                    //        chartMeasTemp1.Series[0].Points.AddXY(Convert.ToDouble(dGridTempMeas["Ubias_V_conv", 0].Value), Convert.ToDouble(dGridTempMeas["Xi", 0].Value));
-                                    //        chartMeasTemp2.Series[0].Points.AddXY(Convert.ToDouble(dGridTempMeas["Ubias_V_conv", 0].Value), Convert.ToDouble(dGridTempMeas["d33rev", 0].Value));
-                                    //    }
-                                    //    if (dGridTempMeas["k_10_E_4", 0].Value.ToString() == "")
-                                    //    {
-                                    //        chartMeasTemp1.Series[0].Points.AddXY(Convert.ToDouble(dGridTempMeas["Timer", 0].Value), Convert.ToDouble(dGridTempMeas["Xi", 0].Value));
-                                    //    }
-                                    //}
                                     break;
                                 }
                             default:
@@ -6331,7 +6461,7 @@ namespace Kalipso
                                     break;
                                 }
                         }
-                        DBConn dBConn = new DBConn();
+                        DBconnect dBConn = new DBconnect();
                         string sql = dBConn.DBExportDataString(this.dGridTempMeas, PP.DBTableName, 0);
 
                         FileJob FJ = new FileJob();
@@ -6350,9 +6480,6 @@ namespace Kalipso
         private void MeasResultsToDataGrid(string freq)
         {
             double[] vals = ParseResponceFromLCR_meter();
-
-
-
         }
 
         /// <summary>
@@ -6366,32 +6493,33 @@ namespace Kalipso
             ParseStringTab PS = new ParseStringTab();
             switch (frmMOpt.cbGPIBDevModel.Text)
             {
-                case "Agilent4980A":
+                case Constants.M_model0:
                     {
                         PS.AddMeasStringAgilent4980(frmGPIB.answer);
                         switch (frmGPIB.cbInterfaceType.Text)
                         {
-                            case "GPIB":
-                                vals[0] = Convert.ToDouble(PS.ElementAt(0));
-                                vals[1] = Convert.ToDouble(PS.ElementAt(1));
+                            case Constants.connect_type0:
+                                PP.valA = Convert.ToDouble(PS.ElementAt(0));
+                                PP.valB = Convert.ToDouble(PS.ElementAt(1));
                                 break;
-                            case "ETHERNET":
-                                vals[0] = Convert.ToDouble(PS.ElementAt(1));
-                                vals[1] = Convert.ToDouble(PS.ElementAt(2));
+                            case Constants.connect_type2:
+                                PP.valA = Convert.ToDouble(PS.ElementAt(1));
+                                PP.valB  = Convert.ToDouble(PS.ElementAt(2));
                                 break;
                             default:
-                                vals[0] = Convert.ToDouble(PS.ElementAt(0));
-                                vals[1] = Convert.ToDouble(PS.ElementAt(1));
+                                PP.valA = Convert.ToDouble(PS.ElementAt(0));
+                                PP.valB = Convert.ToDouble(PS.ElementAt(1));
                                 break;
                         }
+                        //PS.AddMeasStringAgilent4980(frmGPIB.answer);
                         break;
                     }
-                case "Agilent4285A":
+                case Constants.M_model1:
                     try
                     {
                         PS.AddMeasStringAgilent4285A(frmGPIB.answer);
-                        vals[0] = Convert.ToDouble(PS.ElementAt(0));
-                        vals[1] = Convert.ToDouble(PS.ElementAt(1));
+                        PP.valA = Convert.ToDouble(PS.ElementAt(0));
+                        PP.valB = Convert.ToDouble(PS.ElementAt(1));
                     }
                     catch (Exception ex)
                     {
@@ -6399,20 +6527,19 @@ namespace Kalipso
                     }
                     break;
 
-                case "Agilent4263B":
+                case Constants.M_model2:
                     {
                         PS.AddMeasStringAgilent4263(frmGPIB.answer);
-                        vals[0] = Convert.ToDouble(PS.ElementAt(1));
-                        vals[1] = Convert.ToDouble(PS.DeleteZero(PS.ElementAt(2)));
+                        PP.valA = Convert.ToDouble(PS.ElementAt(1));
+                        PP.valB = Convert.ToDouble(PS.DeleteZero(PS.ElementAt(2)));
                         break;
                     }
-                case "Agilent34401A":
+                case Constants.M_model3:
                     {
                         PS.AddMeasStringAgilent4980(frmGPIB.answer);
                         return vals;
-
                     }
-                case "WayneKerr6500B":
+                case Constants.M_model4:
                     {
                         PS.AddMeasStringWayneKerr6500B(frmGPIB.answer);
                         return vals;
@@ -6421,18 +6548,18 @@ namespace Kalipso
                     {
                         //+8.2556835e-13,-1.6205449e+00
                         PS.AddMeasStringWayneKerr4300(frmGPIB.answer);
-                        vals[0] = Convert.ToDouble(PS.ElementAt(0));
-                        vals[1] = Convert.ToDouble(PS.ElementAt(1));
+                        PP.valA  = Convert.ToDouble(PS.ElementAt(0));
+                        PP.valB = Convert.ToDouble(PS.ElementAt(1));
                         break;
                     }
-                case "E7-20":
+                case Constants.M_model6:
                     {
-                        vals[1] = PP.param2_E7_20;
-                        vals[0] = PP.param1_E7_20;
+                        PP.valA = PP.param1_E7_20;
+                        PP.valB = PP.param2_E7_20;
                         break;
                     }
                 default:
-                    PS.AddMeasStringAgilent4980(frmGPIB.answer);
+                    
                     break;
             }
             return vals;
@@ -6571,11 +6698,11 @@ namespace Kalipso
                 }
             }
 
-            if (frmMOpt.cbExportDBMeasTemp.Text == "Export to DB parallel" && frmDBConnection.DataBaseConnected == true)
+            if (frmMOpt.cbExportDBMeasTemp.Text == "Export to DB parallel" && frmDBConnection.DBcon.DataBaseConnected == true)
             {
                 try
                 {
-                    NpgsqlConnection pgcon = new NpgsqlConnection(frmDBConnection.ConnectionStringToDB);
+                    NpgsqlConnection pgcon = new NpgsqlConnection(frmDBConnection.DBcon.ConnectionString);
                     pgcon.Open();
                     string sql = "";
                     NpgsqlCommand CSend = new NpgsqlCommand(sql, pgcon);
@@ -6754,7 +6881,7 @@ namespace Kalipso
                             break;
                         }
                 }
-                DBConn dBConn = new DBConn();
+                DBconnect dBConn = new DBconnect();
                 string sql = dBConn.DBExportDataString(this.dGridTempMeas, PP.DBTableName, 0);
                 FileJob FJ = new FileJob();
                 FJ.WriteF(sql, PP.FileNameSaveTempMeasDB);
@@ -6822,6 +6949,8 @@ namespace Kalipso
             PP.BiasHCurrent = Convert.ToDouble(txtHBias.Text);
 
             double[] vals = ParseResponceFromLCR_meter();
+
+
             if (frmMOpt.cWorkMode.Text != "Magnit_hand")
             {
                 if (txtHBias.Text == "")
@@ -6836,6 +6965,8 @@ namespace Kalipso
 
             if (frmMOpt.cbExportDBMeasTemp.Text == "None")
             {
+                #region none add data
+
                 try
                 {
                     string dateformat = "hh:mm:ss.fff";
@@ -6893,13 +7024,17 @@ namespace Kalipso
                 {
                     ex.ToString();
                 }
+
+
+                #endregion
             }
 
-            if (frmMOpt.cbExportDBMeasTemp.Text == "Export to DB parallel" && frmDBConnection.DataBaseConnected == true)
+            if (frmMOpt.cbExportDBMeasTemp.Text == "Export to DB parallel" && frmDBConnection.DBcon.DataBaseConnected == true)
             {
+                #region add data parallel
                 try
                 {
-                    NpgsqlConnection pgcon = new NpgsqlConnection(frmDBConnection.ConnectionStringToDB);
+                    NpgsqlConnection pgcon = new NpgsqlConnection(frmDBConnection.DBcon.ConnectionString);
                     pgcon.Open();
                     string sql = "";
                     NpgsqlCommand CSend = new NpgsqlCommand(sql, pgcon);
@@ -6918,6 +7053,7 @@ namespace Kalipso
                 {
                     ex.ToString();
                 }
+                #endregion
             }
 
             if (frmMOpt.cbExportDBMeasTemp.Text == "Export to DB(only)")
@@ -6927,30 +7063,7 @@ namespace Kalipso
                 dateT = DateTime.Now;
                 dateT.AddMilliseconds(1);
 
-                dGridTempMeas["id", 0].Value = PP.CelSel.ToString();
-                dGridTempMeas["composition", 0].Value = frmMOpt.txtComposition.Text;
-                dGridTempMeas["id_sample", 0].Value = frmMOpt.txtSampleNumber.Text;
-                dGridTempMeas["Tsint_K", 0].Value = frmMOpt.txtTempSint.Text;
-                dGridTempMeas["composition", 0].Value = frmMOpt.txtHeight.Text;
-                t = Convert.ToDouble(frmMOpt.txtHeight.Text);
-                dGridTempMeas["d_cm", 0].Value = frmMOpt.txtDiameter.Text;
-                d = Convert.ToDouble(frmMOpt.txtDiameter.Text);
-                dGridTempMeas["T_K", 0].Value = lbTemp.Text;
-                dGridTempMeas["f_Hz", 0].Value = freq;
-                dGridTempMeas["C_pF", 0].Value = (Convert.ToDouble(vals[0]) * 1e12).ToString();
-                e_e0 = PM.e_re(t, d, Convert.ToDouble(dGridTempMeas["C_pF", 0].Value));
-                dGridTempMeas["e_re", 0].Value = e_e0.ToString();
-                dGridTempMeas["tgd", 0].Value = vals[1];
-                tgper = Convert.ToDouble(dGridTempMeas["tgd", 0].Value);
-                dGridTempMeas["tgd1e2", 0].Value = PM.tgdE2(tgper).ToString();
-                e_e2 = PM.e_im(e_e0, Convert.ToDouble(dGridTempMeas["tgd", 0].Value));
-                dGridTempMeas["e_im", 0].Value = e_e2.ToString();
-                Y = e_e2 * Convert.ToInt32(freq) * 2 * 3.14;
-                dGridTempMeas["Y", 0].Value = Y.ToString();
-                dGridTempMeas["Ubias_V", 0].Value = PP.BiasUCurrent;
-                dGridTempMeas["Hbias_T", 0].Value = PP.BiasHCurrent;
-
-                //Update cyclenum
+                #region Update cyclenum
                 if (frmMOpt.cWorkMode.Text == "Cycle_ramp")
                 {
                     if (lbTemp.Text != "300" || lbTemp.Text != "300.16")
@@ -6958,105 +7071,100 @@ namespace Kalipso
                         setCycleNumInc();
                     }
                 }
-
                 dGridTempMeas["Cycle", 0].Value = PP.cycleCurrentNum.ToString();
-                dGridTempMeas["Direction", 0].Value = PP.Direction;
-                dGridTempMeas["Date", 0].Value = DateTime.Now.ToShortDateString();
-                dGridTempMeas["Time", 0].Value = dateT.ToString(dateformat);
-                dGridTempMeas["Step", 0].Value = PP.CurrentStep;
+                #endregion
 
-                //Update direction
+                #region  Update direction
                 if (frmMOpt.cWorkMode.Text != "Cycle_ramp")
                 {
                     DirectionChoice();
                 }
-                dGridTempMeas["Polarity", 0].Value = PP.Polarity;
-                dGridTempMeas["operator", 0].Value = frmMOpt.cmbOperator.Text;
-                dGridTempMeas["Meas_type", 0].Value = frmMOpt.cWorkMode.Text;
+                #endregion
+
                 AddParametersVal();
-                //additional data
-                dGridTempMeas["ro_exp", 0].Value = frmMOpt.txtRoExp.Text.ToString();
-                dGridTempMeas["solid_state", 0].Value = frmMOpt.cmbSolidState.Text.ToString();
-                dGridTempMeas["comments", 0].Value = frmMOpt.txtComments.Text;
-                myStopwatch.Stop();
-                PP.TimeMeas = PP.TimeMeas + (Convert.ToDouble(myStopwatch.ElapsedMilliseconds.ToString()) * PP.timeCoef);
-                dGridTempMeas["Timer", 0].Value = (PP.TimeMeas).ToString();
-                dGridTempMeas["comments", 0].Value = frmMOpt.txtComments.Text;
-                dGridTempMeas["current_meas_type", i].Value = 10001.ToString();//10001- dispersion code
+                
+                AddCalculationValDielectricE7_28();
+                CalcDielecticVals();
+                AddPointToGraph();
 
                 myStopwatch.Start();
-                if (frmMOpt.cWorkMode.Text == "C(dU)_auto_reversive")
-                {
-                    dGridTempMeas["Step", 0].Value = PP.CurrentStep.ToString();
-                    dGridTempMeas["Direction", 0].Value = PP.Direction.ToString();
-                    dGridTempMeas["Polarity", 0].Value = PP.Polarity.ToString();
-                }
 
-                switch (frmMOpt.cWorkMode.Text)
-                {
-                    case "C(dU)_man":
-                        {
-                            chartMeasTemp1.Series[0].Points.AddXY(PP.TimeMeas, e_e0);
-                            chartMeasTemp2.Series[0].Points.AddXY(PP.TimeMeas, tgper);
-                            chartMeasTemp1.Update();
-                            chartMeasTemp2.Update();
-                            break;
-                        }
-                    case "C(dU)_relaxation":
-                        {
-                            txtUbias.Text = PP.BiasUCurrent.ToString();
-                            txtCurFreq.Text = PP.MeasuringFrequency.ToString();
-
-                            chartMeasTemp1.Series[0].Points.AddXY(PP.TimeMeas, e_e0);
-                            chartMeasTemp2.Series[0].Points.AddXY(PP.TimeMeas, PP.BiasUCurrent);
-                            chartMeasTemp1.Update();
-                            chartMeasTemp2.Update();
-                            break;
-                        }
-
-                    default:
-                        {
-                            for (int u = 0; u < chartMeasTemp1.Series.Count; u++)
-                            {
-                                if (chartMeasTemp1.Series[u].Name == freq + "\r")
-                                {
-                                    if (frmMOpt.cbGraphOptions.Text == "e(T)" && e_e0 > 0 && e_e0 < 1e25)
-                                    {
-                                        chartMeasTemp1.Series[u].Points.AddXY(Convert.ToDouble(PP.Temperature1), e_e0);
-                                        chartMeasTemp2.Series[u].Points.AddXY(PP.TimeMeas, Convert.ToDouble(PP.Temperature1));
-                                        chartMeasTemp1.Update();
-                                        chartMeasTemp2.Update();
-                                    }
-                                    if (frmMOpt.cbGraphOptions.Text == "e(E)" && e_e0 > 0 && e_e0 < 1e25)
-                                    {
-                                        chartMeasTemp1.Series[u].Points.AddXY(Convert.ToDouble(PP.BiasUCurrent), e_e0);
-                                        chartMeasTemp2.Series[u].Points.AddXY(Convert.ToDouble(PP.BiasUCurrent), tgper);
-                                        chartMeasTemp1.Update();
-                                        chartMeasTemp2.Update();
-                                    }
-
-                                    if (frmMOpt.cbGraphOptions.Text == "e(f)" && e_e0 > 0 && e_e0 < 1e25)
-                                    {
-                                        chartMeasTemp1.Series[u].Points.AddXY(Convert.ToDouble(freq), e_e0);
-                                        chartMeasTemp2.Series[u].Points.AddXY(Convert.ToDouble(freq), tgper);
-                                        chartMeasTemp1.Update();
-                                        chartMeasTemp2.Update();
-                                    }
-                                }
-                            }
-                            break;
-                        }
-                }
-                DBConn dBConn = new DBConn();
+                DBconnect dBConn = new DBconnect();
                 string sql = dBConn.DBExportDataString(this.dGridTempMeas, PP.DBTableName, 0);
                 FileJob FJ = new FileJob();
                 FJ.WriteF(sql, PP.FileNameSaveTempMeasDB);
-
-
             }
             this.Refresh();
             myStopwatch.Stop();
             PP.TimeMeas = PP.TimeMeas + (Convert.ToDouble(myStopwatch.ElapsedMilliseconds.ToString()) * PP.timeCoef);
+        }
+
+        void AddPointToGraph()
+        {
+            switch (frmMOpt.cWorkMode.Text)
+            {
+                case "C(dU)_man":
+                    {
+                        chartMeasTemp1.Series[0].Points.AddXY(PP.TimeMeas, PP.es_re);
+                        chartMeasTemp2.Series[0].Points.AddXY(PP.TimeMeas, PP.valB);
+                        chartMeasTemp1.Update();
+                        chartMeasTemp2.Update();
+                        break;
+                    }
+                case "C(dU)_relaxation":
+                    {
+                        txtUbias.Text = PP.BiasUCurrent.ToString();
+                        txtCurFreq.Text = PP.MeasuringFrequency.ToString();
+
+                        chartMeasTemp1.Series[0].Points.AddXY(PP.TimeMeas, PP.es_re);
+                        chartMeasTemp2.Series[0].Points.AddXY(PP.TimeMeas, PP.BiasUCurrent);
+                        chartMeasTemp1.Update();
+                        chartMeasTemp2.Update();
+                        break;
+                    }
+
+                default:
+                    {
+                        for (int u = 0; u < chartMeasTemp1.Series.Count; u++)
+                        {
+                            if (chartMeasTemp1.Series[u].Name == PP.MeasuringFrequency + "\r")
+                            {
+                                if (frmMOpt.cbGraphOptions.Text == "e(T)" &&
+                                    Convert.ToDouble(dGridTempMeas[Constants.es_re, 0].Value) > 0 &&
+                                    Convert.ToDouble(dGridTempMeas[Constants.es_re, 0].Value) < 1e25)
+                                {
+                                    chartMeasTemp1.Series[u].Points.AddXY(Convert.ToDouble(PP.Temperature1), 
+                                        Convert.ToDouble(dGridTempMeas[Constants.es_re, 0].Value));
+                                    chartMeasTemp2.Series[u].Points.AddXY(PP.TimeMeas, Convert.ToDouble(PP.Temperature1));
+                                    chartMeasTemp1.Update();
+                                    chartMeasTemp2.Update();
+                                }
+                                if (frmMOpt.cbGraphOptions.Text == "e(E)" &&
+                                    Convert.ToDouble(dGridTempMeas[Constants.es_re, 0].Value) > 0 &&
+                                    Convert.ToDouble(dGridTempMeas[Constants.es_re, 0].Value) < 1e25)
+                                {
+                                    chartMeasTemp1.Series[u].Points.AddXY(Convert.ToDouble(PP.BiasUCurrent), PP.es_re);
+                                    chartMeasTemp2.Series[u].Points.AddXY(Convert.ToDouble(PP.BiasUCurrent), PP.valB);
+                                    chartMeasTemp1.Update();
+                                    chartMeasTemp2.Update();
+                                }
+
+                                if (frmMOpt.cbGraphOptions.Text == "e(f)" &&
+                                    Convert.ToDouble(dGridTempMeas[Constants.es_re, 0].Value) > 0 &&
+                                    Convert.ToDouble(dGridTempMeas[Constants.es_re, 0].Value) < 1e25)
+                                {
+                                    chartMeasTemp1.Series[u].Points.AddXY(Convert.ToDouble(PP.MeasuringFrequency), 
+                                        Convert.ToDouble(dGridTempMeas[Constants.es_re, 0].Value));
+                                    chartMeasTemp2.Series[u].Points.AddXY(Convert.ToDouble(PP.MeasuringFrequency), PP.valB);
+
+                                    chartMeasTemp1.Update();
+                                    chartMeasTemp2.Update();
+                                }
+                            }
+                        }
+                        break;
+                    }
+            }
         }
 
         /// <summary>
@@ -7335,22 +7443,22 @@ namespace Kalipso
 
         private void button4_Click_3(object sender, EventArgs e)
         {
-            NpgsqlConnection pgcon = new NpgsqlConnection(frmDBConnection.ConnectionStringToDB);
-            pgcon.Open();
-            NpgsqlCommand command = new NpgsqlCommand("SELECT  * FROM f23_45", pgcon)
-            {
-                CommandTimeout = 200
-            };
-            // Новый адаптер нужен для заполнения набора данных
-            NpgsqlDataAdapter da = new NpgsqlDataAdapter(command);
-            // Создадим новый набор данных
-            DataTable dt = new DataTable();
-            //dt.Clear();
-            // Заполняем набор данных данными, которые вернул запрос
-            da.Fill(dt);
-            //Связываем элемент DataGridView1 с набором данных
-            dTreatmentIn.DataSource = dt;
-            pgcon.Close();
+            //NpgsqlConnection pgcon = new NpgsqlConnection(frmDBConnection.ConnectionStringToDB);
+            //pgcon.Open();
+            //NpgsqlCommand command = new NpgsqlCommand("SELECT  * FROM f23_45", pgcon)
+            //{
+            //    CommandTimeout = 200
+            //};
+            //// Новый адаптер нужен для заполнения набора данных
+            //NpgsqlDataAdapter da = new NpgsqlDataAdapter(command);
+            //// Создадим новый набор данных
+            //DataTable dt = new DataTable();
+            ////dt.Clear();
+            //// Заполняем набор данных данными, которые вернул запрос
+            //da.Fill(dt);
+            ////Связываем элемент DataGridView1 с набором данных
+            //dTreatmentIn.DataSource = dt;
+            //pgcon.Close();
         }
 
         private void saveAgilentToolStripMenuItem_Click(object sender, EventArgs e)
@@ -7563,7 +7671,7 @@ namespace Kalipso
         /// </summary>
         public void ExportMeasInformationToDataBase()
         {
-            NpgsqlConnection pgcon = new NpgsqlConnection(frmDBConnection.ConnectionStringToDB);
+            NpgsqlConnection pgcon = new NpgsqlConnection(frmDBConnection.DBcon.ConnectionString);
             pgcon.Open();
             string s = "";
             for (int i = 0; i < dGridTempMeas.Columns.Count; i++)
@@ -7611,7 +7719,7 @@ namespace Kalipso
         /// <param name="DG">The dg.</param>
         public void ExportMeasToDataBaseFromDataGrid(DataGridView DG)
         {
-            NpgsqlConnection pgcon = new NpgsqlConnection(frmDBConnection.ConnectionStringToDB);
+            NpgsqlConnection pgcon = new NpgsqlConnection(frmDBConnection.DBcon.ConnectionString);
             pgcon.Open();
             string s = "";
             for (int i = 0; i < dGridTempMeas.Columns.Count; i++)
@@ -7670,8 +7778,8 @@ namespace Kalipso
             System.IO.File.Create(PP.FileNameSaveTempMeasDB);
 
             string sql = "Create table " + frmMOpt.txtComposition + " (" + s + " description text);";
-            DBConn dBConn = new DBConn();
-            bool check = dBConn.DBSendCMD(PP.DBSQLConnctionString, sql);
+            DBconnect dBConn = new DBconnect();
+            bool check = dBConn.DBSendCMDOnce(PP.DBSQLConnctionString, sql);
             if (check == false)
             {
                 FileJob FJ = new FileJob();
@@ -7685,10 +7793,10 @@ namespace Kalipso
         public void ExportTreatmentInformationToDataBase(DataGridView DG)
         {
             PiezoMathCalculation PM = new PiezoMathCalculation();
-            DBConn dBConn = new DBConn();
-            dBConn.DBCreateTableForMeas(DG, frmDBConnection.ConnectionStringToDB, frmMOpt.txtComposition.Text);
-            dBConn.DBExportDataCommon(DG, frmDBConnection.ConnectionStringToDB, frmMOpt.txtComposition.Text);
-            NpgsqlConnection pgcon = new NpgsqlConnection(frmDBConnection.ConnectionStringToDB);
+            DBconnect dBConn = new DBconnect();
+            dBConn.DBCreateTableForMeasOnce(DG, frmDBConnection.DBcon.ConnectionString, frmMOpt.txtComposition.Text);
+            dBConn.DBExportDataCommonOnce(DG, frmDBConnection.DBcon.ConnectionString, frmMOpt.txtComposition.Text);
+            NpgsqlConnection pgcon = new NpgsqlConnection(frmDBConnection.DBcon.ConnectionString);
             pgcon.Open();
             string s = "";
             for (int i = 0; i < DG.Columns.Count; i++)
@@ -7813,9 +7921,9 @@ namespace Kalipso
         /// <param name="e"></param>
         private void exportTreatmentDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DBConn dBConn = new DBConn();
-            dBConn.DBCreateTableForMeas(this.dTreatmentIn, frmDBConnection.ConnectionStringToDB, frmMOpt.txtComposition.Text);
-            dBConn.DBExportDataCommon(this.dTreatmentIn, frmDBConnection.ConnectionStringToDB, frmMOpt.txtComposition.Text);
+            DBconnect dBConn = new DBconnect();
+            dBConn.DBCreateTableForMeasOnce(this.dTreatmentIn, frmDBConnection.DBcon.ConnectionString, frmMOpt.txtComposition.Text);
+            dBConn.DBExportDataCommonOnce(this.dTreatmentIn, frmDBConnection.DBcon.ConnectionString, frmMOpt.txtComposition.Text);
         }
         /// <summary>
         /// 
@@ -7874,9 +7982,9 @@ namespace Kalipso
         private void exportAllDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //кусок отвечающий за экспорт в базу данных 
-            DBConn dBConn = new DBConn();
-            dBConn.DBCreateTableRandomMeas(this.dTreatmentIn, PP.DBSQLConnctionString, PP.DBTableName);
-            dBConn.DBExportDataRandom(this.dTreatmentIn, PP.DBSQLConnctionString, PP.DBTableName);
+            DBconnect dBConn = new DBconnect();
+            dBConn.DBCreateTableRandomMeasOnce(this.dTreatmentIn, PP.DBSQLConnctionString, PP.DBTableName);
+            dBConn.DBExportDataRandomOnce(this.dTreatmentIn, PP.DBSQLConnctionString, PP.DBTableName);
             //пропуск фалов с RNON.txt
             this.Refresh();
         }
@@ -7916,9 +8024,9 @@ namespace Kalipso
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void exportTreatmentDataAllFormatsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DBConn dBConn = new DBConn();
-            dBConn.DBCreateTableRandomMeas(this.dTreatmentIn, frmDBConnection.ConnectionStringToDB, frmMOpt.txtComposition.Text);
-            dBConn.DBExportDataCommon(this.dTreatmentIn, frmDBConnection.ConnectionStringToDB, frmMOpt.txtComposition.Text);
+            DBconnect dBConn = new DBconnect();
+            dBConn.DBCreateTableRandomMeasOnce(this.dTreatmentIn, frmDBConnection.DBcon.ConnectionString, frmMOpt.txtComposition.Text);
+            dBConn.DBExportDataCommonOnce(this.dTreatmentIn, frmDBConnection.DBcon.ConnectionString, frmMOpt.txtComposition.Text);
         }
         /// <summary>
         /// Handles the Click event of the sortingOldFormatdnonrnonToolStripMenuItem control.
@@ -7937,8 +8045,8 @@ namespace Kalipso
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void exportTreatmentDatatempRandomFormatToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PP.DBSQLConnctionString = frmDBConnection.ConnectionStringToDB;
-            DBConn dB = new DBConn();
+            PP.DBSQLConnctionString = frmDBConnection.DBcon.ConnectionString;
+            DBconnect dB = new DBconnect();
             dB.ExportDataToDataBaseTempAll(this.dTreatmentIn, PP.DBSQLConnctionString);
 
 
@@ -8003,9 +8111,9 @@ namespace Kalipso
                 frmMOpt.txtComposition.Text = s1[0];//замена подстроки на ""
                 txtLog.AppendText(filesname[i] + Environment.NewLine);
                 //кусок отвечающий за экспорт в базу данных
-                DBConn dBConn = new DBConn();
-                dBConn.DBCreateTableRandomMeas(this.dTreatmentIn, frmDBConnection.ConnectionStringToDB, frmMOpt.txtComposition.Text);
-                dBConn.DBExportDataCommon(this.dTreatmentIn, frmDBConnection.ConnectionStringToDB, frmMOpt.txtComposition.Text);
+                DBconnect dBConn = new DBconnect();
+                dBConn.DBCreateTableRandomMeasOnce(this.dTreatmentIn, frmDBConnection.DBcon.ConnectionString, frmMOpt.txtComposition.Text);
+                dBConn.DBExportDataCommonOnce(this.dTreatmentIn, frmDBConnection.DBcon.ConnectionString, frmMOpt.txtComposition.Text);
             }
             //копирование файлов из temp в подкаталог resolved
             fj.CopyResolvedFiles();
@@ -8051,11 +8159,11 @@ namespace Kalipso
             {
                 DNON_RNON_Import(filesname[i]);//импорт файла
                 ++i;
-                frmDBConnection.ConnString();
-                PP.DBSQLConnctionString = frmDBConnection.ConnectionStringToDB;
-                DBConn dBConn = new DBConn();
-                dBConn.DBCreateTableRandomMeas(this.dTreatmentIn, PP.DBSQLConnctionString, PP.DBTableName);
-                dBConn.DBExportDataRandom1(this.dTreatmentIn, PP.DBSQLConnctionString, PP.DBTableName);
+                frmDBConnection.DBcon.CollectConnectionString();
+                PP.DBSQLConnctionString = frmDBConnection.DBcon.ConnectionString;
+                DBconnect dBConn = new DBconnect();
+                dBConn.DBCreateTableRandomMeasOnce(this.dTreatmentIn, PP.DBSQLConnctionString, PP.DBTableName);
+                dBConn.DBExportDataRandom1Once(this.dTreatmentIn, PP.DBSQLConnctionString, PP.DBTableName);
                 ProgressDB.Value = i;
             }
             //пропуск фалов с RNON.txt
@@ -8104,13 +8212,13 @@ namespace Kalipso
 
         private void sqlFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DBConn dBConn = new DBConn();
+            DBconnect dBConn = new DBconnect();
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.ShowDialog();
             try
             {
                 openFileDialog.OpenFile();
-                dBConn.ExportSQLFile(openFileDialog.FileName, frmDBConnection.ConnectionStringToDB);
+                dBConn.ExportSQLFileOnce(openFileDialog.FileName, frmDBConnection.DBcon.ConnectionString);
             }
             catch (Exception ex)
             {
@@ -8120,7 +8228,7 @@ namespace Kalipso
 
         private void exportTreatmentDatatempCommonFormatToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            new DBConn().ExportDataToDataBaseTemp(this.dTreatmentIn, frmDBConnection.ConnectionStringToDB);
+            new DBconnect().ExportDataToDataBaseTemp(this.dTreatmentIn, frmDBConnection.DBcon.ConnectionString);
 
 
             //FileJob fj = new FileJob();
@@ -8145,8 +8253,8 @@ namespace Kalipso
 
         private void exportDatatempDnonrnonToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PP.DBSQLConnctionString = frmDBConnection.ConnectionStringToDB;
-            DBConn dB = new DBConn();
+            PP.DBSQLConnctionString = frmDBConnection.DBcon.ConnectionString;
+            DBconnect dB = new DBconnect();
             dB.ExportDataToDataBaseTempAll(this.dTreatmentIn, PP.DBSQLConnctionString);
             FileJob fj = new FileJob();
             fj.CopyResolvedFiles();
@@ -8199,9 +8307,9 @@ namespace Kalipso
         private double GetUFromVoltmeter()
         {
             double volt = 0;
-            for (int i = 0; i < Com.allComPort.Count(); i++)
+            for (int i = 0; i < frmComPort.allComPort.Count(); i++)
             {
-                if (Com.allComPort[i].DeviceName == "VoltageMeter HY-AV51-T")
+                if (frmComPort.allComPort[i].DeviceName == "VoltageMeter HY-AV51-T")
                 {
                     switch (frmMOpt.cWorkMode.Text)
                     {
@@ -8496,6 +8604,36 @@ namespace Kalipso
             //{
             //    e.Handled = true;
             //}
+        }
+
+        int thred_i = 0;
+        private void timer1_Tick_1(object sender, EventArgs e)
+        {
+            ++thred_i;
+        }
+
+        private void button3_Click_6(object sender, EventArgs e)
+        {
+            timer1.Enabled = true;
+            timer2.Enabled = true;
+            timer3.Enabled = true;
+        }
+
+        private void button6_Click_1(object sender, EventArgs e)
+        {
+            timer1.Enabled = false;
+            timer2.Enabled = false;
+        }
+
+        private void timer2_Tick_1(object sender, EventArgs e)
+        {
+            lbDirect.Text = thred_i.ToString();
+        }
+
+        private void timer3_Tick_1(object sender, EventArgs e)
+        {
+            getTempFromTermocontroller();
+            lbDirect.Text = PP.Temperature1.ToString();
         }
 
 

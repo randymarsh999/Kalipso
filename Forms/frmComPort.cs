@@ -16,6 +16,131 @@ using System.Security.Cryptography;
 namespace Kalipso
 {
     /// <summary>
+    /// Struct contain answer from LCR-E7_28
+    /// </summary>
+    public struct answerE7_28
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        public int dev_address { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dev_id"></param>
+        public void set_address(int dev_id)
+        {
+            this.dev_address = dev_id;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public int command { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cmd"></param>
+        public void set_send_command(int cmd)
+        {
+            this.command = cmd;
+        }
+        /// <summary>
+        /// 0-АВП; 
+        /// 1-Ток(не используется); 
+        /// 2-Перегрузка; 
+        /// 3-Автовыбор параметра; 
+        /// 4-Схема замещения(1-пар, 0-посл.) 
+        /// 7-цикл измерения завершен.
+        /// </summary>
+        public string flags { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fl"></param>
+        public void set_cur_flags(int fl)
+        {
+            
+            this.flags = Convert.ToString(fl, 2);
+        }
+        /// <summary>
+        /// parameter changed by the keyboard (function keys F1-F4)
+        /// </summary>
+        public int mode { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mode"></param>
+        public void set_cur_mode(int mode)
+        {
+            this.mode = mode;
+        }
+        /// <summary>
+        /// measurment speed 
+        /// </summary>
+        public int slow { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="slow"></param>
+        public void set_cur_slow(int slow)
+        {
+            this.slow = slow;
+        }
+        /// <summary>
+        /// range of measurment
+        /// </summary>
+        public int diap { get; set; }
+
+        public void set_cur_diap(int diap)
+        {
+            this.diap = diap;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public Int16 biasU { get; set; }
+
+        public void set_cur_biasU(Int16 u)
+        { 
+            this.biasU = u;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public int frequecy { get; set;}
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="freq"></param>
+        public void set_cur_freq(int freq)
+        {
+            this.frequecy = freq;
+        }
+        /// <summary>
+        /// Impedance
+        /// </summary>
+        public float Z { get; set; }
+
+        public void set_cur_z(float z)
+        {
+            this.Z = z;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public float angleZ { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="angleZ"></param>
+        public void set_cur_angle(float angleZ)
+        { 
+        this.angleZ = angleZ;
+        }
+    }
+
+
+    /// <summary>
     /// Stuct contain active com port and device name
     /// </summary>
     public struct AllComPorts
@@ -59,15 +184,14 @@ namespace Kalipso
     /// </summary>
     public partial class FrmComPort : Form
     {
-
-
         /// <summary>
         /// Array of struct AllComPorts
         /// </summary>
         public AllComPorts[] allComPort = new AllComPorts[10];
 
+        public answerE7_28 answerE7_28 = new answerE7_28();
 
-        SerialPort ActivePort = new SerialPort();
+        private SerialPort ActivePort = new SerialPort();
         /// <summary>
         /// массив Com портов
         /// </summary>
@@ -373,6 +497,15 @@ namespace Kalipso
                         ComP.StopBits = System.IO.Ports.StopBits.One;
                         break;
                     }
+                case "E7-28":
+                    {
+                        ComP.BaudRate = Convert.ToInt32(cmbBaudRate.Text);
+                        //ComP.Handshake = Handshake.None;
+                        ComP.DataBits = 8;
+                        ComP.Parity = System.IO.Ports.Parity.None;
+                        ComP.StopBits = System.IO.Ports.StopBits.One;
+                        break;
+                    }
                 default:
                     {
                         break;
@@ -499,13 +632,9 @@ namespace Kalipso
 
                         short[] values = new short[40];
                         values = GetDataFromVoltageMeter_HY_AV51_T1();
-
-                        short[] valueArray = new short[2];
                         int[] valueConv = new int[2];
-
                         valueConv[0] = values[37];
                         valueConv[1] = values[35];
-
                         double val_out = 0;
                         switch (valueConv[1])
                         {
@@ -545,10 +674,157 @@ namespace Kalipso
                         SendDataToComPort(cbComDevice.Text, data);
                         break;
                     }
+                case "E7-28":
+                    {
+                        if (this.txtTransmit.Text != "")
+                        {
+                            
+                            setFreqE7_28(this.txtTransmit.Text);
+                            //ClearComBuf(cbComDevice.Text);
+                            System.Threading.Thread.Sleep(400);
+                            
+                        }
+                        break;
+                    }
                 default:
                     break;
             }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="freq"></param>
+        public void setFreqE7_28(string freq)
+        {
+            byte[] dataArray = new byte[6];
+            dataArray[0] = 0xAA;
+            byte[] intBytes = BitConverter.GetBytes(67);
+            dataArray[1] = intBytes[0];
+            byte[] freqArray = BitConverter.GetBytes(Convert.ToInt32(freq));
+            Array.Reverse(freqArray);
+            dataArray[2] = freqArray[0];
+            dataArray[3] = freqArray[1];
+            dataArray[4] = freqArray[2];
+            dataArray[5] = freqArray[3];
+            SendDataToComPort(cbComDevice.Text, dataArray, dataArray.Length);
+        }
+        public void cc1()
+        {
+            byte[] dataArray = new byte[6];
+            dataArray[0] = 0xAA;
+            byte[] intBytes = BitConverter.GetBytes(67);
+            dataArray[1] = intBytes[0];
+            byte[] freqArray = BitConverter.GetBytes(Convert.ToInt32(txtTransmit.Text));
+            Array.Reverse(freqArray);
+            SendDataToComPort(cbComDevice.Text, dataArray, dataArray.Length);
+            getAllDataFromE7_28();
+        }
+
+
+
+        public void GetDataE7_28()
+        {
+
+            byte[] freqArray = BitConverter.GetBytes(Convert.ToInt32(1000));
+            byte[] dataArray = new byte[6];
+            dataArray[0] = 0xAA;
+            //byte[] intBytes = BitConverter.GetBytes(64);
+            //byte[] intBytes = BitConverter.GetBytes(67);
+            byte[] intBytes = BitConverter.GetBytes(72);
+            dataArray[1] = intBytes[0];
+            Array.Reverse(freqArray);
+            for (int i = 0; i < freqArray.Length; i++)
+            {
+                dataArray[i + 2] = freqArray[i];
+            }
+            byte[] dataq = new byte[1];
+            for (int i = 0; i < dataArray.Length; i++)
+            {
+                dataq[0] = dataArray[i];
+                SendDataToComPort(cbComDevice.Text, dataq);
+                
+            }
+            GetDataFromCOMDevice(cbComDevice.Text, 0, 20);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public bool getAllDataFromE7_28()
+        {
+            byte[] bu = new byte[4];
+            byte[] data = new byte[2];
+            short array_range = 20;
+            byte[] buf = new byte[array_range];
+            
+            bool res = false;
+            do
+            {
+
+
+                byte[] dataArray = new byte[2];
+                dataArray[0] = 0xAA;
+                byte[] intBytes = BitConverter.GetBytes(72);
+                dataArray[1] = intBytes[0];
+                SendDataToComPort(cbComDevice.Text, dataArray, dataArray.Length);
+                System.Threading.Thread.Sleep(150);
+                buf = GetDataFromCOMDevice(cbComDevice.Text, 0, array_range);
+
+
+
+                bu[0] = buf[0];
+                answerE7_28.set_address(BitConverter.ToInt32(bu, 0));
+
+                bu[0] = buf[1];
+                answerE7_28.set_send_command(BitConverter.ToInt32(bu, 0));
+
+                bu[0] = buf[2];
+                answerE7_28.set_cur_flags(BitConverter.ToInt32(bu, 0));
+
+                bu[0] = buf[3];
+                answerE7_28.set_cur_mode(BitConverter.ToInt32(bu, 0));
+
+                bu[0] = buf[4];
+                answerE7_28.set_cur_slow(BitConverter.ToInt32(bu, 0));
+                bu[0] = buf[5];
+                answerE7_28.set_cur_diap(BitConverter.ToInt16(bu, 0));
+                data[0] = buf[6];
+                data[1] = buf[7];
+                Array.Reverse(data);
+                answerE7_28.set_cur_biasU(BitConverter.ToInt16(data, 0));
+
+                bu[0] = buf[8];
+                bu[1] = buf[9];
+                bu[2] = buf[10];
+                bu[3] = buf[11];
+                Array.Reverse(bu);
+                answerE7_28.set_cur_freq(BitConverter.ToInt32(bu, 0));
+                bu[0] = buf[12];
+                bu[1] = buf[13];
+                bu[2] = buf[14];
+                bu[3] = buf[15];
+                Array.Reverse(bu);
+                answerE7_28.set_cur_z(BitConverter.ToSingle(bu, 0));
+                bu[0] = buf[16];
+                bu[1] = buf[17];
+                bu[2] = buf[18];
+                bu[3] = buf[19];
+                Array.Reverse(bu);
+                answerE7_28.set_cur_angle(BitConverter.ToSingle(bu, 0));
+
+                if (buf[3] == 0)
+                {
+                    res = false;
+                }
+                else res = true;
+
+                txtReadString.Text = buf[19].ToString();
+
+            } while (res == false);
+            return res;
+
+        }
+
         /// <summary>
         /// Handles the Tick event of the tComPortVarta control.
         /// </summary>
@@ -875,6 +1151,7 @@ namespace Kalipso
                         if (allComPort[i].ActivePort.IsOpen == true)
                         {
                             allComPort[i].ActivePort.Write(data, 0, 1);
+                            //allComPort[i].ActivePort.DiscardInBuffer();
                         }
                     }
                 }
@@ -885,6 +1162,108 @@ namespace Kalipso
                 return;
             }
         }
+
+        public void SendDataToComPort(string device, byte[] data, int offset)
+        {
+            try
+            {
+                for (int i = 0; i < allComPort.Count(); i++)
+                {
+                    if (allComPort[i].DeviceName == device)
+                    {
+                        if (allComPort[i].ActivePort.IsOpen == true)
+                        {
+                            allComPort[i].ActivePort.Write(data, 0, offset);
+                            //allComPort[i].ActivePort.DiscardInBuffer();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                txtComLog.Text = "ERROR: " + ex.ToString();
+                return;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="device"></param>
+        /// <param name="ch"></param>
+        public void SendDataToComPort(string device, char ch)
+        {
+            try
+            {
+                for (int i = 0; i < allComPort.Count(); i++)
+                {
+                    if (allComPort[i].DeviceName == device)
+                    {
+                        if (allComPort[i].ActivePort.IsOpen == true)
+                        {
+                            allComPort[i].ActivePort.Write(ch.ToString());
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                txtComLog.Text = "ERROR: " + ex.ToString();
+                return;
+            }
+        }
+
+        void ClearComBuf(string device)
+        {
+            try
+            {
+                for (int i = 0; i < allComPort.Count(); i++)
+                {
+                    if (allComPort[i].DeviceName == device)
+                    {
+                        if (allComPort[i].ActivePort.IsOpen == true)
+                        {
+                            allComPort[i].ActivePort.DiscardInBuffer();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                txtComLog.Text = "ERROR: " + ex.ToString();
+                return;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="device"></param>
+        /// <param name="data"></param>
+        public void SendDataToComPort(string device, char[] data)
+        {
+            try
+            {
+                for (int i = 0; i < allComPort.Count(); i++)
+                {
+                    if (allComPort[i].DeviceName == device)
+                    {
+                        if (allComPort[i].ActivePort.IsOpen == true)
+                        {
+                            allComPort[i].ActivePort.Write(data, 0, 1);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                txtComLog.Text = "ERROR: " + ex.ToString();
+                return;
+            }
+        }
+
+
+
         /// <summary>
         /// Sends the data to COM port.
         /// </summary>
@@ -1054,7 +1433,6 @@ namespace Kalipso
                     }
                 }
             }
-
             return values;
         }
         /// <summary>
@@ -1066,34 +1444,70 @@ namespace Kalipso
         /// <returns></returns>
         public byte[] GetDataFromCOMDevice(string device, short offset, short max)
         {
-            byte[] byteBuffer = new byte[max];
-            byte[] responce = new byte[max];
-
-            short[] values = new short[max];
-
-            for (int i = 0; i < allComPort.Count(); i++)
+            try
             {
-                if (allComPort[i].DeviceName == device)
+                byte[] byteBuffer = new byte[max];
+                byte[] responce = new byte[max];
+                int[] buf = new int[max];
+                for (int i = 0; i < allComPort.Count(); i++)
                 {
-                    if (allComPort[i].ActivePort.IsOpen == true)
+                    if (allComPort[i].DeviceName == device)
                     {
-                        allComPort[i].ActivePort.DiscardInBuffer();
-                        System.Threading.Thread.Sleep(400);
-                        int byteRecieved = allComPort[i].ActivePort.BytesToRead;
+                        if (allComPort[i].ActivePort.IsOpen == true)
+                        {
+                            //allComPort[i].ActivePort.DiscardInBuffer();
+                            if (allComPort[i].DeviceName != "E7-28")
+                            {
+                                System.Threading.Thread.Sleep(300);
+                            }
 
-                        allComPort[i].ActivePort.Read(byteBuffer, offset, max);
-                        //for (int j = 0; j < (byteBuffer.Length - 5) / 2; j++)
-                        //{
-                        //    values[j] = byteBuffer[2 * j + 3];
-                        //    values[j] <<= 8;
-                        //    values[j] += byteBuffer[2 * j + 4];
-                        //}
-                        return byteBuffer;
+
+                            int p = allComPort[i].ActivePort.BytesToRead;
+                            int byteRecieved = allComPort[i].ActivePort.BytesToRead;
+
+                            if (allComPort[i].DeviceName == "E7-28")
+                            {
+                                if (p >= 1)
+                                {
+                                    allComPort[i].ActivePort.Read(byteBuffer, offset, max);
+                                    allComPort[i].ActivePort.DiscardOutBuffer();
+                                }
+                            }
+                            else
+                            {
+                                allComPort[i].ActivePort.Read(byteBuffer, offset, max);
+                                allComPort[i].ActivePort.DiscardOutBuffer();
+                            }
+
+                            //do
+                            //{
+                            //    allComPort[i].ActivePort.Read(byteBuffer, offset, max);
+                            //    allComPort[i].ActivePort.DiscardOutBuffer();
+                            //} while (p<3);
+
+
+                            //string sbyteBuffer1 = allComPort[i].ActivePort.ReadLine();
+                            //allComPort[i].ActivePort.Read(byteBuffer, offset, max);
+                            //for (int c = 0; c < buf.Length; c++)
+                            //{
+                            //    buf[c]= allComPort[i].ActivePort.ReadByte();
+                            //} 
+                            //int signedInt = Convert.ToInt32("u0004");
+
+                            return byteBuffer;
+                        }
                     }
                 }
+                return byteBuffer;
+
             }
-            return byteBuffer;
+            catch (Exception)
+            {
+                throw;
+            }
+
         }
+
 
 
 
@@ -1103,11 +1517,9 @@ namespace Kalipso
             int max = 85;
             var byteBuffer = new byte[max];
 
-            //serial.Read(byteBuffer1, 0, byteBuffer1.Length - offset);
             while (offset < max)
             {
                 offset += serial.Read(byteBuffer, offset, byteBuffer.Length - offset);
-
             }
             return byteBuffer;
         }
@@ -1203,7 +1615,8 @@ namespace Kalipso
 
         private void frmComPort_Load(object sender, EventArgs e)
         {
-
+            cbComDevice.Text = Properties.Settings.Default.defComDevice;
+            cmbComPortList.Text = Properties.Settings.Default.defComPort;
         }
 
         private void button3_Click_1(object sender, EventArgs e)
@@ -1322,7 +1735,6 @@ namespace Kalipso
         {
             int offset = 0;
             int max = 8;
-            //byte[] byteBuffer = new byte[max];
             byte[] byteBuffer;
             short[] values = new short[10];
             for (int j = 0; j < allComPort.Count() - 1; j++)
@@ -1345,9 +1757,9 @@ namespace Kalipso
                         values[i] += byteBuffer[2 * i + 4];
                     }
                     allComPort[j].ActivePort.DiscardInBuffer();
-                    
+
                 }
-                
+
             }
             return values;
         }
@@ -1402,7 +1814,7 @@ namespace Kalipso
         {
             byte[] nn = new byte[6];
             byte[] tt = new byte[2];
-           //
+            //
             short[] get = new short[100];
             int i = 0;
             do
@@ -1444,15 +1856,6 @@ namespace Kalipso
         private void btnCheckXMFT_Click(object sender, EventArgs e)
         {
             CheckXMTF();
-            //int num = Convert.ToInt32(txtReadString.Text, 16);
-            //string text = string.Format("{0:X}", num);
-            //int i = Convert.ToInt32(txtReadString.Text);
-            //string x = Convert.ToString(i, 16);
-            //byte[] arr = BitConverter.GetBytes(i);
-            //string s = x.ToString("x");
-            //byte c = Convert.ToByte(x);
-            //txtComLog.AppendText(' '+ x);
-
         }
 
 
@@ -1514,10 +1917,10 @@ namespace Kalipso
             }
         }
 
-        
 
 
-        
+
+
         /// <summary>
         /// Fills the of XMFT data grid view.
         /// </summary>
@@ -1542,8 +1945,6 @@ namespace Kalipso
             byte[] nn = new byte[6];
             byte[] tt = new byte[2];
             short[] get = new short[8];
-
-            //bool varta = false;
             for (int j = 0; j < allComPort.Count() - 1; j++)
             {
                 if (allComPort[j].DeviceName == XMTF.xmt_model)
@@ -1581,7 +1982,7 @@ namespace Kalipso
             if (dGridXMFT.Rows.Count < 2)
             {
                 dGridXMFT.Rows.Add();
-                
+
             }
             fillOfXMFTDataGridView();
             for (int j = 0; j < allComPort.Count() - 1; j++)
@@ -1618,7 +2019,7 @@ namespace Kalipso
                             dGridXMFT["Command", i].Value = xmt.XMFT_commands[i];
                             System.Threading.Thread.Sleep(300);
                         }
-                        
+
                     }
                     for (int i = 0; i < 28; i++)
                     {
@@ -1731,13 +2132,13 @@ namespace Kalipso
                         nn[0] = Convert.ToByte(allComPort[j].DeviceAddressRS458);
                         nn[1] = 3;
                         nn[2] = 0;
-                        nn[3] = Convert.ToByte(i); 
+                        nn[3] = Convert.ToByte(i);
                         nn[4] = 0;
                         nn[5] = 0;
                         tt = CRC.ModbusCRC16Calc(nn);
                         byte[] buf_out = new byte[] { nn[0], nn[1], nn[2], nn[3], nn[4], nn[5], tt[0], tt[1] };
                         get = GetDataFromXMFT(buf_out);
-                        txtComLog.AppendText(i.ToString()+" "+ get[0].ToString()+" \r\n" );
+                        txtComLog.AppendText(i.ToString() + " " + get[0].ToString() + " \r\n");
                         System.Threading.Thread.Sleep(300);
                     }
                 }
@@ -1759,17 +2160,17 @@ namespace Kalipso
             {
                 if (allComPort[j].DeviceName == XMTF.xmt_model)
                 {
-                        nn[0] = Convert.ToByte(allComPort[j].DeviceAddressRS458);
-                        nn[1] = 6;
-                        nn[2] = 0;
-                        nn[3] = 0x1A;
-                        nn[4] = 0;
-                        nn[5] = 8;
-                        tt = CRC.ModbusCRC16Calc(nn);
-                        allComPort[j].ActivePort.Write(new byte[] { nn[0], nn[1], nn[2], nn[3], nn[4], nn[5], tt[0], tt[1] }, offset, 8);
-                        allComPort[j].ActivePort.DiscardInBuffer();
-                        allComPort[j].ActivePort.DiscardOutBuffer();
-                    
+                    nn[0] = Convert.ToByte(allComPort[j].DeviceAddressRS458);
+                    nn[1] = 6;
+                    nn[2] = 0;
+                    nn[3] = 0x1A;
+                    nn[4] = 0;
+                    nn[5] = 8;
+                    tt = CRC.ModbusCRC16Calc(nn);
+                    allComPort[j].ActivePort.Write(new byte[] { nn[0], nn[1], nn[2], nn[3], nn[4], nn[5], tt[0], tt[1] }, offset, 8);
+                    allComPort[j].ActivePort.DiscardInBuffer();
+                    allComPort[j].ActivePort.DiscardOutBuffer();
+
                 }
             }
             val_byte = BitConverter.GetBytes(time);
@@ -1798,7 +2199,7 @@ namespace Kalipso
         int oooo = 0;
         private void timer2_Tick(object sender, EventArgs e)
         {
-            
+
             GetTemperatureFromXMFT();
             chart1.Series[0].Color = Color.Red;
             chart1.Series[0].Points.AddXY(oooo, Temperature);
@@ -1810,11 +2211,31 @@ namespace Kalipso
             timer2.Enabled = true;
 
         }
+
+        private void FrmComPort_VisibleChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.defComPort = cmbComPortList.Text;
+            Properties.Settings.Default.defComDevice = cbComDevice.Text;
+
+            Properties.Settings.Default.Save();
+        }
+
+        private void txtTransmit_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnGetDataE7_28_Click(object sender, EventArgs e)
+        {
+            getAllDataFromE7_28();
+
+
+        }
     }
 
 }
-        
-    
+
+
 
 
 
